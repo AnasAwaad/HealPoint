@@ -1,4 +1,4 @@
-﻿namespace Vezeeta.DataAccess.Contracts;
+﻿namespace HealPoint.DataAccess.Contracts;
 public interface IRepository<TEntity> where TEntity : class
 {
     IEnumerable<TEntity> GetAll();

@@ -1,16 +1,16 @@
-﻿using Microsoft.Extensions.Configuration;
+﻿using HealPoint.DataAccess.Contracts;
+using HealPoint.DataAccess.Data;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Vezeeta.DataAccess.Contracts;
-using Vezeeta.DataAccess.Data;
 
-namespace Vezeeta.DataAccess;
+namespace HealPoint.DataAccess;
 public static class DataAccessExtensions
 {
     public static IServiceCollection AddDataAccessServices(this IServiceCollection services, IConfigurationManager configuration)
     {
         services.AddDbContext<ApplicationDbContext>(options =>
         {
-            options.UseSqlServer(configuration.GetConnectionString("salesConnection"));
+            options.UseSqlServer(configuration.GetConnectionString("DefaultConnection"));
         });
 
         services.AddScoped<IUnitOfWork, UnitOfWork>();

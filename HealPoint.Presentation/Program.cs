@@ -1,3 +1,6 @@
+using HealPoint.BusinessLogic;
+using HealPoint.DataAccess;
+
 namespace HealPoint.Presentation;
 
 public class Program
@@ -6,8 +9,15 @@ public class Program
     {
         var builder = WebApplication.CreateBuilder(args);
 
-        // Add services to the container.
+        #region Add services to the container.
+
         builder.Services.AddControllersWithViews();
+
+        builder.Services
+            .AddBusinessLogicServices()
+            .AddDataAccessServices(builder.Configuration);
+
+        #endregion
 
         var app = builder.Build();
 

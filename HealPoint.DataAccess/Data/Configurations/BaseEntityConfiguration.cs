@@ -1,4 +1,4 @@
-﻿namespace Vezeeta.DataAccess.Data.Configurations;
+﻿namespace HealPoint.DataAccess.Data.Configurations;
 internal class BaseEntityConfiguration<TEntity> : IEntityTypeConfiguration<TEntity> where TEntity : BaseEntity
 {
     public void Configure(EntityTypeBuilder<TEntity> builder)

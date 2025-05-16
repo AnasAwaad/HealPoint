@@ -1,6 +1,6 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 
-namespace Vezeeta.BusinessLogic;
+namespace HealPoint.BusinessLogic;
 public static class AddBusinessLogicExtensions
 {
     public static IServiceCollection AddBusinessLogicServices(this IServiceCollection services)

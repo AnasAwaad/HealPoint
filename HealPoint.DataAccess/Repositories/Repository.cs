@@ -1,7 +1,7 @@
-﻿using Vezeeta.DataAccess.Contracts;
-using Vezeeta.DataAccess.Data;
+﻿using HealPoint.DataAccess.Contracts;
+using HealPoint.DataAccess.Data;
 
-namespace Vezeeta.DataAccess.Repositories;
+namespace HealPoint.DataAccess.Repositories;
 internal abstract class Repository<TEntity> : IRepository<TEntity> where TEntity : class
 {
     protected readonly ApplicationDbContext _context;

@@ -1,6 +1,6 @@
-﻿using Vezeeta.DataAccess.Contracts;
+﻿using HealPoint.DataAccess.Contracts;
 
-namespace Vezeeta.DataAccess.Data;
+namespace HealPoint.DataAccess.Data;
 internal class UnitOfWork : IUnitOfWork
 {
     private readonly ApplicationDbContext _context;
