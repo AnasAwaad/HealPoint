@@ -22,26 +22,47 @@ public class CategoryService : ICategoryService
         return _mapper.Map<IEnumerable<CategoryListDto>>(categories);
     }
 
-    public Category GetCategoryById(int id)
+    public CategoryFormDto? GetCategoryById(int id)
     {
-        throw new NotImplementedException();
+        var category = _unitOfWork.Categories.FindById(id);
+
+        return _mapper.Map<CategoryFormDto>(category);
     }
 
-    public void UpdateCategory(Category category)
+    public bool UpdateCategory(CategoryFormDto categoryDto)
     {
-        throw new NotImplementedException();
+
+        var existingCategory = _unitOfWork.Categories.FindById(categoryDto.Id);
+        if (existingCategory == null)
+            return false;
+
+        _mapper.Map(categoryDto, existingCategory);
+
+        _unitOfWork.SaveChanges();
+
+        return true;
     }
 
-
-    public void DeleteCategory(int id)
-    {
-        throw new NotImplementedException();
-    }
-
-    public void CreateCategory(CreateCategoryDto categoryDto)
+    public void CreateCategory(CategoryFormDto categoryDto)
     {
         var category = _mapper.Map<Category>(categoryDto);
         _unitOfWork.Categories.Insert(category);
         _unitOfWork.SaveChanges();
+    }
+
+    public bool ChangeStatus(int id)
+    {
+        var existingCategory = _unitOfWork.Categories.FindById(id);
+        if (existingCategory == null)
+            return false;
+
+        existingCategory.IsDeleted = !existingCategory.IsDeleted;
+        existingCategory.LastUpdatedOn = DateTime.Now;
+
+        _unitOfWork.Categories.Update(existingCategory);
+
+        _unitOfWork.SaveChanges();
+
+        return true;
     }
 }

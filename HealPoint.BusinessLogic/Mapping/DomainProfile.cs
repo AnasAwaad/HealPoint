@@ -8,6 +8,6 @@ public class DomainProfile : Profile
     public DomainProfile()
     {
         CreateMap<Category, CategoryListDto>();
-        CreateMap<CreateCategoryDto, Category>();
+        CreateMap<CategoryFormDto, Category>().ReverseMap();
     }
 }

@@ -1,15 +1,19 @@
-﻿@model CreateCategoryDto
+﻿@model CategoryFormDto
 
 @{
-	ViewData["Title"] = "Create Category";
+	ViewData["Title"] = $"{(Model?.Id > 0 ? "Update":"Create")} Category";
 }
 
 <div class="card shadow-sm">
     <div class="card-header">
-        <h3 class="card-title">Create Category</h3>
+        <h3 class="card-title">@(Model?.Id > 0 ?"Update":"Create") Category</h3>
     </div>
     <div class="card-body">
-        <form method="post" asp-action="Create" >
+        <form method="post" asp-controller="Categories" asp-action="@(Model?.Id > 0 ?"Update":"Create")">
+            @if(Model?.Id > 0)
+            {
+                <input type="hidden" asp-for="Id" />
+            }
             <!--begin::Input group-->
             <div class="row mb-5">
                 <div class="col-md-6">
@@ -39,3 +43,8 @@
         </form>
     </div>
 </div>
+
+@section Scripts
+{
+    <partial name="_ValidationScriptsPartial"/>
+}

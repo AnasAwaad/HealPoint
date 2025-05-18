@@ -1,12 +1,11 @@
 ﻿using HealPoint.BusinessLogic.DTOs;
-using HealPoint.DataAccess.Entities;
 
 namespace HealPoint.BusinessLogic.Contracts;
 public interface ICategoryService
 {
     IEnumerable<CategoryListDto> GetAllCategories();
-    void CreateCategory(CreateCategoryDto category);
-    Category GetCategoryById(int id);
-    void UpdateCategory(Category category);
-    void DeleteCategory(int id);
+    void CreateCategory(CategoryFormDto category);
+    CategoryFormDto GetCategoryById(int id);
+    bool UpdateCategory(CategoryFormDto category);
+    bool ChangeStatus(int id);
 }

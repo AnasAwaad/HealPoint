@@ -5,8 +5,6 @@ internal class BaseEntityConfiguration<TEntity> : IEntityTypeConfiguration<TEnti
     {
         builder.Property(e => e.CreatedOn).HasDefaultValueSql("GETDATE()");
 
-        builder.Property(e => e.LastUpdatedOn).HasComputedColumnSql("GETDATE()");
-
         builder.Property(e => e.IsDeleted)
                .HasDefaultValue(false);
     }
