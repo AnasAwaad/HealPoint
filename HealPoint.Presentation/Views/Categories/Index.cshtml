@@ -141,23 +141,50 @@
 				var btn = $(this);
 				var id = btn.data('id');
 
-				$.post({
-					url:"/Categories/ChangeStatus/"+id,
-					data:{
-						"__RequestVerificationToken": $("input[name='__RequestVerificationToken']").val()
+				bootbox.confirm({
+					title: "Change Status Alert",
+					message: "Do you want to change status of this category?",
+					buttons: {
+						cancel: {
+							label: '<i class="fa fa-times"></i> Cancel',
+							className: 'btn btn-secondary'
+						},
+						confirm: {
+							label: '<i class="fa fa-check"></i> Confirm',
+							className: 'btn btn-danger'
+						}
 					},
-					success:function(lastUpdatedOn){
-						var row = btn.parents('tr');
-						var status = row.find('.js-status');
+					callback: function (result) {
+						if (result)
+						{
+							$.post({
+								url: "/Categories/ChangeStatus/" + id,
+								data: {
+									"__RequestVerificationToken": $("input[name='__RequestVerificationToken']").val()
+								},
+								success: function (lastUpdatedOn) {
+									// toastify alert
+									showSuccessMessage("category status updated successfully");
 
-						// change status in badge
-						status.html(status.text() == "Deleted" ? "Active" : "Deleted");
-						status.toggleClass("badge-light-success badge-light-danger");
+									var row = btn.parents('tr');
+									var status = row.find('.js-status');
 
-						// change time of last updated on 
-						row.find('.js-last-updated-on').html(lastUpdatedOn);
+									// change status in badge
+									status.html(status.text() == "Deleted" ? "Active" : "Deleted");
+									status.toggleClass("badge-light-success badge-light-danger");
+
+									// change time of last updated on
+									row.find('.js-last-updated-on').html(lastUpdatedOn);
+								},
+								error: function () {
+									showErrorMessage("An error occurred while changing status.");
+								}
+							})
+						}
 					}
-				})
+				});
+
+				
 			})
 		})
 	</script>

@@ -30,6 +30,7 @@ public class CategoriesController : Controller
 			return View(model);
 
 		_categoryService.CreateCategory(model);
+		TempData["SuccessMessage"] = "Category created successfully";
 
 		return RedirectToAction(nameof(Index));
 	}
@@ -53,6 +54,8 @@ public class CategoriesController : Controller
 
 		if (!isUpdated)
 			return NotFound();
+
+		TempData["SuccessMessage"] = "Category updated successfully";
 
 		return RedirectToAction(nameof(Index));
 	}

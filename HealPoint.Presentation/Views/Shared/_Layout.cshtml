@@ -11,6 +11,9 @@
 	<link href="~/assets/css/plugins.bundle.css" rel="stylesheet" />
 	<link href="~/assets/css/style.bundle.css" rel="stylesheet" type="text/css" />
 	<!--end::Global Stylesheets Bundle-->
+	<!--begin::Toastify-js style-->
+	<link href="~/lib/toastify-js/toastify.min.css" rel="stylesheet" />
+	<!--end::Toastify-js style-->
 	<link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
 	<link rel="stylesheet" href="~/HealPoint.Presentation.styles.css" asp-append-version="true" />
 </head>
@@ -89,6 +92,8 @@
 			<span class="path2"></span>
 		</i>
 	</div>
+
+	<span class="d-none js-success-message">@TempData["SuccessMessage"]</span>
 	<!--end::Scrolltop-->
 	<!--begin::Javascript-->
 	<script>var hostUrl = "assets/";</script>
@@ -97,6 +102,12 @@
 	<script src="~/assets/js/plugins.bundle.js"></script>
 	<script src="~/assets/js/scripts.bundle.js"></script>
 	<!--end::Global Javascript Bundle-->
+	<!--begin::Bootbox-->
+	<script src="~/lib/bootbox.js/bootbox.min.js"></script>
+	<!--end::Bootbox-->
+	<!--begin::Toastify-js script-->
+	<script src="~/lib/toastify-js/toastify.min.js"></script>
+	<!--end::Toastify-js script-->
 	<script src="~/js/site.js" asp-append-version="true"></script>
 	@await RenderSectionAsync("Scripts", required: false)
 	<!--end::Javascript-->
