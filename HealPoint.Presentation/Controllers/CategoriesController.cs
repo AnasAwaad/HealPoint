@@ -44,6 +44,7 @@ public class CategoriesController : Controller
 	public IActionResult Update(int id)
 	{
 		var category = _categoryService.GetCategoryById(id);
+		category.ParentCategoryOptions = _categoryService.GetParentCategorySelectList();
 
 		return PartialView("_Form", category);
 	}
@@ -85,5 +86,17 @@ public class CategoriesController : Controller
 			return NotFound();
 
 		return Ok(lastUpdatedOn);
+	}
+
+	[HttpPost]
+	[ValidateAntiForgeryToken]
+	public IActionResult DeleteCategory(int id)
+	{
+		var isDeleted = _categoryService.DeleteCategory(id);
+
+		if (!isDeleted)
+			return BadRequest();
+
+		return Ok();
 	}
 }

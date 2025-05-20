@@ -11,4 +11,5 @@ public interface ICategoryService
 	CategoryDto? UpdateCategory(CategoryFormDto category);
 	string? UpdateFeaturedStatus(int id);
 	string? UpdateCategoryStatus(int id);
+	bool DeleteCategory(int id);
 }

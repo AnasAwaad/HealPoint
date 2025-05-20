@@ -43,7 +43,9 @@ public class CategoryService : ICategoryService
 
 		_unitOfWork.SaveChanges();
 
-		return _mapper.Map<CategoryDto>(existingCategory);
+		var categoryResult = _mapper.Map<CategoryDto>(existingCategory);
+		categoryResult.ParentCategoryName = categoryDto.ParentCategoryName;
+		return categoryResult;
 	}
 
 	public CategoryDto CreateCategory(CategoryFormDto categoryDto)
@@ -93,5 +95,17 @@ public class CategoryService : ICategoryService
 			Value = c.Id.ToString(),
 			Text = c.Name
 		}).OrderBy(c => c.Text).ToList();
+	}
+
+	public bool DeleteCategory(int id)
+	{
+		var category = _unitOfWork.Categories.FindById(id);
+
+		if (category is null)
+			return false;
+
+		_unitOfWork.Categories.Delete(id);
+
+		return true;
 	}
 }
