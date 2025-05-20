@@ -7,5 +7,5 @@ public interface ICategoryService
 	CategoryDto CreateCategory(CategoryFormDto category);
 	CategoryFormDto? GetCategoryById(int id);
 	CategoryDto? UpdateCategory(CategoryFormDto category);
-	bool ChangeStatus(int id);
+	DateTime? ChangeStatus(int id);
 }

@@ -54,11 +54,12 @@ public class CategoryService : ICategoryService
 		return _mapper.Map<CategoryDto>(category);
 	}
 
-	public bool ChangeStatus(int id)
+	public DateTime? ChangeStatus(int id)
 	{
 		var existingCategory = _unitOfWork.Categories.FindById(id);
+
 		if (existingCategory == null)
-			return false;
+			return null;
 
 		existingCategory.IsDeleted = !existingCategory.IsDeleted;
 		existingCategory.LastUpdatedOn = DateTime.Now;
@@ -67,6 +68,6 @@ public class CategoryService : ICategoryService
 
 		_unitOfWork.SaveChanges();
 
-		return true;
+		return existingCategory.LastUpdatedOn;
 	}
 }

@@ -1,5 +1,6 @@
 ﻿using HealPoint.BusinessLogic.Contracts;
 using HealPoint.BusinessLogic.DTOs;
+using HealPoint.Presentation.Filters;
 using Microsoft.AspNetCore.Mvc;
 
 namespace HealPoint.Presentation.Controllers;
@@ -16,7 +17,7 @@ public class CategoriesController : Controller
 		return View(_categoryService.GetAllCategories());
 	}
 
-
+	[AjaxOnly]
 	public IActionResult Create()
 	{
 		return PartialView("_Form");
@@ -34,7 +35,7 @@ public class CategoriesController : Controller
 		return PartialView("_CategoryRow", category);
 	}
 
-
+	[AjaxOnly]
 	public IActionResult Update(int id)
 	{
 		var category = _categoryService.GetCategoryById(id);
@@ -61,12 +62,11 @@ public class CategoriesController : Controller
 	[ValidateAntiForgeryToken]
 	public IActionResult ChangeStatus(int id)
 	{
-		var isUpdated = _categoryService.ChangeStatus(id);
+		var lastUpdatedOn = _categoryService.ChangeStatus(id);
 
-		if (!isUpdated)
+		if (lastUpdatedOn is null)
 			return NotFound();
 
-
-		return Ok(DateTime.Now.ToString());
+		return Ok(lastUpdatedOn);
 	}
 }
