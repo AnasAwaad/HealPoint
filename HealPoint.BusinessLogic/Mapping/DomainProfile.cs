@@ -7,7 +7,9 @@ public class DomainProfile : Profile
 {
 	public DomainProfile()
 	{
-		CreateMap<Category, CategoryDto>().ReverseMap();
+		CreateMap<CategoryDto, Category>().ReverseMap()
+			.ForMember(src => src.ParentCategoryName, opt => opt.MapFrom(dest => dest.ParentCategory.Name));
 		CreateMap<CategoryFormDto, Category>().ReverseMap();
+		CreateMap<CategoryFormDto, CategoryDto>().ReverseMap();
 	}
 }

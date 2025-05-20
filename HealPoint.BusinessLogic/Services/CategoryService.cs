@@ -3,6 +3,7 @@ using HealPoint.BusinessLogic.Contracts;
 using HealPoint.BusinessLogic.DTOs;
 using HealPoint.DataAccess.Contracts;
 using HealPoint.DataAccess.Entities;
+using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace HealPoint.BusinessLogic.Services;
 public class CategoryService : ICategoryService
@@ -51,7 +52,7 @@ public class CategoryService : ICategoryService
 		_unitOfWork.Categories.Insert(category);
 		_unitOfWork.SaveChanges();
 
-		return _mapper.Map<CategoryDto>(category);
+		return _mapper.Map<CategoryDto>(categoryDto);
 	}
 
 	public DateTime? ChangeStatus(int id)
@@ -69,5 +70,15 @@ public class CategoryService : ICategoryService
 		_unitOfWork.SaveChanges();
 
 		return existingCategory.LastUpdatedOn;
+	}
+
+	public List<SelectListItem> GetParentCategorySelectList()
+	{
+		var categories = _unitOfWork.Categories.GetParentCategories();
+		return categories.Select(c => new SelectListItem
+		{
+			Value = c.Id.ToString(),
+			Text = c.Name
+		}).OrderBy(c => c.Text).ToList();
 	}
 }

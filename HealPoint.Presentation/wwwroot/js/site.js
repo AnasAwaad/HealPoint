@@ -9,6 +9,7 @@ $(document).ready(function () {
         showSuccessMessage(message);
 	}
 
+	$('.js-select2').select2();
 
 	// Handle Global Modal 
 	$(document).on('click', '.js-render-modal', function () {

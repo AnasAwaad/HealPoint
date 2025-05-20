@@ -60,9 +60,9 @@
 								<thead>
 									<tr class="fw-bold fs-6 text-gray-800">
 										<th>Name</th>
-										<th>Description</th>
-										<th>Created On</th>
-										<th>Last Updated On</th>
+										<th>Parent Category</th>
+										<th>Date</th>
+										<th>Featured</th>
 										<th>Status</th>
 										<th class="text-center">Actions</th>
 									</tr>
@@ -102,6 +102,14 @@
 
 	<script>
 		$(document).ready(function(){
+			$(document).on('change', '#ParentCategoryId', function () {
+
+				var selectedText = $(this).find('option:selected').text();
+
+				$('#ParentCategoryName').val(selectedText);
+			});
+
+
 			$('.js-change-status').on('click', function () {
 				var btn = $(this);
 				var id = btn.data('id');

@@ -12,10 +12,11 @@
     {
         <input type="hidden" asp-for="Id" />
     }
+    <input type="hidden" asp-for="ParentCategoryName" />
     <!--begin::Input group-->
     <div>
         <div class="form-floating mb-2">
-            <input asp-for="Name" type="text" class="form-control" placeholder="Name" />
+            <input asp-for="Name" type="text" class="form-control form-control-solid" placeholder="Name" />
             <label asp-for="Name"></label>
         </div>
         <span asp-validation-for="Name" class="text-danger"></span>
@@ -25,11 +26,19 @@
     <!--begin::Input group-->
     <div>
         <div class="form-floating mb-2">
-            <input asp-for="Description" type="text" class="form-control" placeholder="Description" />
+            <input asp-for="Description " type="text" class="form-control form-control-solid" placeholder="Description" />
             <label asp-for="Description"></label>
         </div>
         <span asp-validation-for="Description" class="text-danger"></span>
 
+    </div>
+
+    <div class="form-floating mb-2">
+        <select asp-for="ParentCategoryId" class="form-select form-select-solid js-select2" data-control="select2" data-placeholder="Select an option" asp-items="Model?.ParentCategoryOptions">
+            <option value="">Select parent category</option>
+        </select>
+        <label asp-for="ParentCategoryId"></label>
+        <span asp-validation-for="ParentCategoryId" class="text-danger"></span>
     </div>
     
 
