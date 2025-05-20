@@ -2,7 +2,7 @@
 // for details on configuring this project to bundle and minify static web assets.
 
 // Write your JavaScript code.
-
+var updatedRow;
 $(document).ready(function () {
     var message = $('.js-success-message').text();
     if (message != '') {
@@ -11,12 +11,15 @@ $(document).ready(function () {
 
 
 	// Handle Global Modal 
-	$('.js-render-modal').on('click', function () {
+	$(document).on('click', '.js-render-modal', function () {
 		var btn = $(this);
 		var myModal = $('#myModal');
 		var title = btn.data('title');
 		var url = btn.data('url');
 
+		if (btn.data('update') != undefined) {
+			updatedRow = btn.parents('tr');
+		}
 
 		myModal.find('.modal-title').text(title);
 
@@ -38,21 +41,31 @@ $(document).ready(function () {
 		myModal.modal('show');
 	})
 
-	$('.js-modal-save').on('click', function () {
+	$(document).on('click', '.js-modal-save', function () {
 		$('#ModalForm').submit();
 	})
 })
 
 function onModalFormSuccess(row) {
-	$('.js-tbody').append(row);
+	var message;
+	if (updatedRow != undefined) {
+		// Updates existing row with new HTML, then clears 'updatedRow' reference.
+		$(updatedRow).replaceWith(row);
+		updatedRow = undefined;
+
+		message = "Category updated successfully";
+	} else {
+		// Appends new row HTML to the table body.
+		$('.js-tbody').append(row);
+
+		message = "Category created successfully";
+	}
+
 
 	$('#myModal').modal('hide');
 
-	showSuccessMessage("Category created successfully");
+	showSuccessMessage(message);
 
-	//TODO: Not Workingggggggggggg
-	//KTMenu.init();
-	//KTMenu.initHandlers();
 }
 
 function onModalFormFailure(res) {

@@ -5,7 +5,7 @@ public interface ICategoryService
 {
 	IEnumerable<CategoryDto> GetAllCategories();
 	CategoryDto CreateCategory(CategoryFormDto category);
-	CategoryFormDto GetCategoryById(int id);
-	bool UpdateCategory(CategoryFormDto category);
+	CategoryFormDto? GetCategoryById(int id);
+	CategoryDto? UpdateCategory(CategoryFormDto category);
 	bool ChangeStatus(int id);
 }

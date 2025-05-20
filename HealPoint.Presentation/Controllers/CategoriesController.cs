@@ -39,7 +39,7 @@ public class CategoriesController : Controller
 	{
 		var category = _categoryService.GetCategoryById(id);
 
-		return View("Form", category);
+		return PartialView("_Form", category);
 	}
 
 	[HttpPost]
@@ -49,13 +49,12 @@ public class CategoriesController : Controller
 		if (!ModelState.IsValid)
 			return BadRequest();
 
-		bool isUpdated = _categoryService.UpdateCategory(model);
+		var categoryDto = _categoryService.UpdateCategory(model);
 
-		if (!isUpdated)
+		if (categoryDto == null)
 			return NotFound();
 
-
-		return RedirectToAction(nameof(Index));
+		return PartialView("_CategoryRow", categoryDto);
 	}
 
 	[HttpPost]

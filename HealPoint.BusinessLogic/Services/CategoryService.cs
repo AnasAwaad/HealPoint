@@ -29,18 +29,20 @@ public class CategoryService : ICategoryService
 		return _mapper.Map<CategoryFormDto>(category);
 	}
 
-	public bool UpdateCategory(CategoryFormDto categoryDto)
+	public CategoryDto? UpdateCategory(CategoryFormDto categoryDto)
 	{
-
 		var existingCategory = _unitOfWork.Categories.FindById(categoryDto.Id);
+
 		if (existingCategory == null)
-			return false;
+		{
+			return null;
+		}
 
 		_mapper.Map(categoryDto, existingCategory);
 
 		_unitOfWork.SaveChanges();
 
-		return true;
+		return _mapper.Map<CategoryDto>(existingCategory);
 	}
 
 	public CategoryDto CreateCategory(CategoryFormDto categoryDto)
