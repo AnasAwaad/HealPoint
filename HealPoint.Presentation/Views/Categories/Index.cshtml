@@ -61,7 +61,8 @@
 									<tr class="fw-bold fs-6 text-gray-800">
 										<th>Name</th>
 										<th>Parent Category</th>
-										<th>Date</th>
+										<th>Creation Date</th>
+										<th>Last Updated on</th>
 										<th>Featured</th>
 										<th>Status</th>
 										<th class="text-center">Actions</th>
@@ -110,9 +111,9 @@
 			});
 
 
-			$('.js-change-status').on('click', function () {
+			$('.js-change-status').on('change', function () {
 				var btn = $(this);
-				var id = btn.data('id');
+				var url = btn.data('url');
 
 				bootbox.confirm({
 					title: "Change Status Alert",
@@ -131,23 +132,16 @@
 						if (result)
 						{
 							$.post({
-								url: "/Categories/ChangeStatus/" + id,
+								url,
 								data: {
 									"__RequestVerificationToken": $("input[name='__RequestVerificationToken']").val()
 								},
 								success: function (lastUpdatedOn) {
 									// toastify alert
-									showSuccessMessage("category status updated successfully");
-
-									var row = btn.parents('tr');
-									var status = row.find('.js-status');
-
-									// change status in badge
-									status.html(status.text() == "Deleted" ? "Active" : "Deleted");
-									status.toggleClass("badge-light-success badge-light-danger");
+									showSuccessMessage("category updated successfully");
 
 									// change time of last updated on
-									row.find('.js-last-updated-on').html(lastUpdatedOn);
+									btn.parents('tr').find('.js-last-updated-on').html(lastUpdatedOn);
 								},
 								error: function () {
 									showErrorMessage("An error occurred while changing status.");

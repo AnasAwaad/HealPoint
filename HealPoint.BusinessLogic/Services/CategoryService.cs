@@ -55,21 +55,34 @@ public class CategoryService : ICategoryService
 		return _mapper.Map<CategoryDto>(categoryDto);
 	}
 
-	public DateTime? ChangeStatus(int id)
+	public string? UpdateFeaturedStatus(int id)
 	{
 		var existingCategory = _unitOfWork.Categories.FindById(id);
 
 		if (existingCategory == null)
 			return null;
 
-		existingCategory.IsDeleted = !existingCategory.IsDeleted;
+		existingCategory.IsFeatured = !existingCategory.IsFeatured;
 		existingCategory.LastUpdatedOn = DateTime.Now;
-
-		_unitOfWork.Categories.Update(existingCategory);
 
 		_unitOfWork.SaveChanges();
 
-		return existingCategory.LastUpdatedOn;
+		return existingCategory.LastUpdatedOn.ToString();
+	}
+
+	public string? UpdateCategoryStatus(int id)
+	{
+		var existingCategory = _unitOfWork.Categories.FindById(id);
+
+		if (existingCategory == null)
+			return null;
+
+		existingCategory.Status = !existingCategory.Status;
+		existingCategory.LastUpdatedOn = DateTime.Now;
+
+		_unitOfWork.SaveChanges();
+
+		return existingCategory.LastUpdatedOn.ToString();
 	}
 
 	public List<SelectListItem> GetParentCategorySelectList()

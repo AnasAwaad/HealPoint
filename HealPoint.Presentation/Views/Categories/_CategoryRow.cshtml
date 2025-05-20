@@ -4,14 +4,15 @@
 	<td>@Model.Name</td>
 	<td>@(string.IsNullOrEmpty(Model.ParentCategoryName) ? "-":Model.ParentCategoryName)</td>
 	<td>@Model.CreatedOn</td>
+	<td class="js-last-updated-on">@Model.LastUpdatedOn</td>
 	<td>
-		<div class="form-check form-switch form-check-custom form-check-solid">
-			<input class="form-check-input" type="checkbox" asp-for="IsFeatured" />
+		<div class="form-check form-switch form-check-custom form-check-solid ">
+			<input class="form-check-input js-change-status" type="checkbox" asp-for="IsFeatured" data-url="/Categories/UpdateFeaturedStatus/@Model.Id" />
 		</div>
 	</td>
 	<td>
 		<div class="form-check form-switch form-check-custom form-check-solid">
-			<input class="form-check-input" type="checkbox" asp-for="Status" />
+			<input class="form-check-input js-change-status" type="checkbox" asp-for="Status" data-url="/Categories/ChangeCategoryStatus/@Model.Id" />
 		</div>
 	</td>
 	<td class="text-center">
