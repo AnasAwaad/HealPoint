@@ -19,7 +19,7 @@ public class CategoriesController : Controller
 
 	public IActionResult Create()
 	{
-		return View("Form");
+		return PartialView("_Form");
 	}
 
 	[HttpPost]
@@ -27,12 +27,11 @@ public class CategoriesController : Controller
 	public IActionResult Create(CategoryFormDto model)
 	{
 		if (!ModelState.IsValid)
-			return View(model);
+			return BadRequest();
 
-		_categoryService.CreateCategory(model);
-		TempData["SuccessMessage"] = "Category created successfully";
+		var category = _categoryService.CreateCategory(model);
 
-		return RedirectToAction(nameof(Index));
+		return PartialView("_CategoryRow", category);
 	}
 
 
@@ -48,14 +47,13 @@ public class CategoriesController : Controller
 	public IActionResult Update(CategoryFormDto model)
 	{
 		if (!ModelState.IsValid)
-			return View(model);
+			return BadRequest();
 
 		bool isUpdated = _categoryService.UpdateCategory(model);
 
 		if (!isUpdated)
 			return NotFound();
 
-		TempData["SuccessMessage"] = "Category updated successfully";
 
 		return RedirectToAction(nameof(Index));
 	}

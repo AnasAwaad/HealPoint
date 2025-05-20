@@ -7,62 +7,64 @@ using HealPoint.DataAccess.Entities;
 namespace HealPoint.BusinessLogic.Services;
 public class CategoryService : ICategoryService
 {
-    private readonly IUnitOfWork _unitOfWork;
-    private readonly IMapper _mapper;
+	private readonly IUnitOfWork _unitOfWork;
+	private readonly IMapper _mapper;
 
-    public CategoryService(IUnitOfWork unitOfWork, IMapper mapper)
-    {
-        _unitOfWork = unitOfWork;
-        _mapper = mapper;
-    }
+	public CategoryService(IUnitOfWork unitOfWork, IMapper mapper)
+	{
+		_unitOfWork = unitOfWork;
+		_mapper = mapper;
+	}
 
-    public IEnumerable<CategoryListDto> GetAllCategories()
-    {
-        var categories = _unitOfWork.Categories.GetAll();
-        return _mapper.Map<IEnumerable<CategoryListDto>>(categories);
-    }
+	public IEnumerable<CategoryDto> GetAllCategories()
+	{
+		var categories = _unitOfWork.Categories.GetAll();
+		return _mapper.Map<IEnumerable<CategoryDto>>(categories);
+	}
 
-    public CategoryFormDto? GetCategoryById(int id)
-    {
-        var category = _unitOfWork.Categories.FindById(id);
+	public CategoryFormDto? GetCategoryById(int id)
+	{
+		var category = _unitOfWork.Categories.FindById(id);
 
-        return _mapper.Map<CategoryFormDto>(category);
-    }
+		return _mapper.Map<CategoryFormDto>(category);
+	}
 
-    public bool UpdateCategory(CategoryFormDto categoryDto)
-    {
+	public bool UpdateCategory(CategoryFormDto categoryDto)
+	{
 
-        var existingCategory = _unitOfWork.Categories.FindById(categoryDto.Id);
-        if (existingCategory == null)
-            return false;
+		var existingCategory = _unitOfWork.Categories.FindById(categoryDto.Id);
+		if (existingCategory == null)
+			return false;
 
-        _mapper.Map(categoryDto, existingCategory);
+		_mapper.Map(categoryDto, existingCategory);
 
-        _unitOfWork.SaveChanges();
+		_unitOfWork.SaveChanges();
 
-        return true;
-    }
+		return true;
+	}
 
-    public void CreateCategory(CategoryFormDto categoryDto)
-    {
-        var category = _mapper.Map<Category>(categoryDto);
-        _unitOfWork.Categories.Insert(category);
-        _unitOfWork.SaveChanges();
-    }
+	public CategoryDto CreateCategory(CategoryFormDto categoryDto)
+	{
+		var category = _mapper.Map<Category>(categoryDto);
+		_unitOfWork.Categories.Insert(category);
+		_unitOfWork.SaveChanges();
 
-    public bool ChangeStatus(int id)
-    {
-        var existingCategory = _unitOfWork.Categories.FindById(id);
-        if (existingCategory == null)
-            return false;
+		return _mapper.Map<CategoryDto>(category);
+	}
 
-        existingCategory.IsDeleted = !existingCategory.IsDeleted;
-        existingCategory.LastUpdatedOn = DateTime.Now;
+	public bool ChangeStatus(int id)
+	{
+		var existingCategory = _unitOfWork.Categories.FindById(id);
+		if (existingCategory == null)
+			return false;
 
-        _unitOfWork.Categories.Update(existingCategory);
+		existingCategory.IsDeleted = !existingCategory.IsDeleted;
+		existingCategory.LastUpdatedOn = DateTime.Now;
 
-        _unitOfWork.SaveChanges();
+		_unitOfWork.Categories.Update(existingCategory);
 
-        return true;
-    }
+		_unitOfWork.SaveChanges();
+
+		return true;
+	}
 }
