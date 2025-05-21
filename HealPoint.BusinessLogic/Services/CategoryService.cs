@@ -40,6 +40,7 @@ public class CategoryService : ICategoryService
 		}
 
 		_mapper.Map(categoryDto, existingCategory);
+		existingCategory.LastUpdatedOn = DateTime.Now;
 
 		_unitOfWork.SaveChanges();
 

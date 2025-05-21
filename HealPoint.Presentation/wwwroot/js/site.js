@@ -3,7 +3,15 @@
 
 // Write your JavaScript code.
 var updatedRow;
+var datatable;
+
 $(document).ready(function () {
+
+    KTUtil.onDOMContentLoaded(function () {
+        KTDatatables.init();
+    });
+
+
     var message = $('.js-success-message').text();
     if (message != '') {
         showSuccessMessage(message);
@@ -47,18 +55,20 @@ $(document).ready(function () {
 	})
 })
 
-function onModalFormSuccess(row) {
-	var message;
+function onModalFormSuccess(newRow) {
+    var message;
+
+    // add new row to datatable.
+    datatable.row.add($(newRow)).draw();
+
 	if (updatedRow != undefined) {
-		// Updates existing row with new HTML, then clears 'updatedRow' reference.
-		$(updatedRow).replaceWith(row);
+		// remove existing row from datatable
+        datatable.row(updatedRow).remove().draw();
 		updatedRow = undefined;
 
 		message = "Category updated successfully";
 	} else {
-		// Appends new row HTML to the table body.
-		$('.js-tbody').append(row);
-
+		
 		message = "Category created successfully";
 	}
 
@@ -106,3 +116,82 @@ function showErrorMessage(message) {
 	}).showToast();
 
 }
+
+var KTDatatables = function () {
+    // Shared variables
+    var table;
+
+    // Private functions
+    var initDatatable = function () {
+
+        // Init datatable --- more info on datatables: https://datatables.net/manual/
+        datatable = $(table).DataTable({
+            "info": false,
+            'order': [],
+            'pageLength': 10,
+        });
+    }
+
+    // Hook export buttons
+    var exportButtons = () => {
+        const documentTitle = 'Customer Orders Report';
+        var buttons = new $.fn.dataTable.Buttons(table, {
+            buttons: [
+                {
+                    extend: 'copyHtml5',
+                    title: documentTitle
+                },
+                {
+                    extend: 'excelHtml5',
+                    title: documentTitle
+                },
+                {
+                    extend: 'csvHtml5',
+                    title: documentTitle
+                },
+                {
+                    extend: 'pdfHtml5',
+                    title: documentTitle
+                }
+            ]
+        }).container().appendTo($('#kt_datatable_example_buttons'));
+
+        // Hook dropdown menu click event to datatable export buttons
+        const exportButtons = document.querySelectorAll('#kt_datatable_example_export_menu [data-kt-export]');
+        exportButtons.forEach(exportButton => {
+            exportButton.addEventListener('click', e => {
+                e.preventDefault();
+
+                // Get clicked export value
+                const exportValue = e.target.getAttribute('data-kt-export');
+                const target = document.querySelector('.dt-buttons .buttons-' + exportValue);
+
+                // Trigger click event on hidden datatable export buttons
+                target.click();
+            });
+        });
+    }
+
+    // Search Datatable --- official docs reference: https://datatables.net/reference/api/search()
+    var handleSearchDatatable = () => {
+        const filterSearch = document.querySelector('[data-kt-filter="search"]');
+        filterSearch.addEventListener('keyup', function (e) {
+            datatable.search(e.target.value).draw();
+        });
+    }
+
+    // Public methods
+    return {
+        init: function () {
+            table = document.querySelector('#datatable');
+
+            if (!table) {
+                return;
+            }
+
+            initDatatable();
+            exportButtons();
+            handleSearchDatatable();
+        }
+    };
+}();
