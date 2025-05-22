@@ -1,7 +1,7 @@
-﻿@model IEnumerable<CategoryDto>
+﻿@model IEnumerable<SpecializationDto>
 
 @{
-	ViewData["Title"] = "Create Category";
+	ViewData["Title"] = "Create Specialization";
 }
 
 <div class="d-flex flex-column flex-column-fluid" style="margin-top:30px;">
@@ -13,7 +13,7 @@
 			<div class="page-title d-flex flex-column justify-content-center flex-wrap me-3 mb-4 ">
 				<!--begin::Title-->
 				<h1 class="page-heading d-flex text-gray-900 fw-bold fs-3 flex-column justify-content-center my-0">
-					Categories
+					Specializations
 				</h1>
 				<!--end::Title-->
 				<!--begin::Breadcrumb-->
@@ -32,13 +32,13 @@
 					<!--end::Item-->
 					<!--begin::Item-->
 					<li class="breadcrumb-item text-muted">
-						Categories
+						Specializations
 					</li>
 
 				</ul>
 				<!--end::Breadcrumb-->
 			</div>
-			<!--begin::Category-->
+			<!--begin::Specialization-->
 			<div class="card card-flush">
 				<!--begin::Card header-->
 				<div class="card-header d-flex align-items-center py-5 gap-2 gap-md-5">
@@ -46,7 +46,7 @@
 						<!--begin::Search-->
 						<div class="d-flex align-items-center position-relative my-1">
 							<i class="ki-duotone ki-magnifier fs-1 position-absolute ms-4"><span class="path1"></span><span class="path2"></span></i>
-							<input type="text" data-kt-filter="search" class="form-control form-control-solid w-250px ps-14" placeholder="Search Category" />
+							<input type="text" data-kt-filter="search" class="form-control form-control-solid w-250px ps-14" placeholder="Search Specialization" />
 						</div>
 						<!--end::Search-->
 						<!--begin::Export buttons-->
@@ -54,7 +54,7 @@
 						<!--end::Export buttons-->
 					</div>
 					<div class="card-toolbar flex-row-fluid justify-content-end gap-5">
-						
+
 						<!--begin::Export dropdown-->
 						<button type="button" class="btn btn-light-primary" data-kt-menu-trigger="click" data-kt-menu-placement="bottom-end">
 							<i class="ki-duotone ki-exit-down fs-2"><span class="path1"></span><span class="path2"></span></i>
@@ -93,8 +93,8 @@
 						</div>
 						<!--end::Menu-->
 						<!--end::Export dropdown-->
-						<a href="javascript:;" data-url="/Categories/Create" data-title="Create New Category" class="btn btn-primary js-render-modal">
-							Add Category
+						<a href="javascript:;" data-url="/Specializations/Create" data-title="Create New Specialization" class="btn btn-primary js-render-modal">
+							Create
 						</a>
 						<!--begin::Hide default export buttons-->
 						<div id="kt_datatable_example_buttons" class="d-none"></div>
@@ -106,7 +106,7 @@
 
 						</div>
 
-						<!--end::Category-->
+						<!--end::Specialization-->
 					</div>
 				</div>
 				<!--begin::Card body-->
@@ -119,19 +119,17 @@
 							<thead>
 								<tr class="fw-bold fs-6 text-gray-800">
 									<th class="text-center">Name</th>
-									<th>Parent Category</th>
-									<th>Creation Date</th>
-									<th>Last Updated on</th>
-									<th>Featured</th>
+									<th>Description</th>
+									<th>Category</th>
 									<th>Status</th>
 									<th class="text-center">Actions</th>
 								</tr>
 							</thead>
 							<tbody class="js-tbody">
-					@foreach (var category in Model)
-					{
-									<partial name="_CategoryRow" model="category" />
-					}
+								@foreach (var specialization in Model)
+								{
+									<partial name="_SpecializationRow" model="specialization" />
+								}
 
 
 							</tbody>
@@ -158,97 +156,5 @@
 @section Scripts {
 			<partial name="_ValidationScriptsPartial" />
 
-			<script>
-				$(document).ready(function () {
-					$('.table').DataTable();
-					$(document).on('change', '#ParentCategoryId', function () {
-
-						var selectedText = $(this).find('option:selected').text();
-
-						$('#ParentCategoryName').val(selectedText);
-					});
-
-					$('.js-delete-category').on('click', function () {
-						var btn = $(this);
-						var url = btn.data('url');
-
-						bootbox.confirm({
-							title: "Change Status Alert",
-							message: "Do you want to delete this category?",
-							buttons: {
-								cancel: {
-									label: '<i class="fa fa-times"></i> Cancel',
-									className: 'btn btn-secondary'
-								},
-								confirm: {
-									label: '<i class="fa fa-check"></i> Confirm',
-									className: 'btn btn-danger'
-								}
-							},
-							callback: function (result) {
-								if (result) {
-									$.post({
-										url,
-										data: {
-											"__RequestVerificationToken": $("input[name='__RequestVerificationToken']").val()
-										},
-										success: function () {
-											// toastify alert
-											showSuccessMessage("category deleted successfully");
-
-											// delete item from table
-											btn.parents('tr').fadeOut();
-										},
-										error: function () {
-											showErrorMessage("An error occurred while changing status.");
-										}
-									})
-								}
-							}
-						});
-					})
-
-					$('.js-change-status').on('change', function () {
-						var btn = $(this);
-						var url = btn.data('url');
-
-						bootbox.confirm({
-							title: "Change Status Alert",
-							message: "Do you want to change status of this category?",
-							buttons: {
-								cancel: {
-									label: '<i class="fa fa-times"></i> Cancel',
-									className: 'btn btn-secondary'
-								},
-								confirm: {
-									label: '<i class="fa fa-check"></i> Confirm',
-									className: 'btn btn-danger'
-								}
-							},
-							callback: function (result) {
-								if (result) {
-									$.post({
-										url,
-										data: {
-											"__RequestVerificationToken": $("input[name='__RequestVerificationToken']").val()
-										},
-										success: function (lastUpdatedOn) {
-											// toastify alert
-											showSuccessMessage("category updated successfully");
-
-											// change time of last updated on
-											btn.parents('tr').find('.js-last-updated-on').html(lastUpdatedOn);
-										},
-										error: function () {
-											showErrorMessage("An error occurred while changing status.");
-										}
-									})
-								}
-							}
-						});
-
-
-					})
-				})
-			</script>
+			
 }

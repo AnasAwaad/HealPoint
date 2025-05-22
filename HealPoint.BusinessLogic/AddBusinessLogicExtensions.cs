@@ -6,13 +6,15 @@ using Microsoft.Extensions.DependencyInjection;
 namespace HealPoint.BusinessLogic;
 public static class AddBusinessLogicExtensions
 {
-	public static IServiceCollection AddBusinessLogicServices(this IServiceCollection services)
-	{
+    public static IServiceCollection AddBusinessLogicServices(this IServiceCollection services)
+    {
 
-		services.AddScoped<ICategoryService, CategoryService>();
-		services.AddAutoMapper(typeof(DomainProfile));
-		//services.AddScoped<IProductService, ProductService>();
+        services.AddScoped<ICategoryService, CategoryService>();
+        services.AddScoped<ISpecializationService, SpecializationService>();
 
-		return services;
-	}
+
+        services.AddAutoMapper(typeof(DomainProfile));
+
+        return services;
+    }
 }

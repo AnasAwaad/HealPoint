@@ -4,36 +4,29 @@ using HealPoint.DataAccess.Repositories;
 namespace HealPoint.DataAccess.Data;
 internal class UnitOfWork : IUnitOfWork
 {
-	private readonly ApplicationDbContext _context;
+    private readonly ApplicationDbContext _context;
 
-	//private readonly Lazy<IProductRepository> _productRepository;
-	private readonly Lazy<ICategoryRepository> _categoryRepository;
+    private readonly Lazy<ISpecializationRepository> _specializationRepository;
+    private readonly Lazy<ICategoryRepository> _categoryRepository;
 
+    public UnitOfWork(ApplicationDbContext context)
+    {
+        _context = context;
 
-	public UnitOfWork(ApplicationDbContext context)
-	{
-		_context = context;
+        _specializationRepository = new Lazy<ISpecializationRepository>(new SpecializationRepository(_context));
+        _categoryRepository = new Lazy<ICategoryRepository>(new CategoryRepository(_context));
+    }
 
-		//_productRepository = new Lazy<IProductRepository>(new ProductRepository(_context));
-		_categoryRepository = new Lazy<ICategoryRepository>(new CategoryRepository(_context));
+    public ISpecializationRepository Specializations => _specializationRepository.Value;
 
+    public ICategoryRepository Categories => _categoryRepository.Value;
 
-
-
-
-	}
-
-	public void Dispose()
-	{
-		_context.Dispose();
-	}
-
-	//public IProductRepository Products => _productRepository.Value;
-
-	public ICategoryRepository Categories => _categoryRepository.Value;
-
-	public void SaveChanges()
-	{
-		_context.SaveChanges();
-	}
+    public void SaveChanges()
+    {
+        _context.SaveChanges();
+    }
+    public void Dispose()
+    {
+        _context.Dispose();
+    }
 }

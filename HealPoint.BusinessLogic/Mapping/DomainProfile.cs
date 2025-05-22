@@ -11,5 +11,13 @@ public class DomainProfile : Profile
 			.ForMember(src => src.ParentCategoryName, opt => opt.MapFrom(dest => dest.ParentCategory.Name));
 		CreateMap<CategoryFormDto, Category>().ReverseMap();
 		CreateMap<CategoryFormDto, CategoryDto>().ReverseMap();
+
+
+		CreateMap<SpecializationDto, Specialization>().ReverseMap()
+			.ForMember(src => src.CategoryName, opt => opt.MapFrom(dest => dest.Category.Name));
+
+		CreateMap<SpecializationFormDto, Specialization>().ReverseMap();
+		CreateMap<SpecializationFormDto, CategoryDto>().ReverseMap();
+
 	}
 }

@@ -1,7 +1,4 @@
-﻿using System.ComponentModel.DataAnnotations.Schema;
-
-namespace HealPoint.DataAccess.Entities;
-[Index(nameof(Name), IsUnique = true)]
+﻿namespace HealPoint.DataAccess.Entities;
 public class Category : BaseEntity
 {
     public string Name { get; set; } = null!;
@@ -10,7 +7,5 @@ public class Category : BaseEntity
     public bool IsFeatured { get; set; }
     public bool Status { get; set; } = true;
     public int? ParentCategoryId { get; set; }
-
-    [ForeignKey("ParentCategoryId")]
     public Category ParentCategory { get; set; }
 }
