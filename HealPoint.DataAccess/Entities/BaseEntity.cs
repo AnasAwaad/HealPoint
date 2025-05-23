@@ -7,7 +7,7 @@ public class BaseEntity
     public DateTime CreatedOn { get; set; }
     // user id
     public int? LastUpdatedBy { get; set; }
-    public DateTime LastUpdatedOn { get; set; }
+    public DateTime? LastUpdatedOn { get; set; }
     // soft delete
     public bool IsDeleted { get; set; }
 }

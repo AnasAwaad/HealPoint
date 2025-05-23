@@ -1,0 +1,30 @@
+﻿@model SpecializationDto
+
+<tr>
+	<td class="text-center">@Model.Name</td>
+	<td>@Model.Description</td>
+	<td>@Model.CategoryName</td>
+	<td>
+		<div class="form-check form-switch form-check-custom form-check-solid">
+			<input class="form-check-input js-change-status w-40px h-25px" type="checkbox" asp-for="Status" data-url="/Specializations/ChangeSpecializationStatus/@Model.Id" />
+		</div>
+	</td>
+	<td class="text-center">
+		<a class="js-render-modal" href="javascript:;" data-url="/Specializations/Update/@Model.Id" data-title="Update Specialization" data-update="true">
+			<i class="ki-duotone ki-notepad-edit fs-1 text-success">
+				<span class="path1"></span>
+				<span class="path2"></span>
+			</i>
+		</a>
+
+		<a class="js-delete-item" data-url="/Specializations/DeleteSpecialization/@Model.Id" href="javascript:;" data-id="@Model.Id" data-kt-ecommerce-Model-filter="delete_row">
+			<i class="ki-duotone ki-trash-square fs-1 text-danger">
+				<span class="path1"></span>
+				<span class="path2"></span>
+				<span class="path3"></span>
+				<span class="path4"></span>
+			</i>
+		</a>
+
+	</td>
+</tr>
