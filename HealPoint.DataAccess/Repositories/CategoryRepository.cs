@@ -42,7 +42,6 @@ internal class CategoryRepository : Repository<Category>, ICategoryRepository
 
 			category.IsDeleted = true;
 			category.LastUpdatedOn = DateTime.Now;
-			_context.SaveChanges();
 		}
 	}
 

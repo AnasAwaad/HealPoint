@@ -41,15 +41,100 @@ $(document).ready(function () {
 				// Re-enable client-side validation for the new form
 				$.validator.unobtrusive.parse(myModal);
 			},
-			error: function (err) {
+            error: function (err) {
+                console.log(err.message)
 				showErrorMessage(err);
 			}
 		})
 
 
 		myModal.modal('show');
+    })
+
+	// Handle change status checkbox
+	$('.js-change-status').on('change', function () {
+		var btn = $(this);
+		var url = btn.data('url');
+
+		bootbox.confirm({
+			title: "Change Status Alert",
+			message: "Do you want to change status of this item?",
+			buttons: {
+				cancel: {
+					label: '<i class="fa fa-times"></i> Cancel',
+					className: 'btn btn-secondary'
+				},
+				confirm: {
+					label: '<i class="fa fa-check"></i> Confirm',
+					className: 'btn btn-danger'
+				}
+			},
+			callback: function (result) {
+				if (result) {
+					$.post({
+						url,
+						data: {
+							"__RequestVerificationToken": $("input[name='__RequestVerificationToken']").val()
+						},
+						success: function (lastUpdatedOn) {
+							// toastify alert
+							showSuccessMessage("item updated successfully");
+
+							// change time of last updated on
+							btn.parents('tr').find('.js-last-updated-on').html(lastUpdatedOn);
+						},
+						error: function () {
+							showErrorMessage("An error occurred while changing status.");
+						}
+					})
+				}
+			}
+		});
+
+
 	})
 
+
+	// Handle Delete item
+	$('.js-delete-item').on('click', function () {
+		var btn = $(this);
+		var url = btn.data('url');
+
+		bootbox.confirm({
+			title: "Change Status Alert",
+			message: "Do you want to delete this item?",
+			buttons: {
+				cancel: {
+					label: '<i class="fa fa-times"></i> Cancel',
+					className: 'btn btn-secondary'
+				},
+				confirm: {
+					label: '<i class="fa fa-check"></i> Confirm',
+					className: 'btn btn-danger'
+				}
+			},
+			callback: function (result) {
+				if (result) {
+					$.post({
+						url,
+						data: {
+							"__RequestVerificationToken": $("input[name='__RequestVerificationToken']").val()
+						},
+						success: function () {
+							// toastify alert
+							showSuccessMessage("item deleted successfully");
+
+							// delete item from table
+							btn.parents('tr').fadeOut();
+						},
+						error: function () {
+							showErrorMessage("An error occurred while changing status.");
+						}
+					})
+				}
+			}
+		});
+	})
 	$(document).on('click', '.js-modal-save', function () {
 		$('#ModalForm').submit();
 	})
@@ -134,7 +219,7 @@ var KTDatatables = function () {
 
     // Hook export buttons
     var exportButtons = () => {
-        const documentTitle = 'Customer Orders Report';
+        const documentTitle = $(table).data("title");
         var buttons = new $.fn.dataTable.Buttons(table, {
             buttons: [
                 {

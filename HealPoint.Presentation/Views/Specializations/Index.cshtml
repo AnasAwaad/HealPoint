@@ -115,7 +115,7 @@
 
 					<!--begin::Table-->
 					<div class="table-responsive">
-						<table id="datatable" class="table align-middle border rounded table-row-dashed fs-6 g-5">
+						<table id="datatable" data-title="Specialization - Report" class="table align-middle border rounded table-row-dashed fs-6 g-5">
 							<thead>
 								<tr class="fw-bold fs-6 text-gray-800">
 									<th class="text-center">Name</th>
@@ -156,5 +156,14 @@
 @section Scripts {
 			<partial name="_ValidationScriptsPartial" />
 
-			
+			<script>
+				$(document).ready(function () {
+					$(document).on('change', '#CategoryId', function () {
+						var selectedText = $(this).find('option:selected').text();
+						console.log(selectedText)
+
+						$('#CategoryName').val(selectedText);
+					});
+				})
+			</script>
 }
