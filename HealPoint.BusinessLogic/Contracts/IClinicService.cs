@@ -3,5 +3,6 @@
 namespace HealPoint.BusinessLogic.Contracts;
 public interface IClinicService
 {
-    IEnumerable<ClinicListDto> GetAllClinics();
+	IEnumerable<ClinicListDto> GetAllClinics();
+	void CreateClinic(CreateClinicDto clinicDto);
 }
