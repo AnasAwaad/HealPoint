@@ -24,5 +24,6 @@ public class DomainProfile : Profile
 		// Clinics
 		CreateMap<Clinic, ClinicListDto>();
 		CreateMap<CreateClinicDto, Clinic>();
+		CreateMap<Clinic, UpdateClinicDto>().ReverseMap();
 	}
 }

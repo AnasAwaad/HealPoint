@@ -32,7 +32,14 @@
         
     </td>
     <td class="text-center">
-        <a href="javascript:;" data-url="@Url.Action("Update", "Clinics", new { id = Model.Id })" data-title="Edit Clinic" class="btn btn-sm btn-light-primary js-render-modal me-2">Edit</a>
-        <button type="button" class="btn btn-sm btn-light-danger delete-clinic-btn" data-id="@Model.Id">Delete</button>
+        <a asp-action="Update" asp-route-Id="@Model.Id"  class="btn btn-sm btn-light-primary me-2">Update</a>
+        <a class="js-delete-item" data-url="/Clinics/DeleteClinic/@Model.Id" href="javascript:;" data-kt-ecommerce-Model-filter="delete_row">
+            <i class="ki-duotone ki-trash-square fs-1 text-danger">
+                <span class="path1"></span>
+                <span class="path2"></span>
+                <span class="path3"></span>
+                <span class="path4"></span>
+            </i>
+        </a>
     </td>
 </tr>

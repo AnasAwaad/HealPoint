@@ -2,8 +2,9 @@
 using System.ComponentModel.DataAnnotations;
 
 namespace HealPoint.BusinessLogic.DTOs;
-public class CreateClinicDto
+public class UpdateClinicDto
 {
+	public int Id { get; set; }
 	public string Name { get; set; } = null!;
 	public string Description { get; set; } = null!;
 	public string? ImagePath { get; set; }

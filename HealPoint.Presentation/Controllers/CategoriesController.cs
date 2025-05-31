@@ -27,7 +27,7 @@ public class CategoriesController : Controller
         return PartialView("_Form", categoryDto);
     }
 
-
+    [AjaxOnly]
     [HttpPost]
     [ValidateAntiForgeryToken]
     public IActionResult Create(CategoryFormDto model)
@@ -49,6 +49,7 @@ public class CategoriesController : Controller
         return PartialView("_Form", category);
     }
 
+    [AjaxOnly]
     [HttpPost]
     [ValidateAntiForgeryToken]
     public IActionResult Update(CategoryFormDto model)
@@ -63,7 +64,7 @@ public class CategoriesController : Controller
 
         return PartialView("_CategoryRow", categoryDto);
     }
-
+    [AjaxOnly]
     [HttpPost]
     [ValidateAntiForgeryToken]
     public IActionResult UpdateFeaturedStatus(int id)
@@ -75,7 +76,7 @@ public class CategoriesController : Controller
 
         return Ok(lastUpdatedOn);
     }
-
+    [AjaxOnly]
     [HttpPost]
     [ValidateAntiForgeryToken]
     public IActionResult ChangeCategoryStatus(int id)
@@ -87,7 +88,7 @@ public class CategoriesController : Controller
 
         return Ok(lastUpdatedOn);
     }
-
+    [AjaxOnly]
     [HttpPost]
     [ValidateAntiForgeryToken]
     public IActionResult DeleteCategory(int id)
