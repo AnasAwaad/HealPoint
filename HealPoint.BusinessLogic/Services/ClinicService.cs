@@ -7,76 +7,88 @@ using HealPoint.DataAccess.Entities;
 namespace HealPoint.BusinessLogic.Services;
 public class ClinicService : IClinicService
 {
-    private readonly IUnitOfWork _unitOfWork;
-    private readonly IMapper _mapper;
-    private readonly IFileStorageService _fileStorage;
+	private readonly IUnitOfWork _unitOfWork;
+	private readonly IMapper _mapper;
+	private readonly IFileStorageService _fileStorage;
 
-    public ClinicService(IUnitOfWork unitOfWork, IMapper mapper, IFileStorageService fileStorage)
-    {
-        _unitOfWork = unitOfWork;
-        _mapper = mapper;
-        _fileStorage = fileStorage;
-    }
+	public ClinicService(IUnitOfWork unitOfWork, IMapper mapper, IFileStorageService fileStorage)
+	{
+		_unitOfWork = unitOfWork;
+		_mapper = mapper;
+		_fileStorage = fileStorage;
+	}
 
-    public IEnumerable<ClinicListDto> GetAllClinics()
-    {
-        var clinics = _unitOfWork.Clinics.GetAll();
-        return _mapper.Map<IEnumerable<ClinicListDto>>(clinics);
-    }
+	public IEnumerable<ClinicListDto> GetAllClinics()
+	{
+		var clinics = _unitOfWork.Clinics.GetAll();
+		return _mapper.Map<IEnumerable<ClinicListDto>>(clinics);
+	}
 
-    public async Task CreateClinic(CreateClinicDto clinicDto)
-    {
-        var clinic = _mapper.Map<Clinic>(clinicDto);
+	public async Task CreateClinicAsync(CreateClinicDto clinicDto)
+	{
+		var clinic = _mapper.Map<Clinic>(clinicDto);
 
-        var imagePath = await _fileStorage.UploadFileAsync(clinicDto.ImageFile, $"clinics\\{clinicDto.Name}");
-        if (imagePath is not null)
-            clinic.ImagePath = imagePath;
-        else
-            clinic.ImagePath = "/images/clinics/default-clinic.png";
+		clinic.CreatedOn = DateTime.Now;
 
-        clinic.CreatedOn = DateTime.Now;
+		// save clinic to get id and then add physical image in server by clinic id
+		_unitOfWork.Clinics.Insert(clinic);
+		_unitOfWork.SaveChanges();
 
-        _unitOfWork.Clinics.Insert(clinic);
-        _unitOfWork.SaveChanges();
-    }
+		var imagePath = await _fileStorage.UploadFileAsync(clinicDto.ImageFile, $"clinics\\{clinic.Id}");
 
-    public UpdateClinicDto? GetClinicById(int id)
-    {
-        var clinic = _unitOfWork.Clinics.GetClinicWithSpecializations(id);
+		clinic.ImagePath = imagePath ?? "/images/clinics/default-clinic.png";
 
-        if (clinic is null)
-            return null;
+		_unitOfWork.SaveChanges();
+	}
 
-        return _mapper.Map<UpdateClinicDto>(clinic);
-    }
+	public UpdateClinicDto? GetClinicById(int id)
+	{
+		var clinic = _unitOfWork.Clinics.GetClinicWithSpecializations(id);
 
-    public UpdateClinicDto? UpdateClinic(UpdateClinicDto clinicDto)
-    {
-        var existingClinic = _unitOfWork.Clinics.FindById(clinicDto.Id);
+		if (clinic is null)
+			return null;
 
-        if (existingClinic is null)
-            return null;
+		return _mapper.Map<UpdateClinicDto>(clinic);
+	}
 
-        _mapper.Map(clinicDto, existingClinic);
+	public async Task<UpdateClinicDto?> UpdateClinicAsync(UpdateClinicDto clinicDto)
+	{
+		var existingClinic = _unitOfWork.Clinics.FindById(clinicDto.Id);
 
-        _unitOfWork.Clinics.Update(existingClinic);
-        _unitOfWork.SaveChanges();
+		if (existingClinic is null)
+			return null;
 
-        return clinicDto;
-    }
+		_mapper.Map(clinicDto, existingClinic);
+
+		if (clinicDto.ImageFile is not null)
+		{
+			_fileStorage.DeleteFile(clinicDto.ImagePath);
+			var imagePath = await _fileStorage.UploadFileAsync(clinicDto.ImageFile, $"clinics/{clinicDto.Name}");
+
+			existingClinic.ImagePath = imagePath ?? "/images/clinics/default-clinic.png";
+
+		}
 
 
-    public bool DeleteClinic(int id)
-    {
-        var clinic = _unitOfWork.Clinics.FindById(id);
 
-        if (clinic is null)
-            return false;
+		_unitOfWork.Clinics.Update(existingClinic);
+		_unitOfWork.SaveChanges();
 
-        _unitOfWork.Clinics.Delete(id);
-        _unitOfWork.SaveChanges();
+		return clinicDto;
+	}
 
-        return true;
-    }
+
+	public bool DeleteClinic(int id)
+	{
+		var clinic = _unitOfWork.Clinics.FindById(id);
+
+		if (clinic is null)
+			return false;
+
+		_unitOfWork.Clinics.Delete(id);
+		_unitOfWork.SaveChanges();
+
+		return true;
+	}
 
 }

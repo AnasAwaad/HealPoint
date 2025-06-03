@@ -1,39 +1,53 @@
 ﻿@model ClinicListDto
+
 <tr id="clinicRow_@Model.Id">
-    <td class="text-center">@Html.DisplayFor(modelItem => Model.Name)</td>
-    <td>@Html.DisplayFor(modelItem => Model.Email)</td>
-    <td>@Html.DisplayFor(modelItem => Model.ContactNumber)</td>
-    <td>@Html.DisplayFor(modelItem => Model.Speciality)</td>
-    <td>@Html.DisplayFor(modelItem => Model.ClinicAdmin)</td>
-    <td>@Html.DisplayFor(modelItem => Model.Description)</td>
-    <td>
-        @if (!string.IsNullOrEmpty(Model.ImagePath))
-        {
-            <img src="@Model.ImagePath" alt="Clinic Image" style="max-width: 50px; max-height: 50px;" />
-        }
-        else
-        {
-            <span>No Image</span>
-        }
+    <td class="ps-2">
+        
+        <div class="d-flex align-items-center">
+            <div class="symbol symbol-circle symbol-50px overflow-hidden me-3">
+                <a href="#">
+                    <div class="symbol-label">
+                        <img src="@(string.IsNullOrEmpty(Model.ImagePath) ? "/images/clinics/default-clinic.png" : Model.ImagePath)"
+                             alt="@Model.Name"
+                             class="w-100"
+                             onerror="this.onerror=null;this.src='/images/default/default-clinic.png';" />
+                    </div>
+                </a>
+            </div>
+            <div class="d-flex flex-column">
+                <a href="#" class="text-gray-800 text-hover-primary mb-1">@Model.Name</a>
+                <span>@Model.Email</span>
+            </div>
+        </div>
     </td>
+    <td>@Model.Speciality</td>
+    <td>@Model.ClinicAdmin</td>
+    <td>@Model.ContactNumber</td>
+    <td>@Model.Description</td>
     <td>
-        <div class="form-check form-switch">
+        <div class="form-check form-switch form-check-custom form-check-solid">
             <input class="form-check-input status-toggle" type="checkbox"
                    id="statusSwitch_@Model.Id"
                    data-clinic-id="@Model.Id"
-            @if (Model.Status)
-            {
-                <text>checked</text>
-            }>
-            <label class="form-check-label" for="statusSwitch_@Model.Id">
-                <span class="status-text_@Model.Id">@(Model.Status ? "Active" : "Inactive")</span>
-            </label>
+                   @(Model.Status ? "checked" : "")/>
         </div>
-        
     </td>
     <td class="text-center">
-        <a asp-action="Update" asp-route-Id="@Model.Id"  class="btn btn-sm btn-light-primary me-2">Update</a>
-        <a class="js-delete-item" data-url="/Clinics/DeleteClinic/@Model.Id" href="javascript:;" data-kt-ecommerce-Model-filter="delete_row">
+        <a href="#" class="btn btn-icon btn-active-light-primary w-30px h-30px me-3" data-bs-toggle="tooltip" title="View">
+            <i class="ki-duotone ki-eye fs-1 text-info                    ">
+                <span class="path1"></span>
+                <span class="path2"></span>
+                <span class="path3"></span>
+            </i>
+        </a>
+        <a asp-action="Update" asp-route-Id="@Model.Id" class="btn btn-icon btn-active-light-primary w-30px h-30px me-3" data-bs-toggle="tooltip" title="Edit"> 
+            <i class="ki-duotone ki-notepad-edit fs-1 text-success">
+                <span class="path1"></span>
+                <span class="path2"></span>
+            </i>
+        </a>
+        @* Delete Button *@
+        <a class="js-delete-item btn btn-icon btn-active-light-primary w-30px h-30px" data-url="/Clinics/DeleteClinic/@Model.Id" href="javascript:;" data-kt-ecommerce-Model-filter="delete_row" data-bs-toggle="tooltip" title="Delete">
             <i class="ki-duotone ki-trash-square fs-1 text-danger">
                 <span class="path1"></span>
                 <span class="path2"></span>

@@ -32,9 +32,6 @@ internal class ClinicConfiguration : BaseEntityConfiguration<Clinic>, IEntityTyp
 			.HasForeignKey(c => c.SpecializationId)
 			.OnDelete(DeleteBehavior.SetNull);
 
-		builder.Property(c => c.TimeSlotInMinutes)
-			.IsRequired();
-
 		builder.Property(c => c.Status)
 			.HasDefaultValue(true);
 
