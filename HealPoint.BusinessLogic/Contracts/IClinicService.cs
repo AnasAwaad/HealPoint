@@ -4,7 +4,7 @@ namespace HealPoint.BusinessLogic.Contracts;
 public interface IClinicService
 {
     IEnumerable<ClinicListDto> GetAllClinics();
-    void CreateClinic(CreateClinicDto clinicDto);
+    Task CreateClinic(CreateClinicDto clinicDto);
 
     UpdateClinicDto? GetClinicById(int id);
 

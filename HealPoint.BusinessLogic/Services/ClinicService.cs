@@ -9,11 +9,13 @@ public class ClinicService : IClinicService
 {
     private readonly IUnitOfWork _unitOfWork;
     private readonly IMapper _mapper;
+    private readonly IFileStorageService _fileStorage;
 
-    public ClinicService(IUnitOfWork unitOfWork, IMapper mapper)
+    public ClinicService(IUnitOfWork unitOfWork, IMapper mapper, IFileStorageService fileStorage)
     {
         _unitOfWork = unitOfWork;
         _mapper = mapper;
+        _fileStorage = fileStorage;
     }
 
     public IEnumerable<ClinicListDto> GetAllClinics()
@@ -22,9 +24,15 @@ public class ClinicService : IClinicService
         return _mapper.Map<IEnumerable<ClinicListDto>>(clinics);
     }
 
-    public void CreateClinic(CreateClinicDto clinicDto)
+    public async Task CreateClinic(CreateClinicDto clinicDto)
     {
         var clinic = _mapper.Map<Clinic>(clinicDto);
+
+        var imagePath = await _fileStorage.UploadFileAsync(clinicDto.ImageFile, $"clinics\\{clinicDto.Name}");
+        if (imagePath is not null)
+            clinic.ImagePath = imagePath;
+        else
+            clinic.ImagePath = "/images/clinics/default-clinic.png";
 
         clinic.CreatedOn = DateTime.Now;
 
