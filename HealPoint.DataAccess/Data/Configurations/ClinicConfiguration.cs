@@ -27,10 +27,7 @@ internal class ClinicConfiguration : BaseEntityConfiguration<Clinic>, IEntityTyp
 
 		builder.Property(c => c.SpecializationId);
 
-		builder.HasOne(c => c.Specialization)
-			.WithMany()
-			.HasForeignKey(c => c.SpecializationId)
-			.OnDelete(DeleteBehavior.SetNull);
+
 
 		builder.Property(c => c.Status)
 			.HasDefaultValue(true);
@@ -57,5 +54,18 @@ internal class ClinicConfiguration : BaseEntityConfiguration<Clinic>, IEntityTyp
 
 		builder.Property(c => c.Latitude);
 		builder.Property(c => c.Longitude);
+
+
+		// Add relation with ClinicSession
+		builder.HasMany(c => c.Sessions)
+			.WithOne(s => s.Clinic)
+			.HasForeignKey(s => s.ClinicId)
+			.OnDelete(DeleteBehavior.Cascade);
+
+		// Add relation with Specialization
+		builder.HasOne(c => c.Specialization)
+			.WithMany()
+			.HasForeignKey(c => c.SpecializationId)
+			.OnDelete(DeleteBehavior.SetNull);
 	}
 }

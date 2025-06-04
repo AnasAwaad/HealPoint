@@ -1,6 +1,4 @@
-﻿using System.ComponentModel.DataAnnotations.Schema;
-
-namespace HealPoint.DataAccess.Entities;
+﻿namespace HealPoint.DataAccess.Entities;
 public class Clinic : BaseEntity
 {
 	public string Name { get; set; } = null!;
@@ -9,8 +7,6 @@ public class Clinic : BaseEntity
 	public string Email { get; set; } = null!;
 	public string ContactNumber { get; set; } = null!;
 	public int? SpecializationId { get; set; }
-	[ForeignKey("SpecializationId")]
-	public Specialization? Specialization { get; set; }
 	public bool Status { get; set; } = true;
 
 	// Address Details
@@ -21,4 +17,8 @@ public class Clinic : BaseEntity
 	public string PostalCode { get; set; } = null!;
 	public double? Latitude { get; set; }
 	public double? Longitude { get; set; }
+
+	// RelationShips
+	public Specialization? Specialization { get; set; }
+	public ICollection<ClinicSession> Sessions { get; set; } = new List<ClinicSession>();
 }
