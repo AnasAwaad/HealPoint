@@ -26,5 +26,11 @@ public class DomainProfile : Profile
             .ForMember(src => src.Speciality, opt => opt.MapFrom(dest => dest.Specialization.Name)); ;
         CreateMap<CreateClinicDto, Clinic>();
         CreateMap<Clinic, UpdateClinicDto>().ReverseMap();
+
+        // ClinicSessions
+        CreateMap<ClinicSession, ClinicSessionDto>()
+            .ForMember(src => src.ClinicId, opt => opt.MapFrom(dest => dest.Clinic.Id))
+            .ForMember(src => src.ClinicName, opt => opt.MapFrom(dest => dest.Clinic.Name));
+
     }
 }

@@ -1,0 +1,279 @@
+﻿@model IEnumerable<ClinicSessionDto>
+
+@{
+    ViewData["Title"] = "Clinic Opening Hours";
+}
+<style>
+    body {
+        font-family: 'Inter', sans-serif;
+        background-color: #f8f9fa; /* Light gray background */
+    }
+
+    .container {
+        max-width: 800px;
+        margin-top: 50px;
+        background-color: #ffffff;
+        padding: 30px;
+        border-radius: 12px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08); /* Soft shadow */
+    }
+
+    .form-check-label {
+        font-weight: 500;
+        cursor: pointer;
+        padding-left: 0.5rem; /* Space between checkbox and label */
+    }
+
+    .time-inputs {
+        display: flex;
+        gap: 15px; /* Space between time inputs */
+        align-items: center;
+    }
+
+    .closed-text {
+        font-style: italic;
+        color: #6c757d; /* Muted gray for clinic closed text */
+        font-weight: 400;
+    }
+
+    .day-row {
+        padding: 15px 0;
+        border-bottom: 1px solid #f0f0f0; /* Light separator */
+    }
+
+    h2 {
+        color: #343a40; /* Darker heading */
+        margin-bottom: 30px;
+        font-weight: 600;
+        text-align: center;
+    }
+
+    .btn-primary {
+        background-color: #0d6efd;
+        border-color: #0d6efd;
+        border-radius: 8px;
+        padding: 10px 25px;
+        font-weight: 600;
+        transition: background-color 0.3s ease;
+    }
+
+    .btn-primary:hover {
+        background-color: #0b5ed7;
+        border-color: #0a58ca;
+    }
+</style>
+@* The content from the Canvas's body section goes here *@
+<div class="container">
+    <h2>Clinic Opening Hours</h2>
+    <form id="clinicHoursForm">
+
+        <div class="row day-row d-flex align-items-center mb-3">
+            <div class="col-1 col-md-1">
+                <input class="form-check-input" type="checkbox" id="saturdayCheckbox" checked>
+            </div>
+            <div class="col-3 col-md-2">
+                <label class="form-check-label" for="saturdayCheckbox">1. Saturday</label>
+            </div>
+            <div class="col-8 col-md-9">
+                <div class="time-inputs" id="saturdayTimeInputs">
+                    <input type="time" class="form-control" id="saturdayOpenTime" value="09:00">
+                    <input type="time" class="form-control" id="saturdayCloseTime" value="18:00">
+                </div>
+                <span class="closed-text" id="saturdayClosedText" style="display: none;">Clinic Closed</span>
+            </div>
+        </div>
+
+        <div class="row day-row d-flex align-items-center mb-3">
+            <div class="col-1 col-md-1">
+                <input class="form-check-input" type="checkbox" id="sundayCheckbox">
+            </div>
+            <div class="col-3 col-md-2">
+                <label class="form-check-label" for="sundayCheckbox">2. Sunday</label>
+            </div>
+            <div class="col-8 col-md-9">
+                <div class="time-inputs" id="sundayTimeInputs" style="display: none;">
+                    <input type="time" class="form-control" id="sundayOpenTime" value="09:00">
+                    <input type="time" class="form-control" id="sundayCloseTime" value="18:00">
+                </div>
+                <span class="closed-text" id="sundayClosedText">Clinic Closed</span>
+            </div>
+        </div>
+        <div class="row day-row d-flex align-items-center mb-3">
+            <div class="col-1 col-md-1">
+                <input class="form-check-input" type="checkbox" id="mondayCheckbox" checked>
+            </div>
+            <div class="col-3 col-md-2">
+                <label class="form-check-label" for="mondayCheckbox">3. Monday</label>
+            </div>
+            <div class="col-8 col-md-9">
+                <div class="time-inputs" id="mondayTimeInputs">
+                    <input type="time" class="form-control" id="mondayOpenTime" value="09:00">
+                    <input type="time" class="form-control" id="mondayCloseTime" value="18:00">
+                </div>
+                <span class="closed-text" id="mondayClosedText" style="display: none;">Clinic Closed</span>
+            </div>
+        </div>
+
+        <div class="row day-row d-flex align-items-center mb-3">
+            <div class="col-1 col-md-1">
+                <input class="form-check-input" type="checkbox" id="tuesdayCheckbox">
+            </div>
+            <div class="col-3 col-md-2">
+                <label class="form-check-label" for="tuesdayCheckbox">4. Tuesday</label>
+            </div>
+            <div class="col-8 col-md-9">
+                <div class="time-inputs" id="tuesdayTimeInputs" style="display: none;">
+                    <input type="time" class="form-control" id="tuesdayOpenTime" value="09:00">
+                    <input type="time" class="form-control" id="tuesdayCloseTime" value="18:00">
+                </div>
+                <span class="closed-text" id="tuesdayClosedText">Clinic Closed</span>
+            </div>
+        </div>
+
+        <div class="row day-row d-flex align-items-center mb-3">
+            <div class="col-1 col-md-1">
+                <input class="form-check-input" type="checkbox" id="wednesdayCheckbox" checked>
+            </div>
+            <div class="col-3 col-md-2">
+                <label class="form-check-label" for="wednesdayCheckbox">5. Wednesday</label>
+            </div>
+            <div class="col-8 col-md-9">
+                <div class="time-inputs" id="wednesdayTimeInputs">
+                    <input type="time" class="form-control" id="wednesdayOpenTime" value="09:00">
+                    <input type="time" class="form-control" id="wednesdayCloseTime" value="18:00">
+                </div>
+                <span class="closed-text" id="wednesdayClosedText" style="display: none;">Clinic Closed</span>
+            </div>
+        </div>
+
+        <div class="row day-row d-flex align-items-center mb-3">
+            <div class="col-1 col-md-1">
+                <input class="form-check-input" type="checkbox" id="thursdayCheckbox" checked>
+            </div>
+            <div class="col-3 col-md-2">
+                <label class="form-check-label" for="thursdayCheckbox">6. Thursday</label>
+            </div>
+            <div class="col-8 col-md-9">
+                <div class="time-inputs" id="thursdayTimeInputs">
+                    <input type="time" class="form-control" id="thursdayOpenTime" value="09:00">
+                    <input type="time" class="form-control" id="thursdayCloseTime" value="18:00">
+                </div>
+                <span class="closed-text" id="thursdayClosedText" style="display: none;">Clinic Closed</span>
+            </div>
+        </div>
+
+        <div class="row day-row d-flex align-items-center mb-3">
+            <div class="col-1 col-md-1">
+                <input class="form-check-input" type="checkbox" id="fridayCheckbox" checked>
+            </div>
+            <div class="col-3 col-md-2">
+                <label class="form-check-label" for="fridayCheckbox">7. Friday</label>
+            </div>
+            <div class="col-8 col-md-9">
+                <div class="time-inputs" id="fridayTimeInputs">
+                    <input type="time" class="form-control" id="fridayOpenTime" value="09:00">
+                    <input type="time" class="form-control" id="fridayCloseTime" value="18:00">
+                </div>
+                <span class="closed-text" id="fridayClosedText" style="display: none;">Clinic Closed</span>
+            </div>
+        </div>
+
+
+        <div class="d-grid gap-2 col-6 mx-auto mt-4">
+            <button type="submit" class="btn btn-primary">Save Hours</button>
+        </div>
+    </form>
+</div>
+
+@section Scripts {
+    <script>
+        $(document).ready(function () {
+            
+
+            // Iterate over each day
+            const days =[
+                { name: 'saturday', dayOfWeek: 0 },
+                { name: 'sunday', dayOfWeek: 1 },
+                { name: 'monday', dayOfWeek: 2 },
+                { name: 'tuesday', dayOfWeek: 3 },
+                { name: 'wednesday', dayOfWeek: 4 },
+                { name: 'thursday', dayOfWeek: 5 },
+                { name: 'friday', dayOfWeek: 6 },
+            ]
+
+
+            days.forEach(function (day) {
+                const checkboxId = day.name + 'Checkbox';
+
+                toggleDayInputs(checkboxId);
+
+                $('#' + checkboxId).change(function () {
+                    toggleDayInputs(checkboxId);
+                });
+            });
+
+            // Handle the visibility of time inputs 
+            function toggleDayInputs(checkboxId) {
+                const checkbox = $('#' + checkboxId);
+                const dayName = checkboxId.replace('Checkbox', '');
+                const timeInputs = $('#' + dayName + 'TimeInputs');
+                const closedText = $('#' + dayName + 'ClosedText');
+
+                if (checkbox.is(':checked')) {
+                    timeInputs.show();
+                    closedText.hide();
+                } else {
+                    timeInputs.hide();
+                    closedText.show();
+                }
+            }
+
+            // Handle form submission
+            $('#clinicHoursForm').submit(function (event) {
+                event.preventDefault();
+
+                const clinicSessions = [];
+                const clinicId = $('#clinicId').val();
+
+                days.forEach(function (day) {
+                    const checkbox = $('#' + day.name + 'Checkbox');
+                    const openTimeInput = $('#' + day.name + 'OpenTime');
+                    const closeTimeInput = $('#' + day.name + 'CloseTime');
+                    const clinicName = $('#clinicName').val();
+
+                    if (checkbox.is(':checked')) {
+                        
+                        const dummyDate = '2000-01-01';
+                        const startTimeString = dummyDate + 'T' + openTimeInput.val() + ':00'; // Format: YYYY-MM-DDTHH:mm:ss
+                        const endTimeString = dummyDate + 'T' + closeTimeInput.val() + ':00';   // Format: YYYY-MM-DDTHH:mm:ss
+
+                        let sessionDto = {
+                            Id: 0,
+                            StartTime: startTimeString,
+                            EndTime: endTimeString,
+                            DayOfWeek: day.dayOfWeek,
+                            ClinicId: parseInt(clinicId),
+                            ClinicName: clinicName
+                        };
+                        clinicSessions.push(sessionDto);
+                    }
+                });
+
+                
+                $.ajax({
+                    url: '/ClinicSessions/SaveClinicSessions',
+                    type: 'POST',
+                    contentType: 'application/json',
+                    data: JSON.stringify(clinicSessions),
+                    success: function(response) {
+                        console.log('Hours saved successfully!', response);
+                    },
+                    error: function(xhr, status, error) {
+                        alert('Error saving clinic hours. Please try again.');
+                    }
+                });
+                
+            });
+        });
+    </script>
+}

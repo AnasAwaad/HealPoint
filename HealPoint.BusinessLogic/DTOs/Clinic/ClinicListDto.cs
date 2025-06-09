@@ -10,4 +10,6 @@ public class ClinicListDto
     public string Speciality { get; set; } = null!;
     public string ClinicAdmin { get; set; } = null!;
     public bool Status { get; set; }
+
+
 }
