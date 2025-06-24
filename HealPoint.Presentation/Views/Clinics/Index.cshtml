@@ -128,10 +128,10 @@
 								</tr>
 							</thead>
 							<tbody class="js-tbody">
-					@foreach (var clinic in Model)
-					{
-						<partial name="_ClinicRow" model="clinic" />
-					}
+							@foreach (var clinic in Model)
+							{
+								<partial name="_ClinicRow" model="clinic" />
+							}
 
 							</tbody>
 						</table>
@@ -148,28 +148,15 @@
 @Html.AntiForgeryToken()
 
 @section Styles {
-			<link href="~/assets/plugins/datatable/datatables.bundle.css" rel="stylesheet" />
+	<link href="~/css/clinic-session.css" rel="stylesheet" />
+	<link href="~/assets/plugins/datatable/datatables.bundle.css" rel="stylesheet" />
 }
 @section Plugins {
-			<script src="~/assets/plugins/datatable/datatables.bundle.js"></script>
+	<script src="~/assets/plugins/datatable/datatables.bundle.js"></script>
 }
 
 @section Scripts {
-			<partial name="_ValidationScriptsPartial" />
-
-			<script>
-				$(document).ready(function () {
-					$('.table').DataTable();
-					$(document).on('change', '#ParentClinicId', function () {
-
-						var selectedText = $(this).find('option:selected').text();
-
-						$('#ParentClinicName').val(selectedText);
-					});
-
-
-
-
-				})
-			</script>
+	<script src="~/js/clinic.js" asp-append-version="true"></script>
+	<script src="~/js/clinic-session.js" asp-append-version="true"></script>
+	<partial name="_ValidationScriptsPartial" />
 }

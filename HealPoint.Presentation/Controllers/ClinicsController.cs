@@ -8,11 +8,14 @@ public class ClinicsController : Controller
 {
 	private readonly IClinicService _clinicService;
 	private readonly ISpecializationService _specializationService;
+	private readonly IClinicSessionService _clinicSessionService;
 
-	public ClinicsController(IClinicService clinicService, ISpecializationService specializationService)
+
+	public ClinicsController(IClinicService clinicService, ISpecializationService specializationService, IClinicSessionService clinicSessionService)
 	{
 		_clinicService = clinicService;
 		_specializationService = specializationService;
+		_clinicSessionService = clinicSessionService;
 	}
 
 	public IActionResult Index()
@@ -88,4 +91,27 @@ public class ClinicsController : Controller
 
 		return Ok();
 	}
+
+	#region ClinicSessionsActions
+
+	[AjaxOnly]
+	public IActionResult GetClinicSessions(int clinicId)
+	{
+		return PartialView("_ClinicSessionsForm", _clinicSessionService.GetSessionsByClinicId(clinicId));
+	}
+	[AjaxOnly]
+	[HttpPost]
+	[ValidateAntiForgeryToken]
+	public IActionResult SaveClinicSessions([FromBody] List<ClinicSessionDto> clinicSessions)
+	{
+		if (clinicSessions == null || !clinicSessions.Any())
+		{
+			return BadRequest("No clinic sessions data received.");
+		}
+
+		_clinicSessionService.SaveClinicSessions(clinicSessions);
+		return Ok();
+	}
+
+	#endregion
 }
