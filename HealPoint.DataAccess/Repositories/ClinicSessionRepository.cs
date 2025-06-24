@@ -8,11 +8,15 @@ internal class ClinicSessionRepository : Repository<ClinicSession>, IClinicSessi
     {
     }
 
-    public IEnumerable<ClinicSession> GetByClinicId(int clinicId)
+    public IEnumerable<ClinicSession> GetAllSessionsByClinicId(int clinicId)
     {
         return _context.ClinicSessions
             .Where(cs => cs.ClinicId == clinicId)
             .Include(cs => cs.Clinic)
             .AsEnumerable();
+    }
+    public void RemoveRange(IEnumerable<ClinicSession> clinicSessions)
+    {
+        _context.ClinicSessions.RemoveRange(clinicSessions);
     }
 }

@@ -32,5 +32,7 @@ public class DomainProfile : Profile
             .ForMember(src => src.ClinicId, opt => opt.MapFrom(dest => dest.Clinic.Id))
             .ForMember(src => src.ClinicName, opt => opt.MapFrom(dest => dest.Clinic.Name));
 
+
+        CreateMap<ClinicSessionDto, ClinicSession>();
     }
 }

@@ -16,15 +16,26 @@ internal class ClinicSessionService : IClinicSessionService
         _mapper = mapper;
     }
 
-    public IEnumerable<ClinicSessionDto> GetSessionsByClinicId(int clinicId)
+    public ClinicSessionListDto GetSessionsByClinicId(int clinicId)
     {
-        var sessions = _unitOfWork.ClinicSessions.GetByClinicId(clinicId);
+        var sessions = _unitOfWork.ClinicSessions.GetAllSessionsByClinicId(clinicId);
 
-        return _mapper.Map<IEnumerable<ClinicSessionDto>>(sessions);
+
+        return new ClinicSessionListDto
+        {
+            ClinicSessions = _mapper.Map<IEnumerable<ClinicSessionDto>>(sessions),
+            ClinicId = clinicId,
+        };
     }
 
     public void SaveClinicSessions(IEnumerable<ClinicSessionDto> clinicSessionDtos)
     {
+        var clinicId = clinicSessionDtos.First().ClinicId;
+        var existingSessions = _unitOfWork.ClinicSessions.GetAllSessionsByClinicId(clinicId);
+
+        if (existingSessions.Any())
+            _unitOfWork.ClinicSessions.RemoveRange(existingSessions);
+
         var sessions = _mapper.Map<IEnumerable<ClinicSession>>(clinicSessionDtos);
 
         foreach (var session in sessions)
@@ -32,6 +43,5 @@ internal class ClinicSessionService : IClinicSessionService
             _unitOfWork.ClinicSessions.Insert(session);
         }
         _unitOfWork.SaveChanges();
-
     }
 }
