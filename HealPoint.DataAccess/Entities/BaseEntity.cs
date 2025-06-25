@@ -1,13 +1,12 @@
 ﻿namespace HealPoint.DataAccess.Entities;
 public class BaseEntity
 {
-    public int Id { get; set; }
-    // user id
-    public int? CreatedBy { get; set; }
-    public DateTime CreatedOn { get; set; }
-    // user id
-    public int? LastUpdatedBy { get; set; }
-    public DateTime? LastUpdatedOn { get; set; }
-    // soft delete
-    public bool IsDeleted { get; set; }
+	public int Id { get; set; }
+	public string? CreatedById { get; set; }
+	public ApplicationUser? CreatedBy { get; set; }
+	public DateTime CreatedOn { get; set; }
+	public string? LastUpdatedById { get; set; }
+	public ApplicationUser? LastUpdatedBy { get; set; }
+	public DateTime? LastUpdatedOn { get; set; }
+	public bool IsDeleted { get; set; }
 }

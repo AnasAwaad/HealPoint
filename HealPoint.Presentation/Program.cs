@@ -1,45 +1,78 @@
 using HealPoint.BusinessLogic;
 using HealPoint.DataAccess;
+using HealPoint.DataAccess.Data;
+using HealPoint.Presentation.Seeds;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 
 namespace HealPoint.Presentation;
 
 public class Program
 {
-    public static void Main(string[] args)
-    {
-        var builder = WebApplication.CreateBuilder(args);
+	public static async Task Main(string[] args)
+	{
+		var builder = WebApplication.CreateBuilder(args);
+		var connectionString = builder.Configuration.GetConnectionString("ApplicationDbContextConnection") ?? throw new InvalidOperationException("Connection string 'ApplicationDbContextConnection' not found."); ;
 
-        #region Add services to the container.
+		builder.Services.AddDbContext<ApplicationDbContext>(options => options.UseSqlServer(connectionString));
 
-        builder.Services.AddControllersWithViews();
+		builder.Services.AddIdentity<ApplicationUser, IdentityRole>(option => option.SignIn.RequireConfirmedAccount = false)
+		   .AddEntityFrameworkStores<ApplicationDbContext>()
+		   .AddDefaultUI()
+		   .AddDefaultTokenProviders();
 
-        builder.Services
-            .AddBusinessLogicServices()
-            .AddDataAccessServices(builder.Configuration);
+		builder.Services.Configure<IdentityOptions>(options =>
+		{
+			// Default Password settings.
+			options.Password.RequireDigit = false;
+			options.Password.RequireLowercase = false;
+			options.Password.RequireNonAlphanumeric = false;
+			options.Password.RequireUppercase = false;
+			options.Password.RequiredLength = 1;
+			options.Password.RequiredUniqueChars = 0;
+		});
 
-        #endregion
+		#region Add services to the container.
 
-        var app = builder.Build();
+		builder.Services.AddControllersWithViews();
 
-        // Configure the HTTP request pipeline.
-        if (!app.Environment.IsDevelopment())
-        {
-            app.UseExceptionHandler("/Home/Error");
-            // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
-            app.UseHsts();
-        }
+		builder.Services
+			.AddBusinessLogicServices()
+			.AddDataAccessServices(builder.Configuration);
 
-        app.UseHttpsRedirection();
-        app.UseStaticFiles();
+		#endregion
 
-        app.UseRouting();
+		var app = builder.Build();
 
-        app.UseAuthorization();
+		// Configure the HTTP request pipeline.
+		if (!app.Environment.IsDevelopment())
+		{
+			app.UseExceptionHandler("/Home/Error");
+			// The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
+			app.UseHsts();
+		}
 
-        app.MapControllerRoute(
-            name: "default",
-            pattern: "{controller=Home}/{action=Index}/{id?}");
+		app.UseHttpsRedirection();
+		app.UseStaticFiles();
 
-        app.Run();
-    }
+		app.UseRouting();
+
+		app.UseAuthorization();
+
+		var scopeFactory = app.Services.GetRequiredService<IServiceScopeFactory>();
+		using var scope = scopeFactory.CreateScope();
+
+		var roleManager = scope.ServiceProvider.GetRequiredService<RoleManager<IdentityRole>>();
+		var userManager = scope.ServiceProvider.GetRequiredService<UserManager<ApplicationUser>>();
+
+		await DefaultRoles.SeedRoles(roleManager);
+		await DefaultUsers.SeedUsers(userManager);
+
+
+		app.MapControllerRoute(
+			name: "default",
+			pattern: "{controller=Home}/{action=Index}/{id?}");
+
+		app.Run();
+	}
 }

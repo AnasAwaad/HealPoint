@@ -1,5 +1,7 @@
-﻿namespace HealPoint.DataAccess.Data;
-internal class ApplicationDbContext : DbContext
+﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+
+namespace HealPoint.DataAccess.Data;
+public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
 {
 	public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options)
 	{
