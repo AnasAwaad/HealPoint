@@ -1,0 +1,327 @@
+﻿@model CreateClinicDto
+
+@{
+	ViewData["Title"] = "Create Clinic";
+}
+
+<div class="d-flex flex-column flex-column-fluid" style="margin-top:30px;">
+
+	<!--begin::Content-->
+	<div id="kt_app_content" class="app-content  flex-column-fluid ">
+		<!--begin::Content container-->
+		<div id="kt_app_content_container">
+			<div class="page-title d-flex flex-column justify-content-center flex-wrap me-3 mb-4 ">
+				<!--begin::Title-->
+				<h1 class="page-heading d-flex text-gray-900 fw-bold fs-3 flex-column justify-content-center my-0">
+					Clinics
+				</h1>
+				<!--end::Title-->
+				<!--begin::Breadcrumb-->
+				<ul class="breadcrumb breadcrumb-separatorless fw-semibold fs-7 my-0 pt-1">
+					<!--begin::Item-->
+					<li class="breadcrumb-item text-muted">
+						<a href="/" class="text-muted text-hover-primary">
+							Home
+						</a>
+					</li>
+					<!--end::Item-->
+					<!--begin::Item-->
+					<li class="breadcrumb-item">
+						<span class="bullet bg-gray-500 w-5px h-2px"></span>
+					</li>
+					<!--end::Item-->
+
+					<li class="breadcrumb-item text-muted">
+						<a href="/Clinics/Index" class="text-muted text-hover-primary">
+							Clinics
+						</a>
+					</li>
+
+					<li class="breadcrumb-item">
+						<span class="bullet bg-gray-500 w-5px h-2px"></span>
+					</li>
+					<!--end::Item-->
+					<!--begin::Item-->
+					<li class="breadcrumb-item text-muted">
+						Create Clinic
+					</li>
+
+				</ul>
+				<!--end::Breadcrumb-->
+			</div>
+			<!--begin::Clinic-->
+			<form class="form d-flex flex-column flex-lg-row fv-plugins-bootstrap5 fv-plugins-framework" method="post" asp-action="Create" enctype="multipart/form-data">
+				<!--begin::Aside column-->
+				<div class="d-flex flex-column gap-7 gap-lg-10 w-100 w-lg-300px mb-7 me-lg-10">
+					<!--begin::Thumbnail settings-->
+					<div class="card card-flush py-4">
+						<!--begin::Card header-->
+						<div class="card-header">
+							<!--begin::Card title-->
+							<div class="card-title">
+								<h2>Image</h2>
+							</div>
+							<!--end::Card title-->
+						</div>
+						<!--end::Card header-->
+						<!--begin::Card body-->
+						<div class="card-body text-center pt-0">
+							<!--begin::Image input-->
+							<!--begin::Image input placeholder-->
+							<style>
+								.image-input-placeholder {
+									background-image: url('/assets/images/blank-image.svg');
+								}
+
+								[data-bs-theme="dark"] .image-input-placeholder {
+									background-image: url('/assets/images/blank-image-dark.svg');
+								}</style>
+							<!--end::Image input placeholder-->
+							<div class="image-input image-input-empty image-input-outline image-input-placeholder mb-3" data-kt-image-input="true">
+								<!--begin::Preview existing avatar-->
+								<div class="image-input-wrapper w-150px h-150px"></div>
+								<!--end::Preview existing avatar-->
+								<!--begin::Label-->
+								<label class="btn btn-icon btn-circle btn-active-color-primary w-25px h-25px bg-body shadow" data-kt-image-input-action="change" data-bs-toggle="tooltip" aria-label="Change avatar" data-bs-original-title="Change avatar" data-kt-initialized="1">
+									<i class="ki-duotone ki-pencil fs-7">
+										<span class="path1"></span>
+										<span class="path2"></span>
+									</i>
+									<!--begin::Inputs-->
+									<input asp-for="ImageFile" type="file" accept=".png, .jpg, .jpeg">
+									<input type="hidden" name="avatar_remove">
+									<!--end::Inputs-->
+								</label>
+								<!--end::Label-->
+								<!--begin::Cancel-->
+								<span class="btn btn-icon btn-circle btn-active-color-primary w-25px h-25px bg-body shadow" data-kt-image-input-action="cancel" data-bs-toggle="tooltip" aria-label="Cancel avatar" data-bs-original-title="Cancel avatar" data-kt-initialized="1">
+									<i class="ki-duotone ki-cross fs-2">
+										<span class="path1"></span>
+										<span class="path2"></span>
+									</i>
+								</span>
+								<!--end::Cancel-->
+								<!--begin::Remove-->
+								<span class="btn btn-icon btn-circle btn-active-color-primary w-25px h-25px bg-body shadow" data-kt-image-input-action="remove" data-bs-toggle="tooltip" aria-label="Remove avatar" data-bs-original-title="Remove avatar" data-kt-initialized="1">
+									<i class="ki-duotone ki-cross fs-2">
+										<span class="path1"></span>
+										<span class="path2"></span>
+									</i>
+								</span>
+								<!--end::Remove-->
+							</div>
+							<!--end::Image input-->
+							<!--begin::Description-->
+							<div class="text-muted fs-7">Set the clinic thumbnail image. Only *.png, *.jpg and *.jpeg image files are accepted</div>
+							<!--end::Description-->
+						</div>
+						<!--end::Card body-->
+					</div>
+					<!--end::Thumbnail settings-->
+					<!--begin::Status-->
+					<div class="card card-flush py-4">
+						<!--begin::Card header-->
+						<div class="card-header">
+							<!--begin::Card title-->
+							<div class="card-title">
+								<h2>Status</h2>
+							</div>
+							<!--end::Card title-->
+							<!--begin::Card toolbar-->
+							<div class="card-toolbar">
+								<div class="rounded-circle bg-success w-15px h-15px" id="kt_ecommerce_add_product_status"></div>
+							</div>
+							<!--begin::Card toolbar-->
+						</div>
+						<!--end::Card header-->
+						<!--begin::Card body-->
+						<div class="card-body pt-0">
+							<!--begin::Select2-->
+							<select class="form-select mb-2 select2-hidden-accessible" data-control="select2" data-hide-search="true" data-placeholder="Select an option">
+								<option selected value="active">Active</option>
+								<option value="inactive">Inactive</option>
+							</select><!--end::Select2-->
+							<!--begin::Description-->
+							<div class="text-muted fs-7">Set the clinic status.</div>
+							<!--end::Description-->
+						</div>
+						<!--end::Card body-->
+					</div>
+					<!--end::Status-->
+				</div>
+				<!--end::Aside column-->
+				<!--begin::Main column-->
+				<div class="d-flex flex-column flex-row-fluid gap-7 gap-lg-10">
+					<!--begin:::Tabs-->
+					<ul class="nav nav-custom nav-tabs nav-line-tabs nav-line-tabs-2x border-0 fs-4 fw-semibold mb-n2" role="tablist">
+						<!--begin:::Tab item-->
+						<li class="nav-item" role="presentation">
+							<a class="nav-link text-active-primary pb-4 active" data-bs-toggle="tab" href="#kt_ecommerce_add_product_general" aria-selected="true" role="tab">General</a>
+						</li>
+						<!--end:::Tab item-->
+						<!--begin:::Tab item-->
+						<li class="nav-item" role="presentation">
+							<a class="nav-link text-active-primary pb-4" data-bs-toggle="tab" href="#kt_ecommerce_add_product_advanced" aria-selected="false" role="tab" tabindex="-1">Details</a>
+						</li>
+						<!--end:::Tab item-->
+					</ul>
+					<!--end:::Tabs-->
+					<!--begin::Tab content-->
+					<div class="tab-content">
+						<!--begin::Tab pane-->
+						<div class="tab-pane fade active show" id="kt_ecommerce_add_product_general" role="tab-panel">
+							<div class="d-flex flex-column gap-7 gap-lg-10">
+								<!--begin::General options-->
+								<div class="card card-flush py-4">
+									<!--begin::Card header-->
+									<div class="card-header">
+										<div class="card-title">
+											<h2>General</h2>
+										</div>
+									</div>
+									<!--end::Card header-->
+									<!--begin::Card body-->
+									<div class="card-body pt-0">
+										<div class="mb-5 fv-row fv-plugins-icon-container">
+											<label asp-for="Name" class="form-label required"></label> 
+											<input type="text" asp-for="Name" class="form-control" placeholder="Name">
+											<span asp-validation-for="Name" class="text-danger"></span>
+										</div>
+
+										<div class="mb-5 fv-row fv-plugins-icon-container">
+											<label asp-for="Description" class="form-label required"></label>
+											<input type="text" asp-for="Description" class="form-control" placeholder="Description">
+											<span asp-validation-for="Description" class="text-danger"></span>
+										</div>
+
+										<div class="row mb-5 g-5">
+											<div class="col-md-6 fv-row fv-plugins-icon-container">
+												<label asp-for="Email" class="form-label required">Email</label>
+												<input asp-for="Email" type="email" class="form-control" placeholder="Email">
+												<span asp-validation-for="Email" class="text-danger"></span>
+											</div>
+											<div class="col-md-6 fv-row fv-plugins-icon-container">
+												<label asp-for="ContactNumber" class="form-label required">Contact Number</label>
+												<input asp-for="ContactNumber" type="text" class="form-control" placeholder="Enter a phone number">
+												<span asp-validation-for="ContactNumber" class="text-danger"></span>
+											</div>
+										</div>
+
+										<div class="row mb-5 g-5">
+											<div class="col-md-6 fv-row fv-plugins-icon-container">
+												<label class="form-label">Clinic Admin</label>
+												<input type="email" class="form-control" placeholder="Clinic Admin">
+											</div>
+											<div class="col-md-6 fv-row fv-plugins-icon-container">
+												<label class="form-label" asp-for="SpecializationId"></label>
+												<select asp-for="SpecializationId" asp-items="Model.SpecializationOptions" class="form-select" data-control="select2" data-placeholder="Specialty">
+													<option value=""></option>
+												</select>
+												<span asp-validation-for="SpecializationId" class="text-danger"></span>
+
+											</div>
+										</div>
+										
+									</div>
+									<!--end::Card header-->
+								</div>
+								<!--end::General options-->
+							</div>
+						</div>
+						<!--end::Tab pane-->
+
+						<!--begin::Tab pane-->
+						<div class="tab-pane fade" id="kt_ecommerce_add_product_advanced" role="tab-panel">
+							<div class="d-flex flex-column gap-7 gap-lg-10">
+								<!--begin::Inventory-->
+								<div class="card card-flush py-4">
+									<!--begin::Card header-->
+									<div class="card-header">
+										<div class="card-title">
+											<h2>Details</h2>
+										</div>
+									</div>
+									<!--end::Card header-->
+									<!--begin::Card body-->
+									<div class="card-body pt-0">
+										<div class="card-body p-0">
+											<div class="mb-5 fv-row fv-plugins-icon-container">
+												<label asp-for="Address" class="form-label">Address</label>
+												<input asp-for="Address" class="form-control" placeholder="Address"></input>
+												<span asp-validation-for="Address" class="text-danger" />
+											</div>
+
+											<div class="row g-5">
+												<div class="col-md-4 fv-row fv-plugins-icon-container">
+													<label asp-for="Country" class="form-label">Country</label>
+													<input asp-for="Country" class="form-control" placeholder="Country"></input>
+													<span asp-validation-for="Country" class="text-danger" />
+												</div>
+												<div class="col-md-4 fv-row fv-plugins-icon-container">
+													<label asp-for="State" class="form-label">State</label>
+													<input asp-for="State" class="form-control" placeholder="State"></input>
+													<span asp-validation-for="State" class="text-danger" />
+												</div>
+												<div class="col-md-4 fv-row fv-plugins-icon-container">
+													<label asp-for="City" class="form-label">City</label>
+													<input asp-for="City" class="form-control" placeholder="City"></input>
+													<span asp-validation-for="City" class="text-danger" />
+												</div>
+											</div>
+
+											<div class="row g-5 mt-5">
+												<div class="col-md-4 fv-row fv-plugins-icon-container">
+													<label asp-for="PostalCode" class="form-label">Postal Code</label>
+													<input asp-for="PostalCode" type="text" class="form-control" placeholder="Postal Code">
+													<span asp-validation-for="PostalCode" class="text-danger" />
+												</div>
+												<div class="col-md-4 fv-row fv-plugins-icon-container">
+													<label asp-for="Latitude" class="form-label"></label>
+													<input type="text" asp-for="Latitude" class="form-control" placeholder="Latitude">
+													<span asp-validation-for="Latitude" class="text-danger" />
+												</div>
+												<div class="col-md-4 fv-row fv-plugins-icon-container">
+													<label asp-for="PostalCode" class="form-label"></label>
+													<input asp-for="PostalCode" type="text" class="form-control" placeholder="Longitude">
+													<span asp-validation-for="PostalCode" class="text-danger" />
+												</div>
+											</div>
+										</div>
+									</div>
+									<!--end::Card header-->
+								</div>
+								<!--end::Inventory-->
+							</div>
+						</div>
+						<!--end::Tab pane-->
+
+					</div>
+					<!--end::Tab content-->
+					<div class="d-flex justify-content-end">
+						<!--begin::Button-->
+						<a asp-action="Index" class="btn btn-light me-5">Cancel</a>
+						<!--end::Button-->
+						<!--begin::Button-->
+						<button type="submit" class="btn btn-primary">
+							<span class="indicator-label">Save Changes</span>
+							<span class="indicator-progress">
+								Please wait...
+								<span class="spinner-border spinner-border-sm align-middle ms-2"></span>
+							</span>
+						</button>
+						<!--end::Button-->
+					</div>
+				</div>
+				<!--end::Main column-->
+			</form>
+			<!--end::Clinic-->
+
+		</div>
+
+	</div>
+
+</div>
+
+@section Scripts{
+	<partial name="_ValidationScriptsPartial" />
+}

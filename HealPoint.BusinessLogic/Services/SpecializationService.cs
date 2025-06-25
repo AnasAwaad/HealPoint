@@ -19,7 +19,7 @@ public class SpecializationService : ISpecializationService
 
 	public IEnumerable<SpecializationDto> GetAllSpecializations()
 	{
-		var specialization = _unitOfWork.Specializations.GetAll();
+		var specialization = _unitOfWork.Specializations.GetAllSpecializationWithCategories();
 		return _mapper.Map<IEnumerable<SpecializationDto>>(specialization);
 	}
 
@@ -103,5 +103,16 @@ public class SpecializationService : ISpecializationService
 		_unitOfWork.SaveChanges();
 
 		return true;
+	}
+
+	public List<SelectListItem> GetSpecializationSelectList()
+	{
+		var specialization = _unitOfWork.Specializations.GetAll();
+
+		return specialization.Select(s => new SelectListItem
+		{
+			Text = s.Name,
+			Value = s.Id.ToString()
+		}).ToList();
 	}
 }

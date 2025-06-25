@@ -8,8 +8,12 @@ internal class SpecializationRepository : Repository<Specialization>, ISpecializ
 	{
 	}
 
-
 	public override IEnumerable<Specialization> GetAll()
+	{
+		return _context.Specializations.Where(s => !s.IsDeleted).AsEnumerable();
+	}
+
+	public IEnumerable<Specialization> GetAllSpecializationWithCategories()
 	{
 		return _context.Specializations
 			.Where(s => !s.IsDeleted)

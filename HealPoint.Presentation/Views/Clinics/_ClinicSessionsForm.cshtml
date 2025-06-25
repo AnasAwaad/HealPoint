@@ -1,0 +1,48 @@
+﻿@model ClinicSessionListDto
+
+@{
+    var days = new string[]{
+        "saturday",
+        "sunday",
+        "monday",
+        "tuesday",
+        "wednesday",
+        "thursday",
+        "friday"
+    };
+}
+<form id="clinicHoursForm">
+    <input type="hidden" id="clinicId" value="@Model.ClinicId" />
+
+    @*Iterate through all 7 days*@
+    @for (int day = 0; day < 7; day++)
+    {
+        var dayName = days[day];
+
+        // Find if there's an existing session for this day
+        var session = Model.ClinicSessions.FirstOrDefault(s => (int)s.DayOfWeek == day);
+
+        var isChecked = session != null;
+
+        var openTime = isChecked ? session.StartTime.ToString("HH:mm") : "09:00";
+        var closeTime = isChecked ? session.EndTime.ToString("HH:mm") : "18:00";
+
+        <div class="row day-row d-flex align-items-center mb-3">
+            <div class="col-1 col-md-1">
+                <input class="form-check-input" type="checkbox" id="@(dayName)Checkbox" @(isChecked ? "checked" : "")>
+            </div>
+            <div class="col-3 col-md-2">
+                <label class="form-check-label" for="@(dayName)Checkbox">@dayName</label>
+            </div>
+            <div class="col-8 col-md-9">
+                <div class="time-inputs @(!isChecked ? "d-none":"")" id="@(dayName)TimeInputs">
+                    <input type="time" class="form-control" id="@(dayName)OpenTime" value="@openTime">
+                    <input type="time" class="form-control" id="@(dayName)CloseTime" value="@closeTime">
+                </div>
+                <span class="closed-text @(isChecked ? "d-none":"")" id="@(dayName)ClosedText">Clinic Closed</span>
+            </div>
+        </div>
+    }
+
+
+</form>

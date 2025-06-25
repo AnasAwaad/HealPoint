@@ -1,0 +1,61 @@
+﻿body {
+    font-family: 'Inter', sans-serif;
+    background-color: #f8f9fa;
+}
+
+.modal .modal-dialog {
+    max-width: 600px !important;
+}
+
+.container {
+    max-width: 800px;
+    margin-top: 50px;
+    background-color: #ffffff;
+    padding: 30px;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+}
+
+.form-check-label {
+    font-weight: 500;
+    cursor: pointer;
+    padding-left: 0.5rem;
+}
+
+.time-inputs {
+    display: flex;
+    gap: 15px;
+    align-items: center;
+}
+
+.closed-text {
+    font-style: italic;
+    color: #6c757d;
+    font-weight: 400;
+}
+
+.day-row {
+    padding: 15px 0;
+    border-bottom: 1px solid #f0f0f0;
+}
+
+h2 {
+    color: #343a40;
+    margin-bottom: 30px;
+    font-weight: 600;
+    text-align: center;
+}
+
+.btn-primary {
+    background-color: #0d6efd;
+    border-color: #0d6efd;
+    border-radius: 8px;
+    padding: 10px 25px;
+    font-weight: 600;
+    transition: background-color 0.3s ease;
+}
+
+    .btn-primary:hover {
+        background-color: #0b5ed7;
+        border-color: #0a58ca;
+    }

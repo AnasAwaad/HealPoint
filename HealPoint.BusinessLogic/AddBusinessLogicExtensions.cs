@@ -11,6 +11,9 @@ public static class AddBusinessLogicExtensions
 
         services.AddScoped<ICategoryService, CategoryService>();
         services.AddScoped<ISpecializationService, SpecializationService>();
+        services.AddScoped<IClinicService, ClinicService>();
+        services.AddScoped<IClinicSessionService, ClinicSessionService>();
+        services.AddScoped<IFileStorageService, FileStorageService>();
 
 
         services.AddAutoMapper(typeof(DomainProfile));
