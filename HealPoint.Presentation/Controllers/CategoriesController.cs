@@ -6,103 +6,111 @@ using Microsoft.AspNetCore.Mvc;
 namespace HealPoint.Presentation.Controllers;
 public class CategoriesController : Controller
 {
-    private readonly ICategoryService _categoryService;
+	#region Props
+	private readonly ICategoryService _categoryService;
 
-    public CategoriesController(ICategoryService categoryService)
-    {
-        _categoryService = categoryService;
-    }
-    public IActionResult Index()
-    {
-        return View(_categoryService.GetAllCategories());
-    }
+	#endregion
 
-    [AjaxOnly]
-    public IActionResult Create()
-    {
-        var categoryDto = new CategoryFormDto
-        {
-            ParentCategoryOptions = _categoryService.GetParentCategorySelectList()
-        };
-        return PartialView("_Form", categoryDto);
-    }
+	#region Ctor
+	public CategoriesController(ICategoryService categoryService)
+	{
+		_categoryService = categoryService;
+	}
+	#endregion
 
-    [AjaxOnly]
-    [HttpPost]
-    [ValidateAntiForgeryToken]
-    public IActionResult Create(CategoryFormDto model)
-    {
-        if (!ModelState.IsValid)
-            return BadRequest();
+	#region Actions
+	public IActionResult Index()
+	{
+		return View(_categoryService.GetAllCategories());
+	}
 
-        var category = _categoryService.CreateCategory(model);
+	[AjaxOnly]
+	public IActionResult Create()
+	{
+		var categoryDto = new CategoryFormDto
+		{
+			ParentCategoryOptions = _categoryService.GetParentCategorySelectList()
+		};
+		return PartialView("_Form", categoryDto);
+	}
 
-        return PartialView("_CategoryRow", category);
-    }
+	[AjaxOnly]
+	[HttpPost]
+	[ValidateAntiForgeryToken]
+	public IActionResult Create(CategoryFormDto model)
+	{
+		if (!ModelState.IsValid)
+			return BadRequest();
 
-    [AjaxOnly]
-    public IActionResult Update(int id)
-    {
-        var category = _categoryService.GetCategoryById(id);
-        category.ParentCategoryOptions = _categoryService.GetParentCategorySelectList();
+		var category = _categoryService.CreateCategory(model);
 
-        return PartialView("_Form", category);
-    }
+		return PartialView("_CategoryRow", category);
+	}
 
-    [AjaxOnly]
-    [HttpPost]
-    [ValidateAntiForgeryToken]
-    public IActionResult Update(CategoryFormDto model)
-    {
-        if (!ModelState.IsValid)
-            return BadRequest();
+	[AjaxOnly]
+	public IActionResult Update(int id)
+	{
+		var category = _categoryService.GetCategoryById(id);
+		category.ParentCategoryOptions = _categoryService.GetParentCategorySelectList();
 
-        var categoryDto = _categoryService.UpdateCategory(model);
+		return PartialView("_Form", category);
+	}
 
-        if (categoryDto == null)
-            return NotFound();
+	[AjaxOnly]
+	[HttpPost]
+	[ValidateAntiForgeryToken]
+	public IActionResult Update(CategoryFormDto model)
+	{
+		if (!ModelState.IsValid)
+			return BadRequest();
 
-        return PartialView("_CategoryRow", categoryDto);
-    }
-    [AjaxOnly]
-    [HttpPost]
-    [ValidateAntiForgeryToken]
-    public IActionResult UpdateFeaturedStatus(int id)
-    {
-        var lastUpdatedOn = _categoryService.UpdateFeaturedStatus(id);
+		var categoryDto = _categoryService.UpdateCategory(model);
 
-        if (lastUpdatedOn is null)
-            return NotFound();
+		if (categoryDto == null)
+			return NotFound();
 
-        return Ok(lastUpdatedOn);
-    }
-    [AjaxOnly]
-    [HttpPost]
-    [ValidateAntiForgeryToken]
-    public IActionResult ChangeCategoryStatus(int id)
-    {
-        var lastUpdatedOn = _categoryService.UpdateCategoryStatus(id);
+		return PartialView("_CategoryRow", categoryDto);
+	}
+	[AjaxOnly]
+	[HttpPost]
+	[ValidateAntiForgeryToken]
+	public IActionResult UpdateFeaturedStatus(int id)
+	{
+		var lastUpdatedOn = _categoryService.UpdateFeaturedStatus(id);
 
-        if (lastUpdatedOn is null)
-            return NotFound();
+		if (lastUpdatedOn is null)
+			return NotFound();
 
-        return Ok(lastUpdatedOn);
-    }
-    [AjaxOnly]
-    [HttpPost]
-    [ValidateAntiForgeryToken]
-    public IActionResult DeleteCategory(int id)
-    {
-        var isDeleted = _categoryService.DeleteCategory(id);
+		return Ok(lastUpdatedOn);
+	}
+	[AjaxOnly]
+	[HttpPost]
+	[ValidateAntiForgeryToken]
+	public IActionResult ChangeCategoryStatus(int id)
+	{
+		var lastUpdatedOn = _categoryService.UpdateCategoryStatus(id);
 
-        if (!isDeleted)
-            return BadRequest();
+		if (lastUpdatedOn is null)
+			return NotFound();
 
-        return Ok();
-    }
+		return Ok(lastUpdatedOn);
+	}
+	[AjaxOnly]
+	[HttpPost]
+	[ValidateAntiForgeryToken]
+	public IActionResult DeleteCategory(int id)
+	{
+		var isDeleted = _categoryService.DeleteCategory(id);
 
-    public IActionResult AllowedCategoryName(CategoryFormDto model)
-    {
-        return Json(_categoryService.IsCategoryAllowed(model));
-    }
+		if (!isDeleted)
+			return BadRequest();
+
+		return Ok();
+	}
+
+	public IActionResult AllowedCategoryName(CategoryFormDto model)
+	{
+		return Json(_categoryService.IsCategoryAllowed(model));
+	}
+	#endregion
 }

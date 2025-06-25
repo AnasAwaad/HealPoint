@@ -6,10 +6,13 @@ using Microsoft.AspNetCore.Mvc;
 namespace HealPoint.Presentation.Controllers;
 public class ClinicsController : Controller
 {
+	#region Props
 	private readonly IClinicService _clinicService;
 	private readonly ISpecializationService _specializationService;
 	private readonly IClinicSessionService _clinicSessionService;
+	#endregion
 
+	#region Ctor
 
 	public ClinicsController(IClinicService clinicService, ISpecializationService specializationService, IClinicSessionService clinicSessionService)
 	{
@@ -17,7 +20,9 @@ public class ClinicsController : Controller
 		_specializationService = specializationService;
 		_clinicSessionService = clinicSessionService;
 	}
+	#endregion
 
+	#region Clinics Actions
 	public IActionResult Index()
 	{
 		return View(_clinicService.GetAllClinics());
@@ -92,7 +97,9 @@ public class ClinicsController : Controller
 		return Ok();
 	}
 
-	#region ClinicSessionsActions
+	#endregion
+
+	#region ClinicSessions Actions
 
 	[AjaxOnly]
 	public IActionResult GetClinicSessions(int clinicId)

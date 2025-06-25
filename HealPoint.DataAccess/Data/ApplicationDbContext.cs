@@ -17,6 +17,7 @@ public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
 	public DbSet<Category> Categories { get; set; }
 	public DbSet<Clinic> Clinics { get; set; }
 	public DbSet<ClinicSession> ClinicSessions { get; set; }
+	public DbSet<Doctor> Doctors { get; set; }
 	public DbSet<Specialization> Specializations { get; set; }
 
 }

@@ -14,6 +14,11 @@ internal class SpecializationConfiguration : BaseEntityConfiguration<Specializat
 			.HasForeignKey(e => e.CategoryId)
 			.OnDelete(DeleteBehavior.Restrict);
 
+		builder.HasMany(e => e.Doctors)
+			.WithOne(e => e.Specialization)
+			.HasForeignKey(e => e.SpecializationId)
+			.OnDelete(DeleteBehavior.Restrict);
+
 		builder.HasIndex(s => s.Name)
 			   .IsUnique();
 	}

@@ -6,4 +6,5 @@ public class Specialization : BaseEntity
 	public int CategoryId { get; set; }
 	public bool Status { get; set; } = true;
 	public Category? Category { get; set; }
+	public ICollection<Doctor> Doctors { get; set; } = new List<Doctor>();
 }
