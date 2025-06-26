@@ -157,10 +157,10 @@ function onModalFormSuccess(newRow) {
         datatable.row(updatedRow).remove().draw();
         updatedRow = undefined;
 
-        message = "Category updated successfully";
+        message = "Department updated successfully";
     } else {
 
-        message = "Category created successfully";
+        message = "Department created successfully";
     }
 
 

@@ -1,0 +1,34 @@
+﻿@model DepartmentDto
+
+<tr>
+	<td class="text-center">@Model.Name</td>
+	<td>kldfkld</td>
+	<td>@Model.CreatedOn</td>
+	<td class="js-last-updated-on">@Model.LastUpdatedOn</td>
+	<td>
+		<div class="form-check form-switch form-check-custom form-check-solid ">
+			<input class="form-check-input js-change-status w-40px h-25px" type="checkbox" asp-for="IsFeatured" data-url="/Departments/UpdateFeaturedStatus/@Model.Id" />
+		</div>
+	</td>
+	<td class="js-status">
+		<span class="badge badge-@(Model.IsDeleted ? "warning" : "success")">@(Model.IsDeleted ? "Inactive" : "Active")</span>
+	</td>
+	<td class="text-center">
+		<a class="js-render-modal" href="javascript:;" data-url="/Departments/Update/@Model.Id" data-title="Update Department" data-update="true">
+			<i class="ki-duotone ki-notepad-edit fs-1 text-success">
+				<span class="path1"></span>
+				<span class="path2"></span>
+			</i>
+		</a>
+
+		<a class="js-delete-item" data-url="/Departments/DeleteDepartment/@Model.Id" href="javascript:;" data-kt-ecommerce-Model-filter="delete_row">
+			<i class="ki-duotone ki-trash-square fs-1 text-danger">
+				<span class="path1"></span>
+				<span class="path2"></span>
+				<span class="path3"></span>
+				<span class="path4"></span>
+			</i>
+		</a>
+		
+	</td>
+</tr>

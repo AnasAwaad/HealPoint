@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace HealPoint.DataAccess.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20250521121724_AddUniqueIndexToCategoryNameColumn")]
-    partial class AddUniqueIndexToCategoryNameColumn
+    [Migration("20250521121724_AddUniqueIndexToDepartmentNameColumn")]
+    partial class AddUniqueIndexToDepartmentNameColumn
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -25,7 +25,7 @@ namespace HealPoint.DataAccess.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
-            modelBuilder.Entity("HealPoint.DataAccess.Entities.Category", b =>
+            modelBuilder.Entity("HealPoint.DataAccess.Entities.Department", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -71,7 +71,7 @@ namespace HealPoint.DataAccess.Migrations
                         .HasMaxLength(100)
                         .HasColumnType("nvarchar(100)");
 
-                    b.Property<int?>("ParentCategoryId")
+                    b.Property<int?>("ParentDepartmentId")
                         .HasColumnType("int");
 
                     b.Property<bool>("Status")
@@ -84,19 +84,19 @@ namespace HealPoint.DataAccess.Migrations
                     b.HasIndex("Name")
                         .IsUnique();
 
-                    b.HasIndex("ParentCategoryId");
+                    b.HasIndex("ParentDepartmentId");
 
-                    b.ToTable("Categories");
+                    b.ToTable("Departments");
                 });
 
-            modelBuilder.Entity("HealPoint.DataAccess.Entities.Category", b =>
+            modelBuilder.Entity("HealPoint.DataAccess.Entities.Department", b =>
                 {
-                    b.HasOne("HealPoint.DataAccess.Entities.Category", "ParentCategory")
+                    b.HasOne("HealPoint.DataAccess.Entities.Department", "ParentDepartment")
                         .WithMany()
-                        .HasForeignKey("ParentCategoryId")
+                        .HasForeignKey("ParentDepartmentId")
                         .OnDelete(DeleteBehavior.Restrict);
 
-                    b.Navigation("ParentCategory");
+                    b.Navigation("ParentDepartment");
                 });
 #pragma warning restore 612, 618
         }

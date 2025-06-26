@@ -120,7 +120,7 @@
 								<tr class="fw-bold fs-6 text-gray-800">
 									<th class="text-center">Name</th>
 									<th>Description</th>
-									<th>Category</th>
+									<th>Department</th>
 									<th>Status</th>
 									<th class="text-center">Actions</th>
 								</tr>
@@ -158,11 +158,11 @@
 
 			<script>
 				$(document).ready(function () {
-					$(document).on('change', '#CategoryId', function () {
+					$(document).on('change', '#DepartmentId', function () {
 						var selectedText = $(this).find('option:selected').text();
 						console.log(selectedText)
 
-						$('#CategoryName').val(selectedText);
+						$('#DepartmentName').val(selectedText);
 					});
 				})
 			</script>

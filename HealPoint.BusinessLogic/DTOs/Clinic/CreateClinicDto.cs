@@ -12,7 +12,7 @@ public class CreateClinicDto
 	public string ContactNumber { get; set; } = null!;
 	[Display(Name = "Specialization")]
 	public int SpecializationId { get; set; }
-	public List<SelectListItem> SpecializationOptions { get; set; } = new List<SelectListItem>();
+	public IEnumerable<SelectListItem> SpecializationSelectList { get; set; } = new List<SelectListItem>();
 	public bool Status { get; set; } = true;
 	public string Address { get; set; } = null!;
 	public string Country { get; set; } = null!;

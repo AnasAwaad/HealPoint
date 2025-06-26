@@ -9,9 +9,9 @@ internal class SpecializationConfiguration : BaseEntityConfiguration<Specializat
 		builder.Property(e => e.Description).HasMaxLength(500);
 		builder.Property(e => e.IsDeleted).HasDefaultValue(false);
 
-		builder.HasOne(e => e.Category)
+		builder.HasOne(e => e.Department)
 			.WithMany()
-			.HasForeignKey(e => e.CategoryId)
+			.HasForeignKey(e => e.DepartmentId)
 			.OnDelete(DeleteBehavior.Restrict);
 
 		builder.HasMany(e => e.Doctors)

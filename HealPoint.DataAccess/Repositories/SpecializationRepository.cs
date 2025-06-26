@@ -16,16 +16,16 @@ internal class SpecializationRepository : Repository<Specialization>, ISpecializ
 			.AsEnumerable();
 	}
 
-	public IEnumerable<Specialization> GetAllSpecializationWithCategories()
+	public IEnumerable<Specialization> GetAllSpecializationWithDepartments()
 	{
 		return _context.Specializations
-			.Include(s => s.Category)
+			.Include(s => s.Department)
 			.AsEnumerable();
 	}
 	public async Task<Specialization?> GetByIdAsync(int id)
 	{
 		return await _context.Specializations
-			.Include(s => s.Category)
+			.Include(s => s.Department)
 			.FirstOrDefaultAsync(s => s.Id == id);
 	}
 

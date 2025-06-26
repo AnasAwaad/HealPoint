@@ -9,7 +9,7 @@ public static class AddBusinessLogicExtensions
 	public static IServiceCollection AddBusinessLogicServices(this IServiceCollection services)
 	{
 
-		services.AddScoped<ICategoryService, CategoryService>();
+		services.AddScoped<IDepartmentService, DepartmentService>();
 		services.AddScoped<ISpecializationService, SpecializationService>();
 		services.AddScoped<IClinicService, ClinicService>();
 		services.AddScoped<IClinicSessionService, ClinicSessionService>();

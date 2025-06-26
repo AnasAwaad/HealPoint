@@ -112,7 +112,7 @@ namespace HealPoint.DataAccess.Migrations
                     b.ToTable("AspNetUsers", (string)null);
                 });
 
-            modelBuilder.Entity("HealPoint.DataAccess.Entities.Category", b =>
+            modelBuilder.Entity("HealPoint.DataAccess.Entities.Department", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -158,7 +158,7 @@ namespace HealPoint.DataAccess.Migrations
                         .HasMaxLength(100)
                         .HasColumnType("nvarchar(100)");
 
-                    b.Property<int?>("ParentCategoryId")
+                    b.Property<int?>("ParentDepartmentId")
                         .HasColumnType("int");
 
                     b.Property<bool>("Status")
@@ -175,9 +175,9 @@ namespace HealPoint.DataAccess.Migrations
                     b.HasIndex("Name")
                         .IsUnique();
 
-                    b.HasIndex("ParentCategoryId");
+                    b.HasIndex("ParentDepartmentId");
 
-                    b.ToTable("Categories");
+                    b.ToTable("Departments");
                 });
 
             modelBuilder.Entity("HealPoint.DataAccess.Entities.Clinic", b =>
@@ -340,7 +340,7 @@ namespace HealPoint.DataAccess.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<int>("CategoryId")
+                    b.Property<int>("DepartmentId")
                         .HasColumnType("int");
 
                     b.Property<string>("CreatedById")
@@ -379,7 +379,7 @@ namespace HealPoint.DataAccess.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("CategoryId");
+                    b.HasIndex("DepartmentId");
 
                     b.HasIndex("CreatedById");
 
@@ -528,7 +528,7 @@ namespace HealPoint.DataAccess.Migrations
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
 
-            modelBuilder.Entity("HealPoint.DataAccess.Entities.Category", b =>
+            modelBuilder.Entity("HealPoint.DataAccess.Entities.Department", b =>
                 {
                     b.HasOne("HealPoint.DataAccess.Entities.ApplicationUser", "CreatedBy")
                         .WithMany()
@@ -538,16 +538,16 @@ namespace HealPoint.DataAccess.Migrations
                         .WithMany()
                         .HasForeignKey("LastUpdatedById");
 
-                    b.HasOne("HealPoint.DataAccess.Entities.Category", "ParentCategory")
+                    b.HasOne("HealPoint.DataAccess.Entities.Department", "ParentDepartment")
                         .WithMany()
-                        .HasForeignKey("ParentCategoryId")
+                        .HasForeignKey("ParentDepartmentId")
                         .OnDelete(DeleteBehavior.Restrict);
 
                     b.Navigation("CreatedBy");
 
                     b.Navigation("LastUpdatedBy");
 
-                    b.Navigation("ParentCategory");
+                    b.Navigation("ParentDepartment");
                 });
 
             modelBuilder.Entity("HealPoint.DataAccess.Entities.Clinic", b =>
@@ -597,9 +597,9 @@ namespace HealPoint.DataAccess.Migrations
 
             modelBuilder.Entity("HealPoint.DataAccess.Entities.Specialization", b =>
                 {
-                    b.HasOne("HealPoint.DataAccess.Entities.Category", "Category")
+                    b.HasOne("HealPoint.DataAccess.Entities.Department", "Department")
                         .WithMany()
-                        .HasForeignKey("CategoryId")
+                        .HasForeignKey("DepartmentId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
@@ -611,7 +611,7 @@ namespace HealPoint.DataAccess.Migrations
                         .WithMany()
                         .HasForeignKey("LastUpdatedById");
 
-                    b.Navigation("Category");
+                    b.Navigation("Department");
 
                     b.Navigation("CreatedBy");
 

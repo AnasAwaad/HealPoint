@@ -6,18 +6,17 @@ public class DomainProfile : Profile
 {
 	public DomainProfile()
 	{
-		// Categories
-		CreateMap<CategoryDto, Category>().ReverseMap()
-			.ForMember(src => src.ParentCategoryName, opt => opt.MapFrom(dest => dest.ParentCategory.Name));
-		CreateMap<CategoryFormDto, Category>().ReverseMap();
-		CreateMap<CategoryFormDto, CategoryDto>().ReverseMap();
+		// Departments
+		CreateMap<DepartmentDto, Department>().ReverseMap();
+		CreateMap<DepartmentFormDto, Department>().ReverseMap();
+		CreateMap<DepartmentFormDto, DepartmentDto>().ReverseMap();
 
 		// Specialization
 		CreateMap<SpecializationDto, Specialization>().ReverseMap()
-			.ForMember(src => src.CategoryName, opt => opt.MapFrom(dest => dest.Category.Name));
+			.ForMember(src => src.DepartmentName, opt => opt.MapFrom(dest => dest.Department.Name));
 
 		CreateMap<SpecializationFormDto, Specialization>().ReverseMap();
-		CreateMap<SpecializationFormDto, CategoryDto>().ReverseMap();
+		CreateMap<SpecializationFormDto, DepartmentDto>().ReverseMap();
 
 
 		// Clinics

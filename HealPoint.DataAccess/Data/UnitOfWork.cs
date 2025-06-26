@@ -7,7 +7,7 @@ internal class UnitOfWork : IUnitOfWork
 	private readonly ApplicationDbContext _context;
 
 	private readonly Lazy<ISpecializationRepository> _specializationRepository;
-	private readonly Lazy<ICategoryRepository> _categoryRepository;
+	private readonly Lazy<IDepartmentRepository> _departmentRepository;
 	private readonly Lazy<IClinicRepository> _clinicRepository;
 	private readonly Lazy<IClinicSessionRepository> _clinicSessionRepository;
 	private readonly Lazy<IDoctorRepository> _doctorRepository;
@@ -17,7 +17,7 @@ internal class UnitOfWork : IUnitOfWork
 		_context = context;
 
 		_specializationRepository = new Lazy<ISpecializationRepository>(new SpecializationRepository(_context));
-		_categoryRepository = new Lazy<ICategoryRepository>(new CategoryRepository(_context));
+		_departmentRepository = new Lazy<IDepartmentRepository>(new DepartmentRepository(_context));
 		_clinicRepository = new Lazy<IClinicRepository>(new ClinicRepository(_context));
 		_clinicSessionRepository = new Lazy<IClinicSessionRepository>(new ClinicSessionRepository(_context));
 		_doctorRepository = new Lazy<IDoctorRepository>(new DoctorRepository(_context));
@@ -25,7 +25,7 @@ internal class UnitOfWork : IUnitOfWork
 
 	public ISpecializationRepository Specializations => _specializationRepository.Value;
 
-	public ICategoryRepository Categories => _categoryRepository.Value;
+	public IDepartmentRepository Departments => _departmentRepository.Value;
 
 	public IClinicRepository Clinics => _clinicRepository.Value;
 	public IClinicSessionRepository ClinicSessions => _clinicSessionRepository.Value;

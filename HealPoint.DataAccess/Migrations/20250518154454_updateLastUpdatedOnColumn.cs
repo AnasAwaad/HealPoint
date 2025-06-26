@@ -13,7 +13,7 @@ namespace HealPoint.DataAccess.Migrations
         {
             migrationBuilder.AlterColumn<DateTime>(
                 name: "LastUpdatedOn",
-                table: "Categories",
+                table: "Departments",
                 type: "datetime2",
                 nullable: true,
                 oldClrType: typeof(DateTime),
@@ -26,7 +26,7 @@ namespace HealPoint.DataAccess.Migrations
         {
             migrationBuilder.AlterColumn<DateTime>(
                 name: "LastUpdatedOn",
-                table: "Categories",
+                table: "Departments",
                 type: "datetime2",
                 nullable: false,
                 computedColumnSql: "GETDATE()",

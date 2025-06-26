@@ -18,7 +18,7 @@ public class SpecializationService : ISpecializationService
 
 	public IEnumerable<SpecializationDto> GetAllSpecializations()
 	{
-		var specialization = _unitOfWork.Specializations.GetAllSpecializationWithCategories();
+		var specialization = _unitOfWork.Specializations.GetAllSpecializationWithDepartments();
 		return _mapper.Map<IEnumerable<SpecializationDto>>(specialization);
 	}
 
@@ -29,16 +29,6 @@ public class SpecializationService : ISpecializationService
 		return _mapper.Map<IEnumerable<SpecializationDto>>(specializations);
 	}
 
-	public List<SelectListItem> GetCategorySelectList()
-	{
-		var categories = _unitOfWork.Categories.GetSubCategories();
-		return categories.Select(c => new SelectListItem
-		{
-			Text = c.Name,
-			Value = c.Id.ToString()
-		}).OrderBy(s => s.Text).ToList();
-	}
-
 	public SpecializationDto CreateSpecialization(SpecializationFormDto specializationDto)
 	{
 		var spec = _mapper.Map<Specialization>(specializationDto);
@@ -46,7 +36,7 @@ public class SpecializationService : ISpecializationService
 		_unitOfWork.SaveChanges();
 
 		var specResult = _mapper.Map<SpecializationDto>(spec);
-		specResult.CategoryName = specializationDto.CategoryName;
+		specResult.DepartmentName = specializationDto.DepartmentName;
 
 		return specResult;
 	}
@@ -73,7 +63,7 @@ public class SpecializationService : ISpecializationService
 		_unitOfWork.SaveChanges();
 
 		var specializationResult = _mapper.Map<SpecializationDto>(existingSpecialization);
-		specializationResult.CategoryName = specializationDto.CategoryName;
+		specializationResult.DepartmentName = specializationDto.DepartmentName;
 
 		return specializationResult;
 	}
@@ -98,15 +88,4 @@ public class SpecializationService : ISpecializationService
 		return existingSpecialization.IsDeleted;
 	}
 
-
-	public List<SelectListItem> GetSpecializationSelectList()
-	{
-		var specialization = _unitOfWork.Specializations.GetAll();
-
-		return specialization.Select(s => new SelectListItem
-		{
-			Text = s.Name,
-			Value = s.Id.ToString()
-		}).ToList();
-	}
 }

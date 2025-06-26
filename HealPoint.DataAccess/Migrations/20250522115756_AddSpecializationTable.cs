@@ -19,7 +19,7 @@ namespace HealPoint.DataAccess.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Name = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
                     Description = table.Column<string>(type: "nvarchar(500)", maxLength: 500, nullable: false),
-                    CategoryId = table.Column<int>(type: "int", nullable: false),
+                    DepartmentId = table.Column<int>(type: "int", nullable: false),
                     Status = table.Column<bool>(type: "bit", nullable: false, defaultValue: true),
                     CreatedBy = table.Column<int>(type: "int", nullable: true),
                     CreatedOn = table.Column<DateTime>(type: "datetime2", nullable: false, defaultValueSql: "GETDATE()"),
@@ -31,17 +31,17 @@ namespace HealPoint.DataAccess.Migrations
                 {
                     table.PrimaryKey("PK_Specializations", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Specializations_Categories_CategoryId",
-                        column: x => x.CategoryId,
-                        principalTable: "Categories",
+                        name: "FK_Specializations_Departments_DepartmentId",
+                        column: x => x.DepartmentId,
+                        principalTable: "Departments",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_Specializations_CategoryId",
+                name: "IX_Specializations_DepartmentId",
                 table: "Specializations",
-                column: "CategoryId");
+                column: "DepartmentId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Specializations_Name",

@@ -2,19 +2,22 @@
 using HealPoint.BusinessLogic.DTOs;
 using HealPoint.Presentation.Filters;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace HealPoint.Presentation.Controllers;
 public class SpecializationsController : Controller
 {
 	#region Props
 	private readonly ISpecializationService _specializationService;
+	private readonly IDepartmentService _departmentService;
 
 	#endregion
 
 	#region Ctor
-	public SpecializationsController(ISpecializationService specializationService)
+	public SpecializationsController(ISpecializationService specializationService, IDepartmentService departmentService)
 	{
 		_specializationService = specializationService;
+		_departmentService = departmentService;
 	}
 	#endregion
 
@@ -28,11 +31,7 @@ public class SpecializationsController : Controller
 	[AjaxOnly]
 	public IActionResult Create()
 	{
-		var specDto = new SpecializationFormDto
-		{
-			CategoryOptions = _specializationService.GetCategorySelectList()
-		};
-		return PartialView("_Form", specDto);
+		return PartialView("_Form", PopulateLookups());
 	}
 
 
@@ -56,9 +55,7 @@ public class SpecializationsController : Controller
 		if (specialization is null)
 			return NotFound();
 
-		specialization.CategoryOptions = _specializationService.GetCategorySelectList();
-
-		return PartialView("_Form", specialization);
+		return PartialView("_Form", PopulateLookups(specialization));
 	}
 
 	[HttpPost]
@@ -91,6 +88,16 @@ public class SpecializationsController : Controller
 			return NotFound();
 
 		return Ok(new { isDeleted });
+	}
+
+	private SpecializationFormDto PopulateLookups(SpecializationFormDto? dto = null)
+	{
+		var specializationDto = dto ?? new SpecializationFormDto();
+		var departments = _departmentService.GetDepartmentsLookup();
+
+		specializationDto.DepartmentSelectList = new SelectList(departments, "Id", "Name");
+
+		return specializationDto;
 	}
 	#endregion
 }

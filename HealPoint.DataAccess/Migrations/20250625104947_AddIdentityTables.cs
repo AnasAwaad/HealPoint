@@ -37,11 +37,11 @@ namespace HealPoint.DataAccess.Migrations
 
             migrationBuilder.DropColumn(
                 name: "CreatedBy",
-                table: "Categories");
+                table: "Departments");
 
             migrationBuilder.DropColumn(
                 name: "LastUpdatedBy",
-                table: "Categories");
+                table: "Departments");
 
             migrationBuilder.AddColumn<string>(
                 name: "CreatedById",
@@ -81,13 +81,13 @@ namespace HealPoint.DataAccess.Migrations
 
             migrationBuilder.AddColumn<string>(
                 name: "CreatedById",
-                table: "Categories",
+                table: "Departments",
                 type: "nvarchar(450)",
                 nullable: true);
 
             migrationBuilder.AddColumn<string>(
                 name: "LastUpdatedById",
-                table: "Categories",
+                table: "Departments",
                 type: "nvarchar(450)",
                 nullable: true);
 
@@ -274,13 +274,13 @@ namespace HealPoint.DataAccess.Migrations
                 column: "LastUpdatedById");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Categories_CreatedById",
-                table: "Categories",
+                name: "IX_Departments_CreatedById",
+                table: "Departments",
                 column: "CreatedById");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Categories_LastUpdatedById",
-                table: "Categories",
+                name: "IX_Departments_LastUpdatedById",
+                table: "Departments",
                 column: "LastUpdatedById");
 
             migrationBuilder.CreateIndex(
@@ -323,15 +323,15 @@ namespace HealPoint.DataAccess.Migrations
                 filter: "[NormalizedUserName] IS NOT NULL");
 
             migrationBuilder.AddForeignKey(
-                name: "FK_Categories_AspNetUsers_CreatedById",
-                table: "Categories",
+                name: "FK_Departments_AspNetUsers_CreatedById",
+                table: "Departments",
                 column: "CreatedById",
                 principalTable: "AspNetUsers",
                 principalColumn: "Id");
 
             migrationBuilder.AddForeignKey(
-                name: "FK_Categories_AspNetUsers_LastUpdatedById",
-                table: "Categories",
+                name: "FK_Departments_AspNetUsers_LastUpdatedById",
+                table: "Departments",
                 column: "LastUpdatedById",
                 principalTable: "AspNetUsers",
                 principalColumn: "Id");
@@ -383,12 +383,12 @@ namespace HealPoint.DataAccess.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropForeignKey(
-                name: "FK_Categories_AspNetUsers_CreatedById",
-                table: "Categories");
+                name: "FK_Departments_AspNetUsers_CreatedById",
+                table: "Departments");
 
             migrationBuilder.DropForeignKey(
-                name: "FK_Categories_AspNetUsers_LastUpdatedById",
-                table: "Categories");
+                name: "FK_Departments_AspNetUsers_LastUpdatedById",
+                table: "Departments");
 
             migrationBuilder.DropForeignKey(
                 name: "FK_Clinics_AspNetUsers_CreatedById",
@@ -460,12 +460,12 @@ namespace HealPoint.DataAccess.Migrations
                 table: "Clinics");
 
             migrationBuilder.DropIndex(
-                name: "IX_Categories_CreatedById",
-                table: "Categories");
+                name: "IX_Departments_CreatedById",
+                table: "Departments");
 
             migrationBuilder.DropIndex(
-                name: "IX_Categories_LastUpdatedById",
-                table: "Categories");
+                name: "IX_Departments_LastUpdatedById",
+                table: "Departments");
 
             migrationBuilder.DropColumn(
                 name: "CreatedById",
@@ -493,11 +493,11 @@ namespace HealPoint.DataAccess.Migrations
 
             migrationBuilder.DropColumn(
                 name: "CreatedById",
-                table: "Categories");
+                table: "Departments");
 
             migrationBuilder.DropColumn(
                 name: "LastUpdatedById",
-                table: "Categories");
+                table: "Departments");
 
             migrationBuilder.AddColumn<int>(
                 name: "CreatedBy",
@@ -537,13 +537,13 @@ namespace HealPoint.DataAccess.Migrations
 
             migrationBuilder.AddColumn<int>(
                 name: "CreatedBy",
-                table: "Categories",
+                table: "Departments",
                 type: "int",
                 nullable: true);
 
             migrationBuilder.AddColumn<int>(
                 name: "LastUpdatedBy",
-                table: "Categories",
+                table: "Departments",
                 type: "int",
                 nullable: true);
         }
