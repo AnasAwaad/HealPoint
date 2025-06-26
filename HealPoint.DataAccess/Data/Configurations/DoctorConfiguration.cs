@@ -5,42 +5,67 @@ internal class DoctorConfiguration : BaseEntityConfiguration<Doctor>, IEntityTyp
 	{
 		base.Configure(builder);
 
-
+		// Personal Information
 		builder.Property(d => d.DateOfBirth)
-			.HasColumnType("date")
-			.IsRequired(false);
+			.HasColumnType("date");
 
 		builder.Property(d => d.Gender)
-			.HasMaxLength(10)
-			.IsRequired(false);
+			.HasMaxLength(10);
 
 		builder.Property(d => d.ProfilePhotoPath)
-			.HasMaxLength(255)
-			.IsRequired(false);
+			.HasMaxLength(255);
 
 		// Address
 		builder.Property(d => d.Address)
-			.HasMaxLength(255)
-			.IsRequired(false);
+			.HasMaxLength(255);
 
 		builder.Property(d => d.City)
-			.HasMaxLength(100)
-			.IsRequired(false);
+			.HasMaxLength(100);
 
 		builder.Property(d => d.State)
-			.HasMaxLength(100)
-			.IsRequired(false);
+			.HasMaxLength(100);
 
 		builder.Property(d => d.PostalCode)
-			.HasMaxLength(20)
-			.IsRequired(false);
+			.HasMaxLength(20);
 
 		builder.Property(d => d.Country)
-			.HasMaxLength(100)
-			.IsRequired(false);
+			.HasMaxLength(100);
 
-		builder.Property(d => d.Experience)
-			.IsRequired(false);
+		//Contact Information
+		builder.Property(d => d.EmergencyContactName)
+			.HasMaxLength(100);
+
+		builder.Property(d => d.EmergencyContactPhone)
+			.HasMaxLength(15);
+
+		//Professional Details
+
+		builder.Property(d => d.MedicalLicenseNumber)
+			.HasMaxLength(50);
+
+		builder.Property(d => d.LicenseExpiryDate)
+			.HasColumnType("date");
+
+		builder.Property(d => d.Qualifications)
+			.HasMaxLength(500);
+
+		builder.Property(d => d.YearOfExperience)
+			.HasMaxLength(30);
+
+		// --- Education & Training
+
+		builder.Property(d => d.Education)
+			  .HasMaxLength(500);
+
+		builder.Property(d => d.Certifications)
+			  .HasMaxLength(500);
+
+		//Department & Position
+		builder.Property(d => d.Department)
+			.HasMaxLength(100);
+
+		builder.Property(d => d.Position)
+			.HasMaxLength(100);
 
 		// Relations
 		builder.Property(d => d.SpecializationId)
