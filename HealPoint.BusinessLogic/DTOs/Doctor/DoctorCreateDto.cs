@@ -1,10 +1,16 @@
-﻿namespace HealPoint.DataAccess.Entities;
-public class Doctor : BaseEntity
+﻿using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc.Rendering;
+
+namespace HealPoint.BusinessLogic.DTOs;
+public class DoctorCreateDto
 {
-	// Personal Information
+
+	public string FirstName { get; set; } = null!;
+	public string? LastName { get; set; }
+
 	public DateOnly? DateOfBirth { get; set; }
 	public string? Gender { get; set; }
-	public string? ProfilePhotoPath { get; set; }
+	public IFormFile ImageFile { get; set; }
 
 	// Address
 	public string? Address { get; set; }
@@ -14,13 +20,14 @@ public class Doctor : BaseEntity
 	public string? PostalCode { get; set; }
 
 	//Contact Information
-	public string? ContactEmail { get; set; } // From Doctor Entity
+	public string? PhoneNumber { get; set; }
+	public string? ContactEmail { get; set; }
 	public string? EmergencyContactName { get; set; }
 	public string? EmergencyContactPhone { get; set; }
 
 	//Professional Details
 	public int SpecializationId { get; set; }
-	public Specialization? Specialization { get; set; }
+	public IEnumerable<SelectListItem>? SpecializationSelectList { get; set; } = new List<SelectListItem>();
 	public string? MedicalLicenseNumber { get; set; }
 	public DateOnly? LicenseExpiryDate { get; set; }
 	public string? Qualifications { get; set; }
@@ -35,7 +42,8 @@ public class Doctor : BaseEntity
 	public string? Position { get; set; }
 
 	// Account Link
-	public string Email { get; set; } // Used for login
-	public string? ApplicationUserId { get; set; }
-	public ApplicationUser? ApplicationUser { get; set; }
+	public string? UserName { get; set; }
+	public string? Email { get; set; }
+	public string? Password { get; set; }
+	public string? RepeatPassword { get; set; }
 }

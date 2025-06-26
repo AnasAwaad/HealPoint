@@ -21,6 +21,12 @@ public class DoctorsController : Controller
 	{
 		return View(_doctorService.GetAll());
 	}
+
+
+	public IActionResult Create()
+	{
+		return View();
+	}
 	#endregion
 
 }
