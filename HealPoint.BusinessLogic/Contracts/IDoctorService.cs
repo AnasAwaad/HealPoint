@@ -3,5 +3,5 @@ public interface IDoctorService
 {
 	IEnumerable<DoctorDto> GetAll();
 
-	//Task CreateAsync(DoctorCreateDto dto);
+	Task CreateAsync(CreateDoctorDto dto);
 }

@@ -2,7 +2,7 @@
 using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace HealPoint.BusinessLogic.DTOs;
-public class DoctorCreateDto
+public class CreateDoctorDto
 {
 
 	public string FirstName { get; set; } = null!;
@@ -10,7 +10,7 @@ public class DoctorCreateDto
 
 	public DateOnly? DateOfBirth { get; set; }
 	public string? Gender { get; set; }
-	public IFormFile ImageFile { get; set; }
+	public IFormFile? ImageFile { get; set; }
 
 	// Address
 	public string? Address { get; set; }

@@ -13,6 +13,11 @@ internal class SpecializationRepository : Repository<Specialization>, ISpecializ
 		return _context.Specializations.Where(s => !s.IsDeleted).AsEnumerable();
 	}
 
+	public IEnumerable<Specialization> GetActiveSpecializations()
+	{
+		return _context.Specializations.Where(s => !s.IsDeleted && s.Status).AsEnumerable();
+	}
+
 	public IEnumerable<Specialization> GetAllSpecializationWithCategories()
 	{
 		return _context.Specializations

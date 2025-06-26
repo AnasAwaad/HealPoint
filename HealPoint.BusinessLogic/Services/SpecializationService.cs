@@ -1,6 +1,5 @@
 ﻿using AutoMapper;
 using HealPoint.BusinessLogic.Contracts;
-using HealPoint.BusinessLogic.DTOs;
 using HealPoint.DataAccess.Contracts;
 using HealPoint.DataAccess.Entities;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -21,6 +20,13 @@ public class SpecializationService : ISpecializationService
 	{
 		var specialization = _unitOfWork.Specializations.GetAllSpecializationWithCategories();
 		return _mapper.Map<IEnumerable<SpecializationDto>>(specialization);
+	}
+
+	public IEnumerable<SpecializationDto> GetSpecializationsLookup()
+	{
+		var specializations = _unitOfWork.Specializations.GetActiveSpecializations();
+
+		return _mapper.Map<IEnumerable<SpecializationDto>>(specializations);
 	}
 
 	public List<SelectListItem> GetCategorySelectList()

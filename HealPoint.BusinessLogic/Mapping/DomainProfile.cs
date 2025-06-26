@@ -1,5 +1,4 @@
 ﻿using AutoMapper;
-using HealPoint.BusinessLogic.DTOs;
 using HealPoint.DataAccess.Entities;
 
 namespace HealPoint.BusinessLogic.Mapping;
@@ -35,6 +34,13 @@ public class DomainProfile : Profile
 
 		CreateMap<ClinicSessionDto, ClinicSession>();
 
-		CreateMap<Doctor, DoctorDto>();
+		CreateMap<Doctor, DoctorDto>()
+			.ForMember(src => src.FirstName, opt => opt.MapFrom(dest => dest.ApplicationUser!.FirstName))
+			.ForMember(src => src.LastName, opt => opt.MapFrom(dest => dest.ApplicationUser!.LastName))
+			.ForMember(src => src.SpecializationName, opt => opt.MapFrom(dest => dest.Specialization!.Name))
+			.ReverseMap();
+
+
+		CreateMap<CreateDoctorDto, Doctor>();
 	}
 }

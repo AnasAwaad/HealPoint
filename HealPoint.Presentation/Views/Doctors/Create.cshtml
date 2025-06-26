@@ -1,7 +1,7 @@
-﻿@model DoctorCreateDto
+﻿@model CreateDoctorDto
 
 @{
-	// ViewData["Title"] = "Create Doctor";
+	ViewData["Title"] = "Create Doctor";
 }
 
 <div class="d-flex flex-column flex-column-fluid" style="margin-top:30px;">
@@ -195,13 +195,13 @@
 									<!--begin::Card body-->
 									<div class="card-body pt-0">
 										<div class="card-body p-0">
-											@* <div class="col-md-6 fv-row fv-plugins-icon-container">
+											<div class="col-md-6 fv-row fv-plugins-icon-container">
 												<label class="form-label" asp-for="SpecializationId"></label>
 												<select asp-for="SpecializationId" asp-items="Model.SpecializationSelectList" class="form-select form-select-solid" data-control="select2" data-placeholder="Select specialization">
 													<option value=""></option>
 												</select>
 												<span asp-validation-for="SpecializationId" class="text-danger"></span>
-											</div> *@
+											</div>
 
 											<div class="row g-5">
 												<div class="col-md-6 fv-row fv-plugins-icon-container">
