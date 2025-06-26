@@ -6,18 +6,19 @@ using Microsoft.Extensions.DependencyInjection;
 namespace HealPoint.BusinessLogic;
 public static class AddBusinessLogicExtensions
 {
-    public static IServiceCollection AddBusinessLogicServices(this IServiceCollection services)
-    {
+	public static IServiceCollection AddBusinessLogicServices(this IServiceCollection services)
+	{
 
-        services.AddScoped<ICategoryService, CategoryService>();
-        services.AddScoped<ISpecializationService, SpecializationService>();
-        services.AddScoped<IClinicService, ClinicService>();
-        services.AddScoped<IClinicSessionService, ClinicSessionService>();
-        services.AddScoped<IFileStorageService, FileStorageService>();
+		services.AddScoped<ICategoryService, CategoryService>();
+		services.AddScoped<ISpecializationService, SpecializationService>();
+		services.AddScoped<IClinicService, ClinicService>();
+		services.AddScoped<IClinicSessionService, ClinicSessionService>();
+		services.AddScoped<IFileStorageService, FileStorageService>();
+		services.AddScoped<IDoctorService, DoctorService>();
 
 
-        services.AddAutoMapper(typeof(DomainProfile));
+		services.AddAutoMapper(typeof(DomainProfile));
 
-        return services;
-    }
+		return services;
+	}
 }

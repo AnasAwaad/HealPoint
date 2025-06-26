@@ -1,1 +1,1 @@
-﻿
+﻿global using HealPoint.BusinessLogic.DTOs;
