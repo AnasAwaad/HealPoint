@@ -5,6 +5,5 @@ public class SpecializationDto
 	public string Name { get; set; } = null!;
 	public string Description { get; set; } = null!;
 	public string CategoryName { get; set; } = null!;
-	public bool Status { get; set; }
-
+	public bool IsDeleted { get; set; }
 }

@@ -39,9 +39,11 @@ internal class DoctorService(IUnitOfWork unitOfWork, IMapper mapper, UserManager
 
 		doctor.CreatedOn = DateTime.Now;
 
-		var imagePath = await fileStorage.UploadFileAsync(dto.ImageFile, "doctors");
+		if (dto.ImageFile is not null)
+			doctor.ProfilePhotoPath = await fileStorage.UploadFileAsync(dto.ImageFile, "doctors");
+		else
+			doctor.ProfilePhotoPath = "/images/doctors/default-doctor.png";
 
-		doctor.ProfilePhotoPath = imagePath ?? "/images/doctors/default-doctor.png";
 		doctor.ApplicationUserId = user.Id;
 
 		unitOfWork.Doctors.Insert(doctor);

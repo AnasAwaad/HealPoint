@@ -15,129 +15,135 @@ $(document).ready(function () {
     var message = $('.js-success-message').text();
     if (message != '') {
         showSuccessMessage(message);
-	}
+    }
 
-	$('.js-select2').select2();
+    $('.js-select2').select2();
 
-	// Handle Global Modal 
-	$(document).on('click', '.js-render-modal', function () {
-		var btn = $(this);
-		var myModal = $('#myModal');
-		var title = btn.data('title');
-		var url = btn.data('url');
+    // Handle Global Modal 
+    $(document).on('click', '.js-render-modal', function () {
+        var btn = $(this);
+        var myModal = $('#myModal');
+        var title = btn.data('title');
+        var url = btn.data('url');
 
-		if (btn.data('update') != undefined) {
-			updatedRow = btn.parents('tr');
-		}
+        if (btn.data('update') != undefined) {
+            updatedRow = btn.parents('tr');
+        }
 
-		myModal.find('.modal-title').text(title);
+        myModal.find('.modal-title').text(title);
 
-		// call ajax request to render form inside modal
-		$.get({
-			url,
-			success: function (form) {
-				myModal.find('.modal-body').html(form);
+        // call ajax request to render form inside modal
+        $.get({
+            url,
+            success: function (form) {
+                myModal.find('.modal-body').html(form);
 
-				// Re-enable client-side validation for the new form
-				$.validator.unobtrusive.parse(myModal);
-			},
+                // Re-enable client-side validation for the new form
+                $.validator.unobtrusive.parse(myModal);
+            },
             error: function (err) {
                 console.log(err.message)
-				showErrorMessage(err);
-			}
-		})
+                showErrorMessage(err);
+            }
+        })
 
 
-		myModal.modal('show');
+        myModal.modal('show');
     })
 
-	// Handle change status checkbox
-	$('.js-change-status').on('change', function () {
-		var btn = $(this);
-		var url = btn.data('url');
+    // Handle change status checkbox
+    $('.js-change-status').on('click', function () {
+        var btn = $(this);
+        var url = btn.data('url');
 
-		bootbox.confirm({
-			title: "Change Status Alert",
-			message: "Do you want to change status of this item?",
-			buttons: {
-				cancel: {
-					label: '<i class="fa fa-times"></i> Cancel',
-					className: 'btn btn-secondary'
-				},
-				confirm: {
-					label: '<i class="fa fa-check"></i> Confirm',
-					className: 'btn btn-danger'
-				}
-			},
-			callback: function (result) {
-				if (result) {
-					$.post({
-						url,
-						data: {
-							"__RequestVerificationToken": $("input[name='__RequestVerificationToken']").val()
-						},
-						success: function (lastUpdatedOn) {
-							// toastify alert
-							showSuccessMessage("item updated successfully");
+        bootbox.confirm({
+            title: "Change Status Alert",
+            message: "Do you want to change status of this item?",
+            buttons: {
+                cancel: {
+                    label: '<i class="fa fa-times"></i> Cancel',
+                    className: 'btn btn-secondary'
+                },
+                confirm: {
+                    label: '<i class="fa fa-check"></i> Confirm',
+                    className: 'btn btn-danger'
+                }
+            },
+            callback: function (result) {
+                if (result) {
+                    $.post({
+                        url,
+                        data: {
+                            "__RequestVerificationToken": $("input[name='__RequestVerificationToken']").val()
+                        },
+                        success: function (response) {
+                            // toastify alert
+                            showSuccessMessage("item updated successfully");
 
-							// change time of last updated on
-							btn.parents('tr').find('.js-last-updated-on').html(lastUpdatedOn);
-						},
-						error: function () {
-							showErrorMessage("An error occurred while changing status.");
-						}
-					})
-				}
-			}
-		});
+                            // change status badge text and style
+                            var statusItem = btn.parents('tr').find('.js-status');
+
+                            if (response.isDeleted) {
+                                statusItem.html('<span class="badge badge-warning">Inactive</span>');
+                            } else {
+                                statusItem.html('<span class="badge badge-success">Active</span>');
+                            }
+                        },
+                        error: function () {
+                            showErrorMessage("An error occurred while changing status.");
+                        }
+                    })
+                }
+            }
+        });
 
 
-	})
+    })
 
 
-	// Handle Delete item
-	$('.js-delete-item').on('click', function () {
-		var btn = $(this);
-		var url = btn.data('url');
+    // Handle Delete item
+    $('.js-delete-item').on('click', function () {
+        var btn = $(this);
+        var url = btn.data('url');
 
-		bootbox.confirm({
-			title: "Change Status Alert",
-			message: "Do you want to delete this item?",
-			buttons: {
-				cancel: {
-					label: '<i class="fa fa-times"></i> Cancel',
-					className: 'btn btn-secondary'
-				},
-				confirm: {
-					label: '<i class="fa fa-check"></i> Confirm',
-					className: 'btn btn-danger'
-				}
-			},
-			callback: function (result) {
-				if (result) {
-					$.post({
-						url,
-						data: {
-							"__RequestVerificationToken": $("input[name='__RequestVerificationToken']").val()
-						},
-						success: function () {
-							// toastify alert
-							showSuccessMessage("item deleted successfully");
+        bootbox.confirm({
+            title: "Change Status Alert",
+            message: "Do you want to delete this item?",
+            buttons: {
+                cancel: {
+                    label: '<i class="fa fa-times"></i> Cancel',
+                    className: 'btn btn-secondary'
+                },
+                confirm: {
+                    label: '<i class="fa fa-check"></i> Confirm',
+                    className: 'btn btn-danger'
+                }
+            },
+            callback: function (result) {
+                if (result) {
+                    $.post({
+                        url,
+                        data: {
+                            "__RequestVerificationToken": $("input[name='__RequestVerificationToken']").val()
+                        },
+                        success: function () {
+                            // toastify alert
+                            showSuccessMessage("item deleted successfully");
 
-							// delete item from table
-							btn.parents('tr').fadeOut();
-						},
-						error: function () {
-							showErrorMessage("An error occurred while changing status.");
-						}
-					})
-				}
-			}
-		});
-	})
-	$(document).on('click', '.js-modal-save', function () {
-		$('#ModalForm').submit();
-	})
+                            // delete item from table
+                            btn.parents('tr').fadeOut();
+                        },
+                        error: function () {
+                            showErrorMessage("An error occurred while changing status.");
+                        }
+                    })
+                }
+            }
+        });
+    })
+    $(document).on('click', '.js-modal-save', function () {
+        $('#ModalForm').submit();
+    })
 })
 
 function onModalFormSuccess(newRow) {
@@ -146,59 +152,59 @@ function onModalFormSuccess(newRow) {
     // add new row to datatable.
     datatable.row.add($(newRow)).draw();
 
-	if (updatedRow != undefined) {
-		// remove existing row from datatable
+    if (updatedRow != undefined) {
+        // remove existing row from datatable
         datatable.row(updatedRow).remove().draw();
-		updatedRow = undefined;
+        updatedRow = undefined;
 
-		message = "Category updated successfully";
-	} else {
-		
-		message = "Category created successfully";
-	}
+        message = "Category updated successfully";
+    } else {
+
+        message = "Category created successfully";
+    }
 
 
-	$('#myModal').modal('hide');
+    $('#myModal').modal('hide');
 
-	showSuccessMessage(message);
+    showSuccessMessage(message);
 
 }
 
 function onModalFormFailure(res) {
-	$('#myModal').modal('hide');
-	showErrorMessage("An error happen while creating category");
+    $('#myModal').modal('hide');
+    showErrorMessage("An error happen while creating category");
 }
 
-function showSuccessMessage(message){
-	Toastify({
-		text: message,
-		duration: 3000,
-		newWindow: true,
-		close: true,
-		gravity: "top",
-		position: "right",
-		stopOnFocus: true,
-		style: {
-			background: "linear-gradient(to right, #00b09b, #96c93d)",
-		},
-	}).showToast();
+function showSuccessMessage(message) {
+    Toastify({
+        text: message,
+        duration: 3000,
+        newWindow: true,
+        close: true,
+        gravity: "top",
+        position: "right",
+        stopOnFocus: true,
+        style: {
+            background: "linear-gradient(to right, #00b09b, #96c93d)",
+        },
+    }).showToast();
 }
 
 function showErrorMessage(message) {
-	Toastify({
-		text: message,
-		duration: 3000,
-		newWindow: true,
-		close: true,
-		gravity: "top",
-		position: "right",
-		stopOnFocus: true,
-		style: {
-			background: "linear-gradient(to right, #ff5f6d, #ffc371)", // red-orange gradient
-			color: "#fff"
-		},
-		icon: "❌"
-	}).showToast();
+    Toastify({
+        text: message,
+        duration: 3000,
+        newWindow: true,
+        close: true,
+        gravity: "top",
+        position: "right",
+        stopOnFocus: true,
+        style: {
+            background: "linear-gradient(to right, #ff5f6d, #ffc371)", // red-orange gradient
+            color: "#fff"
+        },
+        icon: "❌"
+    }).showToast();
 
 }
 

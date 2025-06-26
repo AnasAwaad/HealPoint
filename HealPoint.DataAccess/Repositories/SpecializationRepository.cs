@@ -8,20 +8,17 @@ internal class SpecializationRepository : Repository<Specialization>, ISpecializ
 	{
 	}
 
-	public override IEnumerable<Specialization> GetAll()
-	{
-		return _context.Specializations.Where(s => !s.IsDeleted).AsEnumerable();
-	}
-
 	public IEnumerable<Specialization> GetActiveSpecializations()
 	{
-		return _context.Specializations.Where(s => !s.IsDeleted && s.Status).AsEnumerable();
+		return _context.Specializations
+			.Where(s => !s.IsDeleted)
+			.OrderBy(s => s.Name)
+			.AsEnumerable();
 	}
 
 	public IEnumerable<Specialization> GetAllSpecializationWithCategories()
 	{
 		return _context.Specializations
-			.Where(s => !s.IsDeleted)
 			.Include(s => s.Category)
 			.AsEnumerable();
 	}

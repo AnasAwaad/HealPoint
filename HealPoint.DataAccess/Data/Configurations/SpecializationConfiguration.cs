@@ -7,7 +7,7 @@ internal class SpecializationConfiguration : BaseEntityConfiguration<Specializat
 
 		builder.Property(e => e.Name).HasMaxLength(100);
 		builder.Property(e => e.Description).HasMaxLength(500);
-		builder.Property(e => e.Status).HasDefaultValue(true);
+		builder.Property(e => e.IsDeleted).HasDefaultValue(false);
 
 		builder.HasOne(e => e.Category)
 			.WithMany()

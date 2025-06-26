@@ -83,33 +83,21 @@ public class SpecializationService : ISpecializationService
 		return _unitOfWork.Specializations.IsSpecializationNameAllowed(model.Name, model.Id);
 	}
 
-	public string? UpdateSpecializationStatus(int id)
+	public bool? UpdateSpecializationStatus(int id)
 	{
 		var existingSpecialization = _unitOfWork.Specializations.FindById(id);
 
 		if (existingSpecialization == null)
 			return null;
 
-		existingSpecialization.Status = !existingSpecialization.Status;
+		existingSpecialization.IsDeleted = !existingSpecialization.IsDeleted;
 		existingSpecialization.LastUpdatedOn = DateTime.Now;
 
 		_unitOfWork.SaveChanges();
 
-		return existingSpecialization.LastUpdatedOn.ToString();
+		return existingSpecialization.IsDeleted;
 	}
 
-	public bool DeleteSpecialization(int id)
-	{
-		var specialization = _unitOfWork.Specializations.FindById(id);
-
-		if (specialization is null)
-			return false;
-
-		_unitOfWork.Specializations.Delete(id);
-		_unitOfWork.SaveChanges();
-
-		return true;
-	}
 
 	public List<SelectListItem> GetSpecializationSelectList()
 	{

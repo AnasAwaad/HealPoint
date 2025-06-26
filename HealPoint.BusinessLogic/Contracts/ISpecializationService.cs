@@ -9,9 +9,8 @@ public interface ISpecializationService
 	SpecializationFormDto? GetSpecializationById(int id);
 	SpecializationDto CreateSpecialization(SpecializationFormDto specializationDto);
 	SpecializationDto? UpdateSpecialization(SpecializationFormDto specializationDto);
-	bool DeleteSpecialization(int id);
 	bool IsSpecializationAllowed(SpecializationFormDto model);
-	string? UpdateSpecializationStatus(int id);
+	bool? UpdateSpecializationStatus(int id);
 	List<SelectListItem> GetSpecializationSelectList();
 
 }

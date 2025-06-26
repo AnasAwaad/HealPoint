@@ -85,24 +85,12 @@ public class SpecializationsController : Controller
 	[ValidateAntiForgeryToken]
 	public IActionResult ChangeSpecializationStatus(int id)
 	{
-		var lastUpdatedOn = _specializationService.UpdateSpecializationStatus(id);
+		var isDeleted = _specializationService.UpdateSpecializationStatus(id);
 
-		if (lastUpdatedOn is null)
+		if (isDeleted is null)
 			return NotFound();
 
-		return Ok(lastUpdatedOn);
-	}
-
-	[HttpPost]
-	[ValidateAntiForgeryToken]
-	public IActionResult DeleteSpecialization(int id)
-	{
-		var isDeleted = _specializationService.DeleteSpecialization(id);
-
-		if (!isDeleted)
-			return BadRequest();
-
-		return Ok();
+		return Ok(new { isDeleted });
 	}
 	#endregion
 }

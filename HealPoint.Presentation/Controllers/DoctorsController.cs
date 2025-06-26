@@ -29,7 +29,7 @@ public class DoctorsController : Controller
 
 	public IActionResult Create()
 	{
-		return View(PopulateDoctorDtoLookup());
+		return View(PopulateLookups());
 	}
 
 	[HttpPost]
@@ -37,9 +37,7 @@ public class DoctorsController : Controller
 	public async Task<IActionResult> Create(CreateDoctorDto dto)
 	{
 		if (!ModelState.IsValid)
-		{
-			return View(PopulateDoctorDtoLookup(dto));
-		}
+			return View(PopulateLookups(dto));
 
 		await _doctorService.CreateAsync(dto);
 
@@ -47,7 +45,7 @@ public class DoctorsController : Controller
 
 	}
 
-	private CreateDoctorDto PopulateDoctorDtoLookup(CreateDoctorDto? dto = null)
+	private CreateDoctorDto PopulateLookups(CreateDoctorDto? dto = null)
 	{
 		var doctorDto = dto ?? new CreateDoctorDto();
 		var specializations = _specializationService.GetSpecializationsLookup();

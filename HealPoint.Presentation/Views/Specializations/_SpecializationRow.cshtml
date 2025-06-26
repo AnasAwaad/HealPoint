@@ -4,27 +4,25 @@
 	<td class="text-center">@Model.Name</td>
 	<td>@Model.Description</td>
 	<td>@Model.CategoryName</td>
-	<td>
-		<div class="form-check form-switch form-check-custom form-check-solid">
-			<input class="form-check-input js-change-status w-40px h-25px" type="checkbox" asp-for="Status" data-url="/Specializations/ChangeSpecializationStatus/@Model.Id" />
-		</div>
+	<td class="js-status">
+		<span class="badge badge-@(Model.IsDeleted ? "warning":"success")">@(Model.IsDeleted ? "Inactive":"Active")</span>
+
 	</td>
 	<td class="text-center">
-		<a class="js-render-modal" href="javascript:;" data-url="/Specializations/Update/@Model.Id" data-title="Update Specialization" data-update="true">
-			<i class="ki-duotone ki-notepad-edit fs-1 text-success">
-				<span class="path1"></span>
-				<span class="path2"></span>
-			</i>
-		</a>
-
-		<a class="js-delete-item" data-url="/Specializations/DeleteSpecialization/@Model.Id" href="javascript:;" data-id="@Model.Id" data-kt-ecommerce-Model-filter="delete_row">
-			<i class="ki-duotone ki-trash-square fs-1 text-danger">
-				<span class="path1"></span>
-				<span class="path2"></span>
-				<span class="path3"></span>
-				<span class="path4"></span>
-			</i>
-		</a>
+		<div class="dropdown">
+			<button class="border-0 dropdown-toggle bg-white" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
+				<i class="bi bi-three-dots fs-4"></i>
+			</button>
+			<ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+				<li>
+					<a class="js-render-modal dropdown-item d-flex align-items-center " href="javascript:;" data-url="/Specializations/Update/@Model.Id" data-title="Update Specialization" data-update="true">
+						Update
+					</a>
+				</li>
+				<li><a class="dropdown-item js-change-status text-danger" data-url="/Specializations/ChangeSpecializationStatus/@Model.Id" href="javascript:;">Change status</a></li>
+			</ul>
+		</div>
+		
 
 	</td>
 </tr>
