@@ -30,11 +30,7 @@
             </button>
             <ul class="dropdown-menu dropdown-menu-end">
                 <li>
-                    <a class="dropdown-item js-render-modal"
-                       href="javascript:;"
-                       data-url="/Doctors/Update/@Model.Id"
-                       data-title="Update Doctor"
-                       data-update="true">
+                    <a class="dropdown-item " asp-controller="Doctors" asp-action="Update" asp-route-Id="@Model.Id">
                         <i class="ki-duotone ki-notepad-edit text-success me-2"></i> Update
                     </a>
                 </li>

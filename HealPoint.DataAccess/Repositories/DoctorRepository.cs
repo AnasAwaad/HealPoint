@@ -16,6 +16,15 @@ internal class DoctorRepository : Repository<Doctor>, IDoctorRepository
 			.Where(d => !d.IsDeleted);
 	}
 
+	public Doctor? GetDoctorByIdWithDetails(int id)
+	{
+		return _context.Doctors
+			.Include(d => d.Specialization)
+			.Include(d => d.ApplicationUser)
+			.Where(d => !d.IsDeleted)
+			.FirstOrDefault();
+	}
+
 	public Doctor? GetDoctorByContactEmail(string email)
 	{
 		return _context.Doctors.Where(d => d.ContactEmail == email).FirstOrDefault();

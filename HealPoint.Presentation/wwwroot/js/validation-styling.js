@@ -11,6 +11,6 @@ $.validator.setDefaults({
 
     unhighlight: function (element, errorClass, validClass) {
         $(element).addClass("is-valid").removeClass("is-invalid");
-        $(element.form).find("[data-valmsg-for=" + element.id + "]").removeClass("invalid-feedback");
+        //$(element.form).find("[data-valmsg-for=" + element.id + "]").removeClass("invalid-feedback");
     },
 });

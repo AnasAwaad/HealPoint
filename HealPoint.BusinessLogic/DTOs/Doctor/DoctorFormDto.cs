@@ -5,9 +5,9 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using System.ComponentModel.DataAnnotations;
 
 namespace HealPoint.BusinessLogic.DTOs;
-public class CreateDoctorDto
+public class DoctorFormDto
 {
-	public int Id { get; set; }
+	public int? Id { get; set; }
 
 	[Display(Name = "First Name")]
 	[MaxLength(100, ErrorMessage = Errors.MaxLengthExceeded)]
@@ -25,6 +25,8 @@ public class CreateDoctorDto
 	public string? Gender { get; set; }
 
 	public IFormFile? ImageFile { get; set; }
+	public string? ProfilePhotoPath { get; set; }
+
 	// Address
 	public string? Address { get; set; }
 	public string? City { get; set; }

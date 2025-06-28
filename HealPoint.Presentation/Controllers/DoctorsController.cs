@@ -31,12 +31,12 @@ public class DoctorsController : Controller
 
 	public IActionResult Create()
 	{
-		return View(PopulateLookups());
+		return View("Form", PopulateLookups());
 	}
 
 	[HttpPost]
 	[ValidateAntiForgeryToken]
-	public async Task<IActionResult> Create(CreateDoctorDto dto)
+	public async Task<IActionResult> Create(DoctorFormDto dto)
 	{
 		if (!ModelState.IsValid)
 			return View(PopulateLookups(dto));
@@ -46,38 +46,52 @@ public class DoctorsController : Controller
 		return RedirectToAction(nameof(Index));
 
 	}
-	public IActionResult IsAllowedMobileNumber(CreateDoctorDto dto)
+
+	public IActionResult Update(int id)
+	{
+		var doctorDto = _doctorService.GetById(id);
+
+		if (doctorDto == null)
+			return NotFound();
+
+		return View("Form", PopulateLookups(doctorDto));
+	}
+
+
+
+
+	public IActionResult IsAllowedMobileNumber(DoctorFormDto dto)
 	{
 		var isAllowed = _doctorService.IsAllowedMobileNumber(dto.PhoneNumber, dto.Id);
 		return Json(isAllowed);
 	}
 
-	public IActionResult IsAllowedContactEmail(CreateDoctorDto dto)
+	public IActionResult IsAllowedContactEmail(DoctorFormDto dto)
 	{
 		var isAllowed = _doctorService.IsAllowedContactEmail(dto.ContactEmail, dto.Id);
 		return Json(isAllowed);
 	}
 
-	public IActionResult IsAllowedEmergencyContactPhone(CreateDoctorDto dto)
+	public IActionResult IsAllowedEmergencyContactPhone(DoctorFormDto dto)
 	{
 		var isAllowed = _doctorService.IsAllowedEmergencyContactPhone(dto.EmergencyContactPhone, dto.Id);
 		return Json(isAllowed);
 	}
-	public IActionResult IsAllowedUserName(CreateDoctorDto dto)
+	public IActionResult IsAllowedUserName(DoctorFormDto dto)
 	{
 		var isAllowed = _doctorService.IsAllowedUserName(dto.UserName, dto.Id);
 		return Json(isAllowed);
 	}
 
-	public IActionResult IsAllowedEmail(CreateDoctorDto dto)
+	public IActionResult IsAllowedEmail(DoctorFormDto dto)
 	{
 		var isAllowed = _doctorService.IsAllowedEmail(dto.Email, dto.Id);
 		return Json(isAllowed);
 	}
 
-	private CreateDoctorDto PopulateLookups(CreateDoctorDto? dto = null)
+	private DoctorFormDto PopulateLookups(DoctorFormDto? dto = null)
 	{
-		var doctorDto = dto ?? new CreateDoctorDto();
+		var doctorDto = dto ?? new DoctorFormDto();
 		var specializations = _specializationService.GetSpecializationsLookup();
 		var departments = _departmentService.GetDepartmentsLookup();
 

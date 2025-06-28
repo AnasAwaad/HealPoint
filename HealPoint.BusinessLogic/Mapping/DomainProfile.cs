@@ -41,6 +41,13 @@ public class DomainProfile : Profile
 			.ReverseMap();
 
 
-		CreateMap<CreateDoctorDto, Doctor>();
+		CreateMap<DoctorFormDto, Doctor>();
+
+		CreateMap<Doctor, DoctorFormDto>()
+			.ForMember(dest => dest.FirstName, opt => opt.MapFrom(src => src.ApplicationUser!.FirstName))
+			.ForMember(dest => dest.LastName, opt => opt.MapFrom(src => src.ApplicationUser!.LastName))
+			.ForMember(dest => dest.UserName, opt => opt.MapFrom(src => src.ApplicationUser!.UserName))
+			.ForMember(dest => dest.Email, opt => opt.MapFrom(src => src.ApplicationUser!.Email))
+			.ForMember(dest => dest.PhoneNumber, opt => opt.MapFrom(src => src.ApplicationUser!.PhoneNumber));
 	}
 }

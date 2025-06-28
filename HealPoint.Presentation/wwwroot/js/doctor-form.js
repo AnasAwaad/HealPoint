@@ -36,4 +36,11 @@
         altInput: true,
         altFormat: "F j, Y",
     });
+
+    flatpickr("#LicenseExpiryDate", {
+        dateFormat: "Y-m-d",
+        minDate: "today",
+        altInput: true,
+        altFormat: "F j, Y",
+    });
 });
