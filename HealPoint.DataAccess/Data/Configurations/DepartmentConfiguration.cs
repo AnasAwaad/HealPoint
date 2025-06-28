@@ -14,5 +14,10 @@ internal class DepartmentConfiguration : BaseEntityConfiguration<Department>, IE
 		// Add unique constraint on name
 		builder.HasIndex(s => s.Name)
 			   .IsUnique();
+
+		builder.HasMany(d => d.Doctors)
+			.WithOne(d => d.Department)
+			.HasForeignKey(d => d.DepartmentId)
+			.OnDelete(DeleteBehavior.Cascade);
 	}
 }

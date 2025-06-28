@@ -5,4 +5,5 @@ public class Department : BaseEntity
 	public string Description { get; set; } = null!;
 	public string? ImagePath { get; set; }
 	public bool IsFeatured { get; set; }
+	public ICollection<Doctor> Doctors { get; set; } = new List<Doctor>();
 }

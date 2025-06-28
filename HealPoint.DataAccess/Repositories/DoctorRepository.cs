@@ -21,8 +21,7 @@ internal class DoctorRepository : Repository<Doctor>, IDoctorRepository
 		return _context.Doctors
 			.Include(d => d.Specialization)
 			.Include(d => d.ApplicationUser)
-			.Where(d => !d.IsDeleted)
-			.FirstOrDefault();
+			.FirstOrDefault(d => !d.IsDeleted && d.Id == id);
 	}
 
 	public Doctor? GetDoctorByContactEmail(string email)
@@ -34,4 +33,5 @@ internal class DoctorRepository : Repository<Doctor>, IDoctorRepository
 	{
 		return _context.Doctors.Where(d => d.EmergencyContactPhone == emergencyContactNumber).FirstOrDefault();
 	}
+
 }

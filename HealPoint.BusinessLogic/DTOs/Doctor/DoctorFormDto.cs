@@ -70,6 +70,7 @@ public class DoctorFormDto
 	public string? Certifications { get; set; }
 
 	//Department & Position
+	[Display(Name = "Department")]
 	public int DepartmentId { get; set; }
 	public string? Position { get; set; }
 
@@ -86,7 +87,7 @@ public class DoctorFormDto
 
 	[StringLength(maximumLength: 100, MinimumLength = 3, ErrorMessage = Errors.MinMaxLength), DataType(DataType.Password)]
 	[RegularExpression(RegexPattern.Password, ErrorMessage = Errors.WeakPassword)]
-	public string Password { get; set; } = null!;
+	public string? Password { get; set; } = null!;
 
 
 	public IEnumerable<SelectListItem>? SpecializationSelectList { get; set; } = new List<SelectListItem>();

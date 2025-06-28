@@ -38,7 +38,11 @@ internal class DoctorService(IUnitOfWork unitOfWork, IMapper mapper, UserManager
 			PhoneNumber = dto.PhoneNumber
 		};
 
-		await userManager.CreateAsync(user, dto.Password);
+
+		// Use provided password or generate a default one if not supplied
+		string password = dto.Password ?? $"Dr#{Guid.NewGuid().ToString().Substring(0, 8)}";
+
+		await userManager.CreateAsync(user, password);
 		var result = await userManager.AddToRoleAsync(user, "Doctor");
 
 		if (!result.Succeeded)
@@ -60,10 +64,77 @@ internal class DoctorService(IUnitOfWork unitOfWork, IMapper mapper, UserManager
 		unitOfWork.SaveChanges();
 	}
 
+
+	public async Task UpdateAsync(DoctorFormDto dto)
+	{
+
+		var doctor = unitOfWork.Doctors.FindById(dto.Id.Value);
+		if (doctor is null)
+			throw new KeyNotFoundException($"Doctor with ID {dto.Id} not found.");
+
+		var user = await userManager.FindByIdAsync(doctor.ApplicationUserId!);
+		if (user is null)
+			throw new KeyNotFoundException($"User with ID {doctor.ApplicationUserId} not found.");
+
+		// Update ApplicationUser properties
+		user.UserName = dto.UserName ?? dto.Email;
+		user.Email = dto.Email;
+		user.FirstName = dto.FirstName;
+		user.LastName = dto.LastName;
+		user.PhoneNumber = dto.PhoneNumber;
+
+		var result = await userManager.UpdateAsync(user);
+
+		if (!result.Succeeded)
+			throw new Exception(string.Join(", ", result.Errors.Select(e => e.Description)));
+
+		// If a new password was entered, update the password
+		if (!string.IsNullOrWhiteSpace(dto.Password))
+		{
+			var removedPasswordResult = await userManager.RemovePasswordAsync(user);
+			if (!removedPasswordResult.Succeeded)
+				throw new Exception("Failed to remove old password: " + string.Join(", ", removedPasswordResult.Errors.Select(e => e.Description)));
+
+			var addResult = await userManager.AddPasswordAsync(user, dto.Password);
+			if (!addResult.Succeeded)
+				throw new Exception("Failed to set new password: " + string.Join(", ", addResult.Errors.Select(e => e.Description)));
+		}
+
+
+		var oldProfilePhotoPath = doctor.ProfilePhotoPath;
+		mapper.Map(dto, doctor);
+
+		// Handle Profile Photo update
+
+		if (dto.ImageFile is not null)
+		{
+			// Delete the old photo if it's not the default one
+			if (!string.IsNullOrEmpty(oldProfilePhotoPath) && oldProfilePhotoPath != "/images/doctors/default-doctor.jpg")
+				fileStorage.DeleteFile(oldProfilePhotoPath);
+
+			// Upload the new photo
+			doctor.ProfilePhotoPath = await fileStorage.UploadFileAsync(dto.ImageFile, "doctors");
+		}
+		else
+		{
+			// If no new photo is provided, keep the old one
+			doctor.ProfilePhotoPath = oldProfilePhotoPath;
+		}
+
+		doctor.LastUpdatedOn = DateTime.Now;
+		unitOfWork.Doctors.Update(doctor);
+		unitOfWork.SaveChanges();
+	}
+
+
 	public bool IsAllowedMobileNumber(string phoneNumber, int? id)
 	{
-		var doctor = unitOfWork.Doctors.FindById(id.Value);
-		return doctor is null || doctor.Id.Equals(id);
+		var doctor = userManager.Users
+			.Where(u => u.PhoneNumber == phoneNumber)
+			.Select(u => new { DoctorId = u.Doctor.Id })
+			.FirstOrDefault();
+
+		return doctor is null || doctor.DoctorId.Equals(id);
 	}
 
 	public bool IsAllowedContactEmail(string email, int? id)
@@ -81,7 +152,7 @@ internal class DoctorService(IUnitOfWork unitOfWork, IMapper mapper, UserManager
 	public bool IsAllowedUserName(string userName, int? id)
 	{
 		var user = userManager.Users
-			.Where(u => u.UserName == userName)
+			.Where(u => u.UserName == userName && u.Doctor != null)
 			.Select(u => new { DoctorId = u.Doctor.Id })
 			.FirstOrDefault();
 
@@ -91,7 +162,7 @@ internal class DoctorService(IUnitOfWork unitOfWork, IMapper mapper, UserManager
 	public bool IsAllowedEmail(string email, int? id)
 	{
 		var user = userManager.Users
-			.Where(u => u.Email == email)
+			.Where(u => u.Email == email && u.Doctor != null)
 			.Select(u => new { DoctorId = u.Doctor.Id })
 			.FirstOrDefault();
 

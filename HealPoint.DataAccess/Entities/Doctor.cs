@@ -31,7 +31,8 @@ public class Doctor : BaseEntity
 	public string? Certifications { get; set; }
 
 	//Department & Position
-	public string? Department { get; set; }
+	public int DepartmentId { get; set; }
+	public Department? Department { get; set; }
 	public string? Position { get; set; }
 
 	// Account Link

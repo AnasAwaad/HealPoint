@@ -9,4 +9,5 @@ public interface IDoctorService
 	bool IsAllowedEmergencyContactPhone(string emergencyContactPhone, int? id);
 	bool IsAllowedUserName(string userName, int? id);
 	bool IsAllowedEmail(string email, int? id);
+	Task UpdateAsync(DoctorFormDto dto);
 }

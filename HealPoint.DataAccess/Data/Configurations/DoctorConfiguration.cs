@@ -61,9 +61,6 @@ internal class DoctorConfiguration : BaseEntityConfiguration<Doctor>, IEntityTyp
 			  .HasMaxLength(500);
 
 		//Department & Position
-		builder.Property(d => d.Department)
-			.HasMaxLength(100);
-
 		builder.Property(d => d.Position)
 			.HasMaxLength(100);
 
@@ -79,6 +76,11 @@ internal class DoctorConfiguration : BaseEntityConfiguration<Doctor>, IEntityTyp
 		builder.HasOne(d => d.Specialization)
 			.WithMany(s => s.Doctors)
 			.HasForeignKey(d => d.SpecializationId)
+			.OnDelete(DeleteBehavior.Restrict);
+
+		builder.HasOne(d => d.Department)
+			.WithMany(d => d.Doctors)
+			.HasForeignKey(d => d.DepartmentId)
 			.OnDelete(DeleteBehavior.Restrict);
 
 

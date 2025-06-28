@@ -57,6 +57,16 @@ public class DoctorsController : Controller
 		return View("Form", PopulateLookups(doctorDto));
 	}
 
+	[HttpPost]
+	[ValidateAntiForgeryToken]
+	public async Task<IActionResult> Update(DoctorFormDto dto)
+	{
+		if (!ModelState.IsValid)
+			return View("Form", PopulateLookups(dto));
+
+		await _doctorService.UpdateAsync(dto);
+		return RedirectToAction(nameof(Index));
+	}
 
 
 
