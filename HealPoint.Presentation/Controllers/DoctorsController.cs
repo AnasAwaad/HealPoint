@@ -44,6 +44,34 @@ public class DoctorsController : Controller
 		return RedirectToAction(nameof(Index));
 
 	}
+	public IActionResult IsAllowedMobileNumber(CreateDoctorDto dto)
+	{
+		var isAllowed = _doctorService.IsAllowedMobileNumber(dto.PhoneNumber, dto.Id);
+		return Json(isAllowed);
+	}
+
+	public IActionResult IsAllowedContactEmail(CreateDoctorDto dto)
+	{
+		var isAllowed = _doctorService.IsAllowedContactEmail(dto.ContactEmail, dto.Id);
+		return Json(isAllowed);
+	}
+
+	public IActionResult IsAllowedEmergencyContactPhone(CreateDoctorDto dto)
+	{
+		var isAllowed = _doctorService.IsAllowedEmergencyContactPhone(dto.EmergencyContactPhone, dto.Id);
+		return Json(isAllowed);
+	}
+	public IActionResult IsAllowedUserName(CreateDoctorDto dto)
+	{
+		var isAllowed = _doctorService.IsAllowedUserName(dto.UserName, dto.Id);
+		return Json(isAllowed);
+	}
+
+	public IActionResult IsAllowedEmail(CreateDoctorDto dto)
+	{
+		var isAllowed = _doctorService.IsAllowedEmail(dto.Email, dto.Id);
+		return Json(isAllowed);
+	}
 
 	private CreateDoctorDto PopulateLookups(CreateDoctorDto? dto = null)
 	{
@@ -54,6 +82,7 @@ public class DoctorsController : Controller
 
 		return doctorDto;
 	}
+
 	#endregion
 
 }

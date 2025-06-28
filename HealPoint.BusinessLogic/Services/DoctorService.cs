@@ -50,5 +50,43 @@ internal class DoctorService(IUnitOfWork unitOfWork, IMapper mapper, UserManager
 		unitOfWork.SaveChanges();
 	}
 
+	public bool IsAllowedMobileNumber(string phoneNumber, int id)
+	{
+		var doctor = unitOfWork.Doctors.FindById(id);
+		return doctor is null || doctor.Id.Equals(id);
+	}
+
+	public bool IsAllowedContactEmail(string email, int id)
+	{
+		var doctor = unitOfWork.Doctors.GetDoctorByContactEmail(email);
+		return doctor is null || doctor.Id.Equals(id);
+	}
+
+	public bool IsAllowedEmergencyContactPhone(string emergencyContactPhone, int id)
+	{
+		var doctor = unitOfWork.Doctors.GetDoctorByEmergencyContactPhone(emergencyContactPhone);
+		return doctor is null || doctor.Id.Equals(id);
+	}
+
+	public bool IsAllowedUserName(string userName, int id)
+	{
+		var user = userManager.Users
+			.Where(u => u.UserName == userName)
+			.Select(u => new { DoctorId = u.Doctor.Id })
+			.FirstOrDefault();
+
+		return user is null || user.DoctorId.Equals(id);
+	}
+
+	public bool IsAllowedEmail(string email, int id)
+	{
+		var user = userManager.Users
+			.Where(u => u.Email == email)
+			.Select(u => new { DoctorId = u.Doctor.Id })
+			.FirstOrDefault();
+
+		return user is null || user.DoctorId.Equals(id);
+	}
+
 	#endregion
 }

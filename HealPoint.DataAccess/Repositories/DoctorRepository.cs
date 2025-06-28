@@ -14,4 +14,14 @@ internal class DoctorRepository : Repository<Doctor>, IDoctorRepository
 			.Include(d => d.Specialization)
 			.Include(d => d.ApplicationUser).AsEnumerable();
 	}
+
+	public Doctor? GetDoctorByContactEmail(string email)
+	{
+		return _context.Doctors.Where(d => d.ContactEmail == email).FirstOrDefault();
+	}
+
+	public Doctor? GetDoctorByEmergencyContactPhone(string emergencyContactNumber)
+	{
+		return _context.Doctors.Where(d => d.EmergencyContactPhone == emergencyContactNumber).FirstOrDefault();
+	}
 }

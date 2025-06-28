@@ -23,15 +23,7 @@
     <td>@Model.Speciality</td>
     <td>@Model.ClinicAdmin</td>
     <td>@Model.ContactNumber</td>
-    <td>@Model.Description</td>
-    <td>
-        <div class="form-check form-switch form-check-custom form-check-solid">
-            <input class="form-check-input status-toggle" type="checkbox"
-                   id="statusSwitch_@Model.Id"
-                   data-clinic-id="@Model.Id"
-                   @(Model.Status ? "checked" : "")/>
-        </div>
-    </td>
+    <td>@(Model.Description.Length > 30 ? $"{Model.Description.Substring(0, 30)}..." : Model.Description)</td>
     <td class="text-center">
         <a href="javascript:;" class="js-render-modal btn btn-icon btn-active-light-primary w-30px h-30px me-3" data-url="/Clinics/GetClinicSessions?clinicId=@Model.Id" data-title="Clinic Sessions" data-bs-toggle="tooltip" title="Clinic sessions">
             <i class="ki-duotone ki-time">

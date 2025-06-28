@@ -88,19 +88,75 @@
 									<!--end::Card header-->
 									<!--begin::Card body-->
 									<div class="card-body pt-0">
+										<div class="row mb-7">
+											<div class="col-md-6">
+												<!--begin::Label-->
+												<label class="d-block fw-semibold fs-6 mb-5">Profile Photo</label>
+												<!--end::Label-->
+												<!--begin::Image placeholder-->
+												<style>
+													.image-input-placeholder {
+														background-image: url('/images/blank-image.svg');
+													}
 
-										<div class="row mb-5 g-5">
-											<div class="col-md-6 fv-row fv-plugins-icon-container">
-												<label asp-for="FirstName" class="form-label "></label>
-												<input asp-for="FirstName" class="form-control form-control-solid" placeholder="Enter first name">
-												<span asp-validation-for="FirstName" class="text-danger"></span>
+													[data-bs-theme="dark"] .image-input-placeholder {
+														background-image: url('/images/blank-image-dark.svg');
+													}</style>
+												<!--end::Image placeholder-->
+												<!--begin::Image input-->
+												<div class="image-input image-input-outline image-input-placeholder image-input-empty" data-kt-image-input="true">
+													<!--begin::Preview existing avatar-->
+													<div class="image-input-wrapper w-125px h-125px" style="background-image: none;"></div>
+													<!--end::Preview existing avatar-->
+													<!--begin::Label-->
+													<label class="btn btn-icon btn-circle btn-active-color-primary w-25px h-25px bg-body shadow" data-kt-image-input-action="change" data-bs-toggle="tooltip" aria-label="Change avatar" data-bs-original-title="Change avatar" data-kt-initialized="1">
+														<i class="ki-duotone ki-pencil fs-7">
+															<span class="path1"></span>
+															<span class="path2"></span>
+														</i>
+														<!--begin::Inputs-->
+														<input asp-for="ImageFile" type="file" accept=".png, .jpg, .jpeg">
+														<input type="hidden" name="avatar_remove" value="1">
+														<!--end::Inputs-->
+													</label>
+													<!--end::Label-->
+													<!--begin::Cancel-->
+													<span class="btn btn-icon btn-circle btn-active-color-primary w-25px h-25px bg-body shadow" data-kt-image-input-action="cancel" data-bs-toggle="tooltip" aria-label="Cancel avatar" data-bs-original-title="Cancel avatar" data-kt-initialized="1">
+														<i class="ki-duotone ki-cross fs-2">
+															<span class="path1"></span>
+															<span class="path2"></span>
+														</i>
+													</span>
+													<!--end::Cancel-->
+													<!--begin::Remove-->
+													<span class="btn btn-icon btn-circle btn-active-color-primary w-25px h-25px bg-body shadow" data-kt-image-input-action="remove" data-bs-toggle="tooltip" aria-label="Remove avatar" data-bs-original-title="Remove avatar" data-kt-initialized="1">
+														<i class="ki-duotone ki-cross fs-2">
+															<span class="path1"></span>
+															<span class="path2"></span>
+														</i>
+													</span>
+													<!--end::Remove-->
+												</div>
+												<!--end::Image input-->
+												<!--begin::Hint-->
+												<div class="form-text">Allowed file types: png, jpg, jpeg.</div>
+												<!--end::Hint-->
 											</div>
-											<div class="col-md-6 fv-row fv-plugins-icon-container">
-												<label asp-for="LastName" class="form-label "></label>
-												<input asp-for="LastName" class="form-control form-control-solid" placeholder="Enter last name">
-												<span asp-validation-for="LastName" class="text-danger"></span>
+
+											<div class="col-md-6 mb-5 g-5">
+												<div class="col-row mb-5 fv-row fv-plugins-icon-container">
+													<label asp-for="FirstName" class="form-label "></label>
+													<input asp-for="FirstName" class="form-control form-control-solid" placeholder="Enter first name">
+													<span asp-validation-for="FirstName" class="text-danger"></span>
+												</div>
+												<div class="col-row fv-row fv-plugins-icon-container">
+													<label asp-for="LastName" class="form-label "></label>
+													<input asp-for="LastName" class="form-control form-control-solid" placeholder="Enter last name">
+													<span asp-validation-for="LastName" class="text-danger"></span>
+												</div>
 											</div>
 										</div>
+										
 										<div class="row mb-5 g-5">
 											<div class="col-md-6 fv-row fv-plugins-icon-container">
 												<label asp-for="DateOfBirth" class="form-label "></label>
