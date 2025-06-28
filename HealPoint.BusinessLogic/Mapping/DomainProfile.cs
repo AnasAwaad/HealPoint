@@ -37,6 +37,7 @@ public class DomainProfile : Profile
 			.ForMember(src => src.FirstName, opt => opt.MapFrom(dest => dest.ApplicationUser!.FirstName))
 			.ForMember(src => src.LastName, opt => opt.MapFrom(dest => dest.ApplicationUser!.LastName))
 			.ForMember(src => src.SpecializationName, opt => opt.MapFrom(dest => dest.Specialization!.Name))
+			.ForMember(src => src.PhoneNumber, opt => opt.MapFrom(dest => dest.ApplicationUser!.PhoneNumber))
 			.ReverseMap();
 
 

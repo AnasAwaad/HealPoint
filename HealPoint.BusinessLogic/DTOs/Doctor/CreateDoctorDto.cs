@@ -16,7 +16,7 @@ public class CreateDoctorDto
 
 	[Display(Name = "Last Name")]
 	[MaxLength(100, ErrorMessage = Errors.MaxLengthExceeded)]
-	public string? LastName { get; set; }
+	public string LastName { get; set; }
 
 	[Display(Name = "Date of birth")]
 	public DateOnly? DateOfBirth { get; set; }
@@ -38,7 +38,7 @@ public class CreateDoctorDto
 	[MaxLength(11, ErrorMessage = Errors.MaxLengthExceeded)]
 	[RegularExpression(RegexPattern.PhoneNumber, ErrorMessage = Errors.PhoneNumberNotAllowed)]
 	[Remote("IsAllowedMobileNumber", "Doctors", AdditionalFields = "Id", ErrorMessage = Errors.Dublicated)]
-	public string? PhoneNumber { get; set; }
+	public string PhoneNumber { get; set; }
 
 	[Display(Name = "Contact Email")]
 	[MaxLength(150, ErrorMessage = Errors.MaxLengthExceeded)]
@@ -58,18 +58,17 @@ public class CreateDoctorDto
 	//Professional Details
 	[Display(Name = "Specialization")]
 	public int SpecializationId { get; set; }
-	public IEnumerable<SelectListItem>? SpecializationSelectList { get; set; } = new List<SelectListItem>();
 	public string? MedicalLicenseNumber { get; set; }
 	public DateOnly? LicenseExpiryDate { get; set; }
 	public string? Qualifications { get; set; }
-	public int? YearOfExperience { get; set; }
+	public int YearOfExperience { get; set; }
 
 	//Education & Training
 	public string? Education { get; set; }
 	public string? Certifications { get; set; }
 
 	//Department & Position
-	public string? Department { get; set; }
+	public int DepartmentId { get; set; }
 	public string? Position { get; set; }
 
 	// Account Link
@@ -86,4 +85,9 @@ public class CreateDoctorDto
 	[StringLength(maximumLength: 100, MinimumLength = 3, ErrorMessage = Errors.MinMaxLength), DataType(DataType.Password)]
 	[RegularExpression(RegexPattern.Password, ErrorMessage = Errors.WeakPassword)]
 	public string Password { get; set; } = null!;
+
+
+	public IEnumerable<SelectListItem>? SpecializationSelectList { get; set; } = new List<SelectListItem>();
+	public IEnumerable<SelectListItem>? DepartmentSelectList { get; set; } = new List<SelectListItem>();
+
 }

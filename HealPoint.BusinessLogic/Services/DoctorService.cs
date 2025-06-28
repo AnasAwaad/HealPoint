@@ -13,7 +13,7 @@ internal class DoctorService(IUnitOfWork unitOfWork, IMapper mapper, UserManager
 	{
 		var doctors = unitOfWork.Doctors.GetAllWithDetails();
 
-		return mapper.Map<IEnumerable<DoctorDto>>(doctors);
+		return mapper.ProjectTo<DoctorDto>(doctors).ToList();
 	}
 
 	public async Task CreateAsync(CreateDoctorDto dto)
@@ -26,6 +26,7 @@ internal class DoctorService(IUnitOfWork unitOfWork, IMapper mapper, UserManager
 			Email = dto.Email,
 			FirstName = dto.FirstName,
 			LastName = dto.LastName,
+			PhoneNumber = dto.PhoneNumber
 		};
 
 		await userManager.CreateAsync(user, dto.Password);
@@ -42,7 +43,7 @@ internal class DoctorService(IUnitOfWork unitOfWork, IMapper mapper, UserManager
 		if (dto.ImageFile is not null)
 			doctor.ProfilePhotoPath = await fileStorage.UploadFileAsync(dto.ImageFile, "doctors");
 		else
-			doctor.ProfilePhotoPath = "/images/doctors/default-doctor.png";
+			doctor.ProfilePhotoPath = "/images/doctors/default-doctor.jpg";
 
 		doctor.ApplicationUserId = user.Id;
 

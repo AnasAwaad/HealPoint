@@ -8,11 +8,12 @@ internal class DoctorRepository : Repository<Doctor>, IDoctorRepository
 	{
 	}
 
-	public IEnumerable<Doctor> GetAllWithDetails()
+	public IQueryable<Doctor> GetAllWithDetails()
 	{
 		return _context.Doctors
 			.Include(d => d.Specialization)
-			.Include(d => d.ApplicationUser).AsEnumerable();
+			.Include(d => d.ApplicationUser)
+			.Where(d => !d.IsDeleted);
 	}
 
 	public Doctor? GetDoctorByContactEmail(string email)

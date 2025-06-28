@@ -9,14 +9,16 @@ public class DoctorsController : Controller
 	#region Props
 	private readonly IDoctorService _doctorService;
 	private readonly ISpecializationService _specializationService;
+	private readonly IDepartmentService _departmentService;
 
 	#endregion
 
 	#region Ctor
-	public DoctorsController(IDoctorService doctorService, ISpecializationService specializationService)
+	public DoctorsController(IDoctorService doctorService, ISpecializationService specializationService, IDepartmentService departmentService)
 	{
 		_doctorService = doctorService;
 		_specializationService = specializationService;
+		_departmentService = departmentService;
 	}
 	#endregion
 
@@ -77,9 +79,10 @@ public class DoctorsController : Controller
 	{
 		var doctorDto = dto ?? new CreateDoctorDto();
 		var specializations = _specializationService.GetSpecializationsLookup();
+		var departments = _departmentService.GetDepartmentsLookup();
 
 		doctorDto.SpecializationSelectList = new SelectList(specializations, "Id", "Name");
-
+		doctorDto.DepartmentSelectList = new SelectList(departments, "Id", "Name");
 		return doctorDto;
 	}
 
