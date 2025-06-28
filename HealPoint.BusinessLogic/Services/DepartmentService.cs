@@ -66,22 +66,22 @@ public class DepartmentService : IDepartmentService
 
 		_unitOfWork.SaveChanges();
 
-		return existingDepartment.LastUpdatedOn.ToString();
+		return existingDepartment.LastUpdatedOn.Value.ToString("dddd, dd MMMM yyyy h:mm tt");
 	}
 
-	public string? UpdateDepartmentStatus(int id)
+	public (bool? isDeleted, string? lastUpdatedOn) UpdateDepartmentStatus(int id)
 	{
 		var existingDepartment = _unitOfWork.Departments.FindById(id);
 
 		if (existingDepartment == null)
-			return null;
+			return (null, null);
 
 		existingDepartment.IsDeleted = !existingDepartment.IsDeleted;
 		existingDepartment.LastUpdatedOn = DateTime.Now;
 
 		_unitOfWork.SaveChanges();
 
-		return existingDepartment.LastUpdatedOn.ToString();
+		return (existingDepartment.IsDeleted, DateTime.Now.ToString("dddd, dd MMMM yyyy h:mm tt"));
 	}
 
 	public IEnumerable<DepartmentDto> GetDepartmentsLookup()

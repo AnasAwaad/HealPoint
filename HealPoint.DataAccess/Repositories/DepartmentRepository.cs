@@ -30,7 +30,7 @@ internal class DepartmentRepository : Repository<Department>, IDepartmentReposit
 	public IEnumerable<Department> GetActiveDepartments()
 	{
 		return _context.Departments
-			.Include(d => !d.IsDeleted)
+			.Where(d => !d.IsDeleted)
 			.AsEnumerable();
 	}
 }

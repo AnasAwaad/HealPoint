@@ -66,7 +66,8 @@ $(document).ready(function () {
                 },
                 confirm: {
                     label: '<i class="fa fa-check"></i> Confirm',
-                    className: 'btn btn-danger'
+                    className: 'btn btn-danger',
+
                 }
             },
             callback: function (result) {
@@ -80,14 +81,20 @@ $(document).ready(function () {
                             // toastify alert
                             showSuccessMessage("item updated successfully");
 
+                            // change time of last updated on
+                            btn.parents('tr').find('.js-last-updated-on').html(response.lastUpdatedOn);
+
                             // change status badge text and style
                             var statusItem = btn.parents('tr').find('.js-status');
+                            if (btn.data('status') !== undefined) {
+                                if (response.isDeleted) {
 
-                            if (response.isDeleted) {
-                                statusItem.html('<span class="badge badge-warning">Inactive</span>');
-                            } else {
-                                statusItem.html('<span class="badge badge-success">Active</span>');
+                                    statusItem.html('<span class="badge badge-warning">Inactive</span>');
+                                } else {
+                                    statusItem.html('<span class="badge badge-success">Active</span>');
+                                }
                             }
+
                         },
                         error: function () {
                             showErrorMessage("An error occurred while changing status.");

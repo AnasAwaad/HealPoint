@@ -74,31 +74,19 @@ public class DepartmentsController : Controller
 		if (lastUpdatedOn is null)
 			return NotFound();
 
-		return Ok(lastUpdatedOn);
+		return Ok(new { LastUpdatedOn = lastUpdatedOn });
 	}
 	[AjaxOnly]
 	[HttpPost]
 	[ValidateAntiForgeryToken]
 	public IActionResult ChangeDepartmentStatus(int id)
 	{
-		var lastUpdatedOn = _departmentService.UpdateDepartmentStatus(id);
+		(bool? isDeleted, string? lastUpdatedOn) = _departmentService.UpdateDepartmentStatus(id);
 
-		if (lastUpdatedOn is null)
+		if (isDeleted is null)
 			return NotFound();
 
-		return Ok(lastUpdatedOn);
-	}
-	[AjaxOnly]
-	[HttpPost]
-	[ValidateAntiForgeryToken]
-	public IActionResult DeleteDepartment(int id)
-	{
-		var isDeleted = _departmentService.DeleteDepartment(id);
-
-		if (!isDeleted)
-			return BadRequest();
-
-		return Ok();
+		return Ok(new { isDeleted, lastUpdatedOn });
 	}
 
 	public IActionResult AllowedDepartmentName(DepartmentFormDto model)

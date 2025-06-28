@@ -7,7 +7,7 @@ public interface IDepartmentService
 	DepartmentDto CreateDepartment(DepartmentFormDto department);
 	DepartmentDto? UpdateDepartment(DepartmentFormDto department);
 	string? UpdateFeaturedStatus(int id);
-	string? UpdateDepartmentStatus(int id);
+	(bool? isDeleted, string? lastUpdatedOn) UpdateDepartmentStatus(int id);
 	bool DeleteDepartment(int id);
 	bool IsDepartmentAllowed(DepartmentFormDto department);
 }

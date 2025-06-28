@@ -119,7 +119,7 @@
 							<thead>
 								<tr class="fw-bold fs-6 text-gray-800">
 									<th class="text-center">Name</th>
-									<th>Parent Department</th>
+									<th>Description</th>
 									<th>Creation Date</th>
 									<th>Last Updated on</th>
 									<th>Featured</th>
@@ -128,9 +128,9 @@
 								</tr>
 							</thead>
 							<tbody class="js-tbody">
-								@foreach (var category in Model)
+								@foreach (var department in Model)
 								{
-									<partial name="_DepartmentRow" model="category" />
+									<partial name="_DepartmentRow" model="department" />
 								}
 
 
@@ -163,16 +163,6 @@
 	<script>
 		$(document).ready(function () {
 			$('.table').DataTable();
-			$(document).on('change', '#ParentDepartmentId', function () {
-
-				var selectedText = $(this).find('option:selected').text();
-
-				$('#ParentDepartmentName').val(selectedText);
-			});
-
-
-
-
 		})
 	</script>
 }

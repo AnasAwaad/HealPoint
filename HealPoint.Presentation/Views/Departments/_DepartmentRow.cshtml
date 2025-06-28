@@ -2,10 +2,10 @@
 
 <tr>
 	<td class="text-center">@Model.Name</td>
-	<td>kldfkld</td>
-	<td>@Model.CreatedOn</td>
-	<td class="js-last-updated-on">@Model.LastUpdatedOn</td>
-	<td>
+	<td>@(Model.Description.Length > 30 ? $"{Model.Description.Substring(0, 30)}...":Model.Description)</td>
+	<td>@Model.CreatedOn.ToString("dddd, dd MMMM yyyy h:mm tt")</td>
+	<td class="js-last-updated-on">@(Model.LastUpdatedOn.HasValue ? Model.LastUpdatedOn.Value.ToString("dddd, dd MMMM yyyy h:mm tt") : "-")</td>
+	<td class="js-feature-status">
 		<div class="form-check form-switch form-check-custom form-check-solid ">
 			<input class="form-check-input js-change-status w-40px h-25px" type="checkbox" asp-for="IsFeatured" data-url="/Departments/UpdateFeaturedStatus/@Model.Id" />
 		</div>
@@ -13,22 +13,38 @@
 	<td class="js-status">
 		<span class="badge badge-@(Model.IsDeleted ? "warning" : "success")">@(Model.IsDeleted ? "Inactive" : "Active")</span>
 	</td>
-	<td class="text-center">
-		<a class="js-render-modal" href="javascript:;" data-url="/Departments/Update/@Model.Id" data-title="Update Department" data-update="true">
-			<i class="ki-duotone ki-notepad-edit fs-1 text-success">
-				<span class="path1"></span>
-				<span class="path2"></span>
-			</i>
-		</a>
+    <td class="text-center">
+        <div class="dropdown">
+            <button class="btn btn-sm btn-light shadow-sm rounded-circle" type="button" id="dropdownMenuButton1"
+                    data-bs-toggle="dropdown" aria-expanded="false">
+                <i class="bi bi-three-dots-vertical fs-5 text-dark"></i>
+            </button>
+            <ul class="dropdown-menu dropdown-menu-end shadow-sm animate__animated animate__fadeIn"
+                aria-labelledby="dropdownMenuButton1">
+                <li>
+                    <a class="dropdown-item d-flex align-items-center js-render-modal"
+                       href="javascript:;"
+                       data-url="/Departments/Update/@Model.Id"
+                       data-title="Update Department"
+                       data-update="true">
+                        <i class="ki-duotone ki-notepad-edit fs-5 text-success me-2">
+                            <span class="path1"></span>
+                            <span class="path2"></span>
+                        </i>
+                        <span>Update</span>
+                    </a>
+                </li>
+                <li>
+                    <a class="dropdown-item d-flex align-items-center js-change-status text-danger"
+                       data-status="true"
+                       data-url="/Departments/ChangeDepartmentStatus/@Model.Id"
+                       href="javascript:;">
+                        <i class="bi bi-x-circle fs-5 me-2"></i>
+                        <span>Change Status</span>
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </td>
 
-		<a class="js-delete-item" data-url="/Departments/DeleteDepartment/@Model.Id" href="javascript:;" data-kt-ecommerce-Model-filter="delete_row">
-			<i class="ki-duotone ki-trash-square fs-1 text-danger">
-				<span class="path1"></span>
-				<span class="path2"></span>
-				<span class="path3"></span>
-				<span class="path4"></span>
-			</i>
-		</a>
-		
-	</td>
 </tr>

@@ -2,7 +2,7 @@
 
 <tr>
 	<td class="text-center">@Model.Name</td>
-	<td>@Model.Description</td>
+	<td>@(Model.Description.Length > 30 ? $"{Model.Description.Substring(0, 30)}..." : Model.Description)</td>
 	<td>@Model.DepartmentName</td>
 	<td class="js-status">
 		<span class="badge badge-@(Model.IsDeleted ? "warning":"success")">@(Model.IsDeleted ? "Inactive":"Active")</span>
