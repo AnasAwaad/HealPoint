@@ -11,15 +11,17 @@ public class DoctorsController : Controller
 	private readonly IDoctorService _doctorService;
 	private readonly ISpecializationService _specializationService;
 	private readonly IDepartmentService _departmentService;
+	private readonly IAuthService _authService;
 
 	#endregion
 
 	#region Ctor
-	public DoctorsController(IDoctorService doctorService, ISpecializationService specializationService, IDepartmentService departmentService)
+	public DoctorsController(IDoctorService doctorService, ISpecializationService specializationService, IDepartmentService departmentService, IAuthService authService)
 	{
 		_doctorService = doctorService;
 		_specializationService = specializationService;
 		_departmentService = departmentService;
+		_authService = authService;
 	}
 	#endregion
 
@@ -74,10 +76,42 @@ public class DoctorsController : Controller
 	[ValidateAntiForgeryToken]
 	public async Task<IActionResult> UpdateStatus(int id)
 	{
+		if (!ModelState.IsValid)
+			return BadRequest();
+
 		await _doctorService.ToggleDoctorStatusAsync(id);
 		return Ok();
 	}
 
+	[HttpGet]
+	[AjaxOnly]
+	public async Task<IActionResult> ResetPassword(string id)
+	{
+		var user = await _authService.GetUsersByIdAsync(id);
+
+		if (user is null)
+			return BadRequest();
+
+		return PartialView("_ResetPassword", new UserResetPasswordDto() { Id = id });
+	}
+
+
+	[AjaxOnly]
+	[HttpPost]
+	[ValidateAntiForgeryToken]
+	public async Task<IActionResult> ResetPassword(UserResetPasswordDto dto)
+	{
+		if (!ModelState.IsValid)
+			return BadRequest();
+
+		(bool isSucceeded, string? errors) = await _authService.ResetPasswordAsync(dto.Id, dto.Password);
+
+		if (!isSucceeded)
+			return BadRequest(errors);
+
+		return Ok();
+
+	}
 
 
 	public IActionResult IsAllowedMobileNumber(DoctorFormDto dto)

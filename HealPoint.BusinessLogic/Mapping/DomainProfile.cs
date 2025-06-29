@@ -34,6 +34,7 @@ public class DomainProfile : Profile
 		CreateMap<ClinicSessionDto, ClinicSession>();
 
 		CreateMap<Doctor, DoctorDto>()
+			.ForMember(src => src.UserId, opt => opt.MapFrom(dest => dest.ApplicationUserId))
 			.ForMember(src => src.FirstName, opt => opt.MapFrom(dest => dest.ApplicationUser!.FirstName))
 			.ForMember(src => src.LastName, opt => opt.MapFrom(dest => dest.ApplicationUser!.LastName))
 			.ForMember(src => src.SpecializationName, opt => opt.MapFrom(dest => dest.Specialization!.Name))

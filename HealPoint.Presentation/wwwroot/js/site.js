@@ -157,7 +157,8 @@ function onModalFormSuccess(newRow) {
     var message;
 
     // add new row to datatable.
-    datatable.row.add($(newRow)).draw();
+    if (newRow != undefined)
+        datatable.row.add($(newRow)).draw();
 
     if (updatedRow != undefined) {
         // remove existing row from datatable
@@ -175,6 +176,17 @@ function onModalFormSuccess(newRow) {
 
     showSuccessMessage(message);
 
+}
+
+function onResetPasswordFormSuccess() {
+    $('#myModal').modal('hide');
+
+    showSuccessMessage("Doctor password updated successfully");
+}
+
+function onResetPasswordFormFailure() {
+    $('#myModal').modal('hide');
+    showErrorMessage("An error happen while reset password");
 }
 
 function onModalFormFailure(res) {
