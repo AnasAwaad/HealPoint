@@ -1,5 +1,6 @@
 ﻿using HealPoint.BusinessLogic.Contracts;
 using HealPoint.BusinessLogic.DTOs;
+using HealPoint.Presentation.Filters;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 
@@ -66,6 +67,15 @@ public class DoctorsController : Controller
 
 		await _doctorService.UpdateAsync(dto);
 		return RedirectToAction(nameof(Index));
+	}
+
+	[AjaxOnly]
+	[HttpPost]
+	[ValidateAntiForgeryToken]
+	public async Task<IActionResult> UpdateStatus(int id)
+	{
+		await _doctorService.ToggleDoctorStatusAsync(id);
+		return Ok();
 	}
 
 

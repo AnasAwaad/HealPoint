@@ -5,4 +5,5 @@ public interface IDoctorRepository : IRepository<Doctor>
 	Doctor? GetDoctorByContactEmail(string email);
 	Doctor? GetDoctorByEmergencyContactPhone(string emergencyContactNumber);
 	Doctor? GetDoctorByIdWithDetails(int id);
+	Doctor? GetByIdWithUser(int id);
 }

@@ -10,4 +10,5 @@ public interface IDoctorService
 	bool IsAllowedUserName(string userName, int? id);
 	bool IsAllowedEmail(string email, int? id);
 	Task UpdateAsync(DoctorFormDto dto);
+	Task ToggleDoctorStatusAsync(int id);
 }

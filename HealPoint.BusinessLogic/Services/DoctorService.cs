@@ -126,6 +126,30 @@ internal class DoctorService(IUnitOfWork unitOfWork, IMapper mapper, UserManager
 		unitOfWork.SaveChanges();
 	}
 
+	public async Task ToggleDoctorStatusAsync(int id)
+	{
+		var doctor = unitOfWork.Doctors.GetByIdWithUser(id);
+
+		if (doctor is null)
+			throw new KeyNotFoundException($"Doctor with ID {id} not found.");
+
+		doctor.IsDeleted = !doctor.IsDeleted;
+		doctor.LastUpdatedOn = DateTime.Now;
+
+		doctor.ApplicationUser.IsDeleted = !doctor.IsDeleted;
+		doctor.ApplicationUser.LastUpdatedOn = DateTime.Now;
+
+
+
+
+		var result = await userManager.UpdateAsync(doctor.ApplicationUser);
+
+		if (!result.Succeeded)
+			throw new Exception(string.Join(", ", result.Errors.Select(e => e.Description)));
+
+		unitOfWork.Doctors.Update(doctor);
+		unitOfWork.SaveChanges();
+	}
 
 	public bool IsAllowedMobileNumber(string phoneNumber, int? id)
 	{
@@ -168,6 +192,7 @@ internal class DoctorService(IUnitOfWork unitOfWork, IMapper mapper, UserManager
 
 		return user is null || user.DoctorId.Equals(id);
 	}
+
 
 	#endregion
 }

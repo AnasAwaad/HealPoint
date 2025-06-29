@@ -11,9 +11,7 @@
 	</td>
 
 	<td>@Model.SpecializationName</td>
-	<td>
-		<span class="badge badge-@(Model.IsDeleted ? "warning" : "success")">@(Model.IsDeleted ? "Inactive" : "Active")</span>
-	</td>
+	
 	<td class="fw-bold text-gray-800">@Model.NumOfpations</td>
 	<td class="fw-bold text-gray-800">@Model.YearOfExperience years</td>
 	<td>
@@ -22,7 +20,11 @@
 			<span class="text-muted">@Model.PhoneNumber</span>
 		</div>
 	</td>
-
+    <td>
+        <div class="form-check form-switch form-check-custom form-check-solid ">
+            <input class="form-check-input js-change-status w-40px h-25px" type="checkbox" @(Model.IsDeleted ? "" : "checked") data-url="/Doctors/UpdateStatus/@Model.Id" />
+        </div>
+    </td>
     <td class="text-center">
         <div class="dropdown">
             <button class="btn btn-sm btn-icon btn-light btn-active-color-primary" data-bs-toggle="dropdown">
@@ -32,14 +34,6 @@
                 <li>
                     <a class="dropdown-item " asp-controller="Doctors" asp-action="Update" asp-route-Id="@Model.Id">
                         <i class="ki-duotone ki-notepad-edit text-success me-2"></i> Update
-                    </a>
-                </li>
-                <li>
-                    <a class="dropdown-item js-delete-item text-danger"
-                       href="javascript:;"
-                       data-url="/Doctors/DeleteDoctor/@Model.Id"
-                       data-kt-ecommerce-model-filter="delete_row">
-                        <i class="ki-duotone ki-trash-square me-2"></i> Delete
                     </a>
                 </li>
             </ul>
