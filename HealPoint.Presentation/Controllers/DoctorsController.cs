@@ -1,6 +1,7 @@
 ﻿using HealPoint.BusinessLogic.Contracts;
 using HealPoint.BusinessLogic.DTOs;
 using HealPoint.Presentation.Filters;
+using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 
@@ -12,21 +13,25 @@ public class DoctorsController : Controller
 	private readonly ISpecializationService _specializationService;
 	private readonly IDepartmentService _departmentService;
 	private readonly IAuthService _authService;
+	private readonly IEmailSender _emailSender;
+	private readonly IWebHostEnvironment _webHostEnvironment;
 
 	#endregion
 
 	#region Ctor
-	public DoctorsController(IDoctorService doctorService, ISpecializationService specializationService, IDepartmentService departmentService, IAuthService authService)
+	public DoctorsController(IDoctorService doctorService, ISpecializationService specializationService, IDepartmentService departmentService, IAuthService authService, IEmailSender emailSender, IWebHostEnvironment webHostEnvironment)
 	{
 		_doctorService = doctorService;
 		_specializationService = specializationService;
 		_departmentService = departmentService;
 		_authService = authService;
+		_emailSender = emailSender;
+		_webHostEnvironment = webHostEnvironment;
 	}
 	#endregion
 
 	#region Actions
-	public IActionResult Index()
+	public async Task<IActionResult> Index()
 	{
 		return View(_doctorService.GetAll());
 	}

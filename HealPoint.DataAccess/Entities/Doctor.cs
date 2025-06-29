@@ -1,4 +1,5 @@
-﻿namespace HealPoint.DataAccess.Entities;
+﻿
+namespace HealPoint.DataAccess.Entities;
 public class Doctor : BaseEntity
 {
 	// Personal Information

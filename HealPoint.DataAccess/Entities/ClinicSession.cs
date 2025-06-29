@@ -1,4 +1,6 @@
-﻿namespace HealPoint.DataAccess.Entities;
+﻿using HealPoint.DataAccess.Common;
+
+namespace HealPoint.DataAccess.Entities;
 public class ClinicSession : BaseEntity
 {
 	public DateTime StartTime { get; set; }

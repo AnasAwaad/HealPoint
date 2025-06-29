@@ -2,10 +2,21 @@
 using HealPoint.BusinessLogic.Contracts;
 using HealPoint.DataAccess.Contracts;
 using HealPoint.DataAccess.Entities;
+using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.UI.Services;
+using Microsoft.AspNetCore.WebUtilities;
+using System.Text;
 
 namespace HealPoint.BusinessLogic.Services;
-internal class DoctorService(IUnitOfWork unitOfWork, IMapper mapper, UserManager<ApplicationUser> userManager, IFileStorageService fileStorage) : IDoctorService
+internal class DoctorService(IUnitOfWork unitOfWork,
+							 IMapper mapper,
+							 UserManager<ApplicationUser> userManager,
+							 IFileStorageService fileStorage,
+							 IWebHostEnvironment webHostEnvironment,
+							 IEmailSender emailSender,
+							 IHttpContextAccessor httpContextAccessor) : IDoctorService
 {
 	#region Actions
 
@@ -62,8 +73,51 @@ internal class DoctorService(IUnitOfWork unitOfWork, IMapper mapper, UserManager
 
 		unitOfWork.Doctors.Insert(doctor);
 		unitOfWork.SaveChanges();
+
+
+		//Send email notification to the new doctor
+
+		string activationLink = await GenerateActivationLinkAsync(user);
+
+		var emailBody = PrepareEmailBody(user, password, activationLink);
+
+		await emailSender.SendEmailAsync(user.Email, "Confirm your email", emailBody);
+
 	}
 
+	private string PrepareEmailBody(ApplicationUser user, string password, string activationLink)
+	{
+		var templatePath = $"{webHostEnvironment.WebRootPath}/templates/email.html";
+		StreamReader stream = new(templatePath);
+
+		var body = stream.ReadToEnd();
+		stream.Close();
+
+		body = body
+			 .Replace("[doctorName]", $"Dr. {user.FirstName} {user.LastName}")
+			.Replace("[userName]", user.UserName)
+			.Replace("[temporaryPassword]", password)
+			.Replace("[activationLink]", activationLink)
+			.Replace("[year]", DateTime.Now.Year.ToString())
+			.Replace("[header]", $"Hello {user.FirstName}, thank you for joining to us!")
+			.Replace("[body]", "This is a email from Heal Point")
+			.Replace("[url]", activationLink)
+			.Replace("[linkTitle]", "Click Here");
+
+		return body;
+	}
+
+	private async Task<string> GenerateActivationLinkAsync(ApplicationUser user)
+	{
+		var code = await userManager.GenerateEmailConfirmationTokenAsync(user);
+		code = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(code));
+
+		var request = httpContextAccessor.HttpContext?.Request;
+		string baseUrl = $"{request.Scheme}://{request.Host}";
+		string callbackUrl = $"{baseUrl}/Identity/Account/ConfirmEmail?userId={user.Id}&code={code}";
+
+		return callbackUrl;
+	}
 
 	public async Task UpdateAsync(DoctorFormDto dto)
 	{

@@ -1,5 +1,6 @@
 using HealPoint.BusinessLogic;
 using HealPoint.DataAccess;
+using HealPoint.DataAccess.Common;
 using HealPoint.DataAccess.Data;
 using HealPoint.Presentation.Seeds;
 using Microsoft.AspNetCore.Identity;
@@ -31,6 +32,8 @@ public class Program
 			options.Password.RequiredLength = 1;
 			options.Password.RequiredUniqueChars = 0;
 		});
+
+		builder.Services.Configure<MailSettings>(builder.Configuration.GetSection(nameof(MailSettings)));
 
 		#region Add services to the container.
 
