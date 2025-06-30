@@ -40,4 +40,6 @@ public class Doctor : BaseEntity
 	public string Email { get; set; } // Used for login
 	public string? ApplicationUserId { get; set; }
 	public ApplicationUser? ApplicationUser { get; set; }
+
+	public ICollection<TimeSlot> TimeSlots { get; set; } = new List<TimeSlot>();
 }
