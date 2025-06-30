@@ -1,11 +1,10 @@
-﻿using AutoMapper;
-using HealPoint.BusinessLogic.Contracts;
+﻿using HealPoint.BusinessLogic.Contracts;
 using HealPoint.DataAccess.Consts;
 using HealPoint.DataAccess.Entities;
 using Microsoft.AspNetCore.Identity;
 
 namespace HealPoint.BusinessLogic.Services;
-internal class AuthService(UserManager<ApplicationUser> userManager, IMapper mapper) : IAuthService
+internal class AuthService(UserManager<ApplicationUser> userManager) : IAuthService
 {
 	public async Task<ApplicationUser?> GetUsersByIdAsync(string id)
 	{
@@ -16,18 +15,18 @@ internal class AuthService(UserManager<ApplicationUser> userManager, IMapper map
 	{
 		var user = new ApplicationUser()
 		{
-			FirstName = "Patient",
+			FirstName = dto.FirstName,
+			LastName = dto.LastName,
 			Email = dto.Email,
 			UserName = dto.Email,
 		};
 
-		var result = await userManager.CreateAsync(user, dto.Password);
-		if (!result.Succeeded)
-			return result;
+		var userResult = await userManager.CreateAsync(user, dto.Password);
 
+		if (!userResult.Succeeded)
+			return userResult;
 
-		await userManager.AddToRoleAsync(user, AppRoles.Patient);
-
+		var result = await userManager.AddToRoleAsync(user, AppRoles.Patient);
 
 		return result;
 	}

@@ -67,13 +67,28 @@
 							<!--end::Separator-->
 							<div asp-validation-summary="ModelOnly" class="text-danger" role="alert"></div>
 							<!--begin::Input group=-->
+							<div class="row mb-8 fv-plugins-icon-container">
+								<div class="col-md-6">
+									<label asp-for="FirstName" class="form-label"></label>
+									<input asp-for="FirstName" class="form-control"aria-required="true" placeholder="Enter your first name" />
+									<span asp-validation-for="FirstName" class="text-danger"></span>
+								</div>
+								<div class="col-md-6">
+									<label asp-for="LastName" class="form-label"></label>
+									<input asp-for="LastName" class="form-control" aria-required="true" placeholder="Enter your last name" />
+									<span asp-validation-for="LastName" class="text-danger"></span>
+								</div>
+							</div>
+							<!--begin::Input group-->
+							
+							<!--begin::Input group=-->
 							<div class="fv-row mb-8 fv-plugins-icon-container">
 								<!--begin::Email-->
 								<label asp-for="Email" class="form-label"></label>
 								<input asp-for="Email" class="form-control" autocomplete="username" aria-required="true" placeholder="Email" />
 								<span asp-validation-for="Email" class="text-danger"></span>
 								<!--end::Email-->
-							<div class="fv-plugins-message-container fv-plugins-message-container--enabled invalid-feedback"></div></div>
+							</div>
 							<!--begin::Input group-->
 							<div class="fv-row mb-8 fv-plugins-icon-container" data-kt-password-meter="true">
 								<!--begin::Input wrapper-->

@@ -25,8 +25,13 @@ public class AccountController : Controller
 		var result = await _authService.RegisterPatientAsync(model);
 		if (result.Succeeded)
 		{
-			TempData["Success"] = "Registration successful! You can now log in.";
-			return RedirectToAction("Login");
+			var confirmationUrl = Url.Page(
+				"/Account/RegisterConfirmation",
+				pageHandler: null,
+				values: new { area = "Identity", email = model.Email },
+				protocol: Request.Scheme);
+
+			return Redirect(confirmationUrl);
 		}
 
 		foreach (var error in result.Errors)

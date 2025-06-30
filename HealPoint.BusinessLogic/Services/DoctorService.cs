@@ -7,12 +7,11 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.RazorPages;
+using Microsoft.AspNetCore.Mvc.Controllers;
 using Microsoft.AspNetCore.Mvc.Routing;
 using Microsoft.AspNetCore.Routing;
 using Microsoft.AspNetCore.WebUtilities;
 using System.Text;
-using System.Text.Encodings.Web;
 
 namespace HealPoint.BusinessLogic.Services;
 internal class DoctorService(IUnitOfWork unitOfWork,
@@ -93,7 +92,7 @@ internal class DoctorService(IUnitOfWork unitOfWork,
 
 	private string PrepareEmailBody(ApplicationUser user, string password, string activationLink)
 	{
-		var templatePath = $"{webHostEnvironment.WebRootPath}/templates/email.html";
+		var templatePath = $"{webHostEnvironment.WebRootPath}/templates/doctor-confirm-email.html";
 		StreamReader stream = new(templatePath);
 
 		var body = stream.ReadToEnd();
@@ -121,19 +120,17 @@ internal class DoctorService(IUnitOfWork unitOfWork,
 		var httpContext = httpContextAccessor.HttpContext;
 
 		var urlHelper = urlHelperFactory.GetUrlHelper(
-		   new ActionContext(httpContext, new RouteData(), new PageActionDescriptor() { AreaName = "Identity", ViewEnginePath = "/Account/ConfirmEmail" }));
+		   new ActionContext(httpContext, new RouteData(), new ControllerActionDescriptor()));
 
-		// Use Url.Page for robust URL generation
 		var callbackUrl = urlHelper.Page(
 			"/Account/ConfirmEmail",
-			pageHandler: null, // No specific handler needed for the default ConfirmEmail page
-			values: new { area = "Identity", userId = user.Id, code }, // returnUrl is usually not needed for confirmation
+			pageHandler: null,
+			values: new { area = "Identity", userId = user.Id, code },
 			protocol: httpContext.Request.Scheme
 		);
 
-		Console.WriteLine(callbackUrl);
 
-		return HtmlEncoder.Default.Encode(callbackUrl);
+		return callbackUrl;
 	}
 
 	public async Task UpdateAsync(DoctorFormDto dto)

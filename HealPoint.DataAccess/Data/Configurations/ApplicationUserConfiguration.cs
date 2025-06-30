@@ -11,8 +11,10 @@ internal class ApplicationUserConfiguration : IEntityTypeConfiguration<Applicati
 			.HasMaxLength(100)
 			.IsRequired(false);
 
-		builder.Property(u => u.CreatedOn)
-			.IsRequired();
+		builder.Property(e => e.CreatedOn).HasDefaultValueSql("GETDATE()");
+
+		builder.Property(e => e.IsDeleted)
+			   .HasDefaultValue(false);
 
 		builder.Property(u => u.CreatedById)
 			.HasMaxLength(450)
@@ -25,8 +27,6 @@ internal class ApplicationUserConfiguration : IEntityTypeConfiguration<Applicati
 			.HasMaxLength(450)
 			.IsRequired(false);
 
-		builder.Property(u => u.IsDeleted)
-			.IsRequired();
 
 		builder.HasOne(u => u.Doctor)
 			.WithOne(d => d.ApplicationUser)

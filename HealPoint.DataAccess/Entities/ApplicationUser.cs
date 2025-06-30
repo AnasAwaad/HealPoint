@@ -11,5 +11,5 @@ public class ApplicationUser : IdentityUser
 	public string? LastUpdatedById { get; set; }
 	public bool IsDeleted { get; set; }
 
-	public Doctor Doctor { get; set; }
+	public Doctor? Doctor { get; set; }
 }
