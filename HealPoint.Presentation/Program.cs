@@ -71,7 +71,7 @@ public class Program
 		await DefaultRoles.SeedRoles(roleManager);
 		await DefaultUsers.SeedUsers(userManager);
 
-
+		app.MapRazorPages();
 		app.MapControllerRoute(
 			name: "default",
 			pattern: "{controller=Home}/{action=Index}/{id?}");

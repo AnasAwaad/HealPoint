@@ -6,8 +6,13 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI.Services;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.RazorPages;
+using Microsoft.AspNetCore.Mvc.Routing;
+using Microsoft.AspNetCore.Routing;
 using Microsoft.AspNetCore.WebUtilities;
 using System.Text;
+using System.Text.Encodings.Web;
 
 namespace HealPoint.BusinessLogic.Services;
 internal class DoctorService(IUnitOfWork unitOfWork,
@@ -16,7 +21,8 @@ internal class DoctorService(IUnitOfWork unitOfWork,
 							 IFileStorageService fileStorage,
 							 IWebHostEnvironment webHostEnvironment,
 							 IEmailSender emailSender,
-							 IHttpContextAccessor httpContextAccessor) : IDoctorService
+							 IHttpContextAccessor httpContextAccessor,
+							 IUrlHelperFactory urlHelperFactory) : IDoctorService
 {
 	#region Actions
 
@@ -112,11 +118,22 @@ internal class DoctorService(IUnitOfWork unitOfWork,
 		var code = await userManager.GenerateEmailConfirmationTokenAsync(user);
 		code = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(code));
 
-		var request = httpContextAccessor.HttpContext?.Request;
-		string baseUrl = $"{request.Scheme}://{request.Host}";
-		string callbackUrl = $"{baseUrl}/Identity/Account/ConfirmEmail?userId={user.Id}&code={code}";
+		var httpContext = httpContextAccessor.HttpContext;
 
-		return callbackUrl;
+		var urlHelper = urlHelperFactory.GetUrlHelper(
+		   new ActionContext(httpContext, new RouteData(), new PageActionDescriptor() { AreaName = "Identity", ViewEnginePath = "/Account/ConfirmEmail" }));
+
+		// Use Url.Page for robust URL generation
+		var callbackUrl = urlHelper.Page(
+			"/Account/ConfirmEmail",
+			pageHandler: null, // No specific handler needed for the default ConfirmEmail page
+			values: new { area = "Identity", userId = user.Id, code }, // returnUrl is usually not needed for confirmation
+			protocol: httpContext.Request.Scheme
+		);
+
+		Console.WriteLine(callbackUrl);
+
+		return HtmlEncoder.Default.Encode(callbackUrl);
 	}
 
 	public async Task UpdateAsync(DoctorFormDto dto)

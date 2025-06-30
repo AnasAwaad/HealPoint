@@ -1,13 +1,35 @@
-﻿using HealPoint.BusinessLogic.Contracts;
+﻿using AutoMapper;
+using HealPoint.BusinessLogic.Contracts;
+using HealPoint.DataAccess.Consts;
 using HealPoint.DataAccess.Entities;
 using Microsoft.AspNetCore.Identity;
 
 namespace HealPoint.BusinessLogic.Services;
-internal class AuthService(UserManager<ApplicationUser> userManager) : IAuthService
+internal class AuthService(UserManager<ApplicationUser> userManager, IMapper mapper) : IAuthService
 {
 	public async Task<ApplicationUser?> GetUsersByIdAsync(string id)
 	{
 		return await userManager.FindByIdAsync(id);
+	}
+
+	public async Task<IdentityResult> RegisterPatientAsync(RegisterPatientDto dto)
+	{
+		var user = new ApplicationUser()
+		{
+			FirstName = "Patient",
+			Email = dto.Email,
+			UserName = dto.Email,
+		};
+
+		var result = await userManager.CreateAsync(user, dto.Password);
+		if (!result.Succeeded)
+			return result;
+
+
+		await userManager.AddToRoleAsync(user, AppRoles.Patient);
+
+
+		return result;
 	}
 
 	public async Task<(bool isSucceeded, string? errors)> ResetPasswordAsync(string userId, string password)

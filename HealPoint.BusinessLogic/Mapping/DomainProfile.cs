@@ -50,5 +50,8 @@ public class DomainProfile : Profile
 			.ForMember(dest => dest.UserName, opt => opt.MapFrom(src => src.ApplicationUser!.UserName))
 			.ForMember(dest => dest.Email, opt => opt.MapFrom(src => src.ApplicationUser!.Email))
 			.ForMember(dest => dest.PhoneNumber, opt => opt.MapFrom(src => src.ApplicationUser!.PhoneNumber));
+
+		CreateMap<RegisterPatientDto, ApplicationUser>();
+
 	}
 }
