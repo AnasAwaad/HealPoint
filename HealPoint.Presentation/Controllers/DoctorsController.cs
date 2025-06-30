@@ -1,11 +1,15 @@
 ﻿using HealPoint.BusinessLogic.Contracts;
 using HealPoint.BusinessLogic.DTOs;
+using HealPoint.DataAccess.Consts;
 using HealPoint.Presentation.Filters;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace HealPoint.Presentation.Controllers;
+
+[Authorize(Roles = AppRoles.Admin)]
 public class DoctorsController : Controller
 {
 	#region Props

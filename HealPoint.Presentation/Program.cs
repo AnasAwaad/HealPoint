@@ -21,6 +21,10 @@ public class Program
 		   .AddEntityFrameworkStores<ApplicationDbContext>()
 		   .AddDefaultUI()
 		   .AddDefaultTokenProviders();
+		builder.Services.ConfigureApplicationCookie(options =>
+		{
+			options.LoginPath = "/Account/Register";
+		});
 
 		builder.Services.Configure<IdentityOptions>(options =>
 		{

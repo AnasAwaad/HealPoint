@@ -1,9 +1,12 @@
 ﻿using HealPoint.BusinessLogic.Contracts;
 using HealPoint.BusinessLogic.DTOs;
+using HealPoint.DataAccess.Consts;
 using HealPoint.Presentation.Filters;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace HealPoint.Presentation.Controllers;
+[Authorize(Roles = AppRoles.Admin)]
 public class DepartmentsController : Controller
 {
 	#region Props

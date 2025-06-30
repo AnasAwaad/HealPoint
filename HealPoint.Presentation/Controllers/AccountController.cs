@@ -39,4 +39,41 @@ public class AccountController : Controller
 
 		return View(model);
 	}
+
+	public IActionResult Login() => View();
+
+
+	[HttpPost]
+	[ValidateAntiForgeryToken]
+	public async Task<IActionResult> Login(LoginDto model, string? returnUrl)
+	{
+		if (!ModelState.IsValid)
+			return View(model);
+
+		var (result, role) = await _authService.LoginAsync(model);
+
+		if (result.Succeeded)
+		{
+			if (!string.IsNullOrEmpty(returnUrl) && Url.IsLocalUrl(returnUrl))
+				return Redirect(returnUrl);
+
+			return role switch
+			{
+				"Patient" => RedirectToAction("Index", "Patients"),
+				"Doctor" => RedirectToAction("Index", "Doctors"),
+				"Admin" => RedirectToAction("Index", "Home"),
+				_ => RedirectToAction("Index", "Home")
+			};
+		}
+		if (result.IsNotAllowed)
+		{
+			ModelState.AddModelError(string.Empty, "Please confirm your email first.");
+			return View(model);
+		}
+		else
+		{
+			ModelState.AddModelError(string.Empty, $"Invalid login attempt.");
+			return View(model);
+		}
+	}
 }

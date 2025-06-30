@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
 
 namespace HealPoint.Presentation.Controllers;
+
 public class HomeController : Controller
 {
 	#region Props

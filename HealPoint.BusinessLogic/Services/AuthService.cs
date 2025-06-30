@@ -2,13 +2,35 @@
 using HealPoint.DataAccess.Consts;
 using HealPoint.DataAccess.Entities;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 
 namespace HealPoint.BusinessLogic.Services;
-internal class AuthService(UserManager<ApplicationUser> userManager) : IAuthService
+internal class AuthService(UserManager<ApplicationUser> userManager,
+						   SignInManager<ApplicationUser> signInManager) : IAuthService
 {
 	public async Task<ApplicationUser?> GetUsersByIdAsync(string id)
 	{
 		return await userManager.FindByIdAsync(id);
+	}
+
+	public async Task<(SignInResult Result, string? Role)> LoginAsync(LoginDto model)
+	{
+
+		var user = await userManager.Users.SingleOrDefaultAsync(u => u.Email == model.Email && !u.IsDeleted);
+
+		if (user is null)
+			return (SignInResult.Failed, null);
+
+		if (!await userManager.IsEmailConfirmedAsync(user))
+			return (SignInResult.NotAllowed, null);
+
+		var result = await signInManager.PasswordSignInAsync(model.Email, model.Password, false, lockoutOnFailure: false);
+
+		if (!result.Succeeded)
+			return (result, null);
+
+		var roles = await userManager.GetRolesAsync(user);
+		return (result, roles.FirstOrDefault());
 	}
 
 	public async Task<IdentityResult> RegisterPatientAsync(RegisterPatientDto dto)
