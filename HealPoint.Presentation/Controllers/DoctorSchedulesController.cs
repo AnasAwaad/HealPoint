@@ -1,4 +1,5 @@
 ﻿using HealPoint.BusinessLogic.Contracts;
+using HealPoint.BusinessLogic.DTOs;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
 
@@ -6,12 +7,10 @@ namespace HealPoint.Presentation.Controllers;
 public class DoctorSchedulesController : Controller
 {
 	private readonly ITimeSlotService _timeSlotService;
-	private readonly IDoctorService _doctorService;
 
-	public DoctorSchedulesController(ITimeSlotService timeSlotService, IDoctorService doctorService)
+	public DoctorSchedulesController(ITimeSlotService timeSlotService)
 	{
 		_timeSlotService = timeSlotService;
-		_doctorService = doctorService;
 	}
 
 	public IActionResult Index()
@@ -30,5 +29,21 @@ public class DoctorSchedulesController : Controller
 
 		return PartialView("_DayTimeSlotsPartial", slots);
 
+	}
+
+	public IActionResult Create()
+	{
+		return PartialView("_Form");
+	}
+
+	[HttpPost]
+	[ValidateAntiForgeryToken]
+	public IActionResult Create(TimeSlotDto model)
+	{
+		if (!ModelState.IsValid)
+			return BadRequest();
+
+		_timeSlotService.CreateTimeSlot(model, User.FindFirst(ClaimTypes.NameIdentifier)!.Value);
+		return Ok();
 	}
 }

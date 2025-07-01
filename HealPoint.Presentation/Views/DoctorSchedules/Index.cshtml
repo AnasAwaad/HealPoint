@@ -3,12 +3,12 @@
 
 	var days = new string[]{
 		"Saturday",
-		"sunday",
-		"monday",
-		"tuesday",
-		"wednesday",
-		"thursday",
-		"friday"
+		"Sunday",
+		"Monday",
+		"Tuesday",
+		"Wednesday",
+		"Thursday",
+		"Friday"
 	};
 }
 
@@ -59,7 +59,7 @@
 								{
 									<!--begin:::Tab item-->
 									<li class="nav-item" role="presentation">
-										<a class="nav-link pb-4 @(day == 0 ? "text-active-primary active" : "") " data-day="@days[day]" data-bs-toggle="tab" href="#doctor_Schedule_@days[day]" aria-selected="true" role="tab">@days[day]</a>
+										<a class="nav-link pb-4 js-day-name @(day == 0 ? "text-active-primary active" : "") " data-day="@days[day]" data-bs-toggle="tab" href="#doctor_Schedule_@days[day]" aria-selected="true" role="tab">@days[day]</a>
 									</li>
 									<!--end:::Tab item-->
 								}
@@ -107,7 +107,8 @@
 				<!--end::Content container-->
 			</div>
 			<!--end::Content-->
-
+		</div>
+	</div>
 </div>
 
 @Html.AntiForgeryToken()
@@ -118,19 +119,22 @@
 		$(document).ready(function(){
 			$('a[data-bs-toggle="tab"]').on('click', function (e) {
 				const dayName = $(this).data('day');
+				$('#DayOfWeek').val(dayName);
 
 				const container = $(`#timeslot-container-${dayName}`);
 				$.ajax({
 					url:`/DoctorSchedules/GetDayTimeSlots?day=${dayName}`,
 					method:"GET",
 					success:function(data){
-						console.log(data)
+						container.html(data);
 					},
 					error:function(err){
 						console.log(err)
 					}
 				})
 			});
+
+
 		})
 	</script>
 }

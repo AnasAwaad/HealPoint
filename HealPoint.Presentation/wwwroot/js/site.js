@@ -40,6 +40,12 @@ $(document).ready(function () {
 
                 // Re-enable client-side validation for the new form
                 $.validator.unobtrusive.parse(myModal);
+
+                initializeFlatpickr();
+
+
+                var dayName = $('.js-day-name.active').data('day');
+                $('#DayOfWeek').val(dayName);
             },
             error: function (err) {
                 console.log(err.message)
@@ -49,6 +55,8 @@ $(document).ready(function () {
 
 
         myModal.modal('show');
+
+
     })
 
     // Handle change status checkbox
@@ -156,7 +164,28 @@ $(document).ready(function () {
     $('#logoutBtn').on('click', function () {
         $('#logoutForm').submit();
     })
+
+
 })
+
+// Function to initialize flatpickr
+function initializeFlatpickr() {
+    flatpickr("input[name='StartTime'].flat-time", {
+        enableTime: true,
+        noCalendar: true,
+        dateFormat: "H:i",
+        time_24hr: false,
+        defaultDate: "09:00"
+    });
+
+    flatpickr("input[name='EndTime'].flat-time", {
+        enableTime: true,
+        noCalendar: true,
+        dateFormat: "H:i",
+        time_24hr: false,
+        defaultDate: "09:30"
+    });
+}
 
 function onModalFormSuccess(newRow) {
     var message;
@@ -183,6 +212,16 @@ function onModalFormSuccess(newRow) {
 
 }
 
+function onTimeSlotSaveSuccess() {
+    $('#myModal').modal('hide');
+
+    showSuccessMessage("Doctor time slot added successfully");
+}
+
+function onTimeSlotSaveFailure() {
+    $('#myModal').modal('hide');
+    showErrorMessage("An error happen while adding time slot");
+}
 function onResetPasswordFormSuccess() {
     $('#myModal').modal('hide');
 
