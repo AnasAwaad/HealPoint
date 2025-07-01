@@ -1,9 +1,11 @@
-﻿namespace HealPoint.DataAccess.Entities;
+﻿using HealPoint.DataAccess.Common;
+
+namespace HealPoint.DataAccess.Entities;
 public class Specialization : BaseEntity
 {
 	public string Name { get; set; } = null!;
 	public string Description { get; set; } = null!;
-	public int CategoryId { get; set; }
-	public bool Status { get; set; } = true;
-	public Category? Category { get; set; }
+	public int DepartmentId { get; set; }
+	public Department? Department { get; set; }
+	public ICollection<Doctor> Doctors { get; set; } = new List<Doctor>();
 }

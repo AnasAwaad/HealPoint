@@ -1,4 +1,6 @@
-﻿namespace HealPoint.DataAccess.Entities;
+﻿using HealPoint.DataAccess.Common;
+
+namespace HealPoint.DataAccess.Entities;
 public class Clinic : BaseEntity
 {
 	public string Name { get; set; } = null!;

@@ -214,7 +214,7 @@
 											</div>
 											<div class="col-md-6 fv-row fv-plugins-icon-container">
 												<label class="form-label" asp-for="SpecializationId"></label>
-												<select asp-for="SpecializationId" asp-items="Model.SpecializationOptions" class="form-select" data-control="select2" data-placeholder="Specialty">
+												<select asp-for="SpecializationId" asp-items="Model.SpecializationSelectList" class="form-select" data-control="select2" data-placeholder="Specialty">
 													<option value=""></option>
 												</select>
 												<span asp-validation-for="SpecializationId" class="text-danger"></span>

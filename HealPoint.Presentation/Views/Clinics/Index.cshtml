@@ -121,16 +121,15 @@
 									<th class="ps-2">Name</th>
 									<th>Speciality</th>
 									<th>Clinic Admin</th>
+									<th>ContactNumber</th>
 									<th>Description</th>
-									<th>Image Path</th>
-									<th>Status</th>
 									<th class="text-center">Actions</th>
 								</tr>
 							</thead>
 							<tbody class="js-tbody">
 							@foreach (var clinic in Model)
 							{
-								<partial name="_ClinicRow" model="clinic" />
+									<partial name="_ClinicRow" model="clinic" />
 							}
 
 							</tbody>

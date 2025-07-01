@@ -10,7 +10,7 @@ public class SpecializationFormDto
 	[Remote("AllowedSpecializationName", "Specializations", AdditionalFields = "Id", ErrorMessage = "Specialization with the same name is already exists.")]
 	public string Name { get; set; } = null!;
 	public string Description { get; set; } = null!;
-	public string? CategoryName { get; set; }
-	public int? CategoryId { get; set; }
-	public List<SelectListItem> CategoryOptions { get; set; } = new List<SelectListItem>();
+	public string? DepartmentName { get; set; }
+	public int? DepartmentId { get; set; }
+	public IEnumerable<SelectListItem>? DepartmentSelectList { get; set; } = new List<SelectListItem>();
 }

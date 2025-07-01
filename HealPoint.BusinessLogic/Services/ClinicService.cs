@@ -1,6 +1,5 @@
 ﻿using AutoMapper;
 using HealPoint.BusinessLogic.Contracts;
-using HealPoint.BusinessLogic.DTOs;
 using HealPoint.DataAccess.Contracts;
 using HealPoint.DataAccess.Entities;
 
@@ -30,14 +29,10 @@ public class ClinicService : IClinicService
 
 		clinic.CreatedOn = DateTime.Now;
 
-		// save clinic to get id and then add physical image in server by clinic id
-		_unitOfWork.Clinics.Insert(clinic);
-		_unitOfWork.SaveChanges();
-
-		var imagePath = await _fileStorage.UploadFileAsync(clinicDto.ImageFile, $"clinics\\{clinic.Id}");
-
+		var imagePath = await _fileStorage.UploadFileAsync(clinicDto.ImageFile, $"clinics");
 		clinic.ImagePath = imagePath ?? "/images/clinics/default-clinic.png";
 
+		_unitOfWork.Clinics.Insert(clinic);
 		_unitOfWork.SaveChanges();
 	}
 

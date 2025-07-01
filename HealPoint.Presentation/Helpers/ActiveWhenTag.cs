@@ -17,9 +17,9 @@ public class ActiveWhenTag : TagHelper
 	{
 		if (string.IsNullOrEmpty(ActiveWhen))
 			return;
-		var currentController = ViewContextData?.RouteData.Values["controller"]?.ToString();
+		var currentController = ViewContextData?.RouteData.Values["controller"] ?? "";
 
-		if (currentController.Equals(ActiveWhen))
+		if (currentController.ToString()!.Equals(ActiveWhen))
 		{
 			if (output.Attributes.ContainsName("class"))
 				output.Attributes.SetAttribute("class", $"{output.Attributes["class"].Value} active");

@@ -8,22 +8,24 @@ internal class SpecializationRepository : Repository<Specialization>, ISpecializ
 	{
 	}
 
-	public override IEnumerable<Specialization> GetAll()
-	{
-		return _context.Specializations.Where(s => !s.IsDeleted).AsEnumerable();
-	}
-
-	public IEnumerable<Specialization> GetAllSpecializationWithCategories()
+	public IEnumerable<Specialization> GetActiveSpecializations()
 	{
 		return _context.Specializations
 			.Where(s => !s.IsDeleted)
-			.Include(s => s.Category)
+			.OrderBy(s => s.Name)
+			.AsEnumerable();
+	}
+
+	public IEnumerable<Specialization> GetAllSpecializationWithDepartments()
+	{
+		return _context.Specializations
+			.Include(s => s.Department)
 			.AsEnumerable();
 	}
 	public async Task<Specialization?> GetByIdAsync(int id)
 	{
 		return await _context.Specializations
-			.Include(s => s.Category)
+			.Include(s => s.Department)
 			.FirstOrDefaultAsync(s => s.Id == id);
 	}
 

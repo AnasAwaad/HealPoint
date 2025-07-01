@@ -1,6 +1,5 @@
 ﻿using AutoMapper;
 using HealPoint.BusinessLogic.Contracts;
-using HealPoint.BusinessLogic.DTOs;
 using HealPoint.DataAccess.Contracts;
 using HealPoint.DataAccess.Entities;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -19,18 +18,15 @@ public class SpecializationService : ISpecializationService
 
 	public IEnumerable<SpecializationDto> GetAllSpecializations()
 	{
-		var specialization = _unitOfWork.Specializations.GetAllSpecializationWithCategories();
+		var specialization = _unitOfWork.Specializations.GetAllSpecializationWithDepartments();
 		return _mapper.Map<IEnumerable<SpecializationDto>>(specialization);
 	}
 
-	public List<SelectListItem> GetCategorySelectList()
+	public IEnumerable<SpecializationDto> GetSpecializationsLookup()
 	{
-		var categories = _unitOfWork.Categories.GetSubCategories();
-		return categories.Select(c => new SelectListItem
-		{
-			Text = c.Name,
-			Value = c.Id.ToString()
-		}).OrderBy(s => s.Text).ToList();
+		var specializations = _unitOfWork.Specializations.GetActiveSpecializations();
+
+		return _mapper.Map<IEnumerable<SpecializationDto>>(specializations);
 	}
 
 	public SpecializationDto CreateSpecialization(SpecializationFormDto specializationDto)
@@ -40,7 +36,7 @@ public class SpecializationService : ISpecializationService
 		_unitOfWork.SaveChanges();
 
 		var specResult = _mapper.Map<SpecializationDto>(spec);
-		specResult.CategoryName = specializationDto.CategoryName;
+		specResult.DepartmentName = specializationDto.DepartmentName;
 
 		return specResult;
 	}
@@ -67,7 +63,7 @@ public class SpecializationService : ISpecializationService
 		_unitOfWork.SaveChanges();
 
 		var specializationResult = _mapper.Map<SpecializationDto>(existingSpecialization);
-		specializationResult.CategoryName = specializationDto.CategoryName;
+		specializationResult.DepartmentName = specializationDto.DepartmentName;
 
 		return specializationResult;
 	}
@@ -77,42 +73,19 @@ public class SpecializationService : ISpecializationService
 		return _unitOfWork.Specializations.IsSpecializationNameAllowed(model.Name, model.Id);
 	}
 
-	public string? UpdateSpecializationStatus(int id)
+	public bool? UpdateSpecializationStatus(int id)
 	{
 		var existingSpecialization = _unitOfWork.Specializations.FindById(id);
 
 		if (existingSpecialization == null)
 			return null;
 
-		existingSpecialization.Status = !existingSpecialization.Status;
+		existingSpecialization.IsDeleted = !existingSpecialization.IsDeleted;
 		existingSpecialization.LastUpdatedOn = DateTime.Now;
 
 		_unitOfWork.SaveChanges();
 
-		return existingSpecialization.LastUpdatedOn.ToString();
+		return existingSpecialization.IsDeleted;
 	}
 
-	public bool DeleteSpecialization(int id)
-	{
-		var specialization = _unitOfWork.Specializations.FindById(id);
-
-		if (specialization is null)
-			return false;
-
-		_unitOfWork.Specializations.Delete(id);
-		_unitOfWork.SaveChanges();
-
-		return true;
-	}
-
-	public List<SelectListItem> GetSpecializationSelectList()
-	{
-		var specialization = _unitOfWork.Specializations.GetAll();
-
-		return specialization.Select(s => new SelectListItem
-		{
-			Text = s.Name,
-			Value = s.Id.ToString()
-		}).ToList();
-	}
 }

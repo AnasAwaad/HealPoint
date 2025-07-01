@@ -5,14 +5,14 @@
 namespace HealPoint.DataAccess.Migrations
 {
     /// <inheritdoc />
-    public partial class AddUniqueIndexToCategoryNameColumn : Migration
+    public partial class AddUniqueIndexToDepartmentNameColumn : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateIndex(
-                name: "IX_Categories_Name",
-                table: "Categories",
+                name: "IX_Departments_Name",
+                table: "Departments",
                 column: "Name",
                 unique: true);
         }
@@ -21,8 +21,8 @@ namespace HealPoint.DataAccess.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropIndex(
-                name: "IX_Categories_Name",
-                table: "Categories");
+                name: "IX_Departments_Name",
+                table: "Departments");
         }
     }
 }

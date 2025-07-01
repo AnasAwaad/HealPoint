@@ -1,17 +1,12 @@
-﻿using HealPoint.BusinessLogic.DTOs;
-using Microsoft.AspNetCore.Mvc.Rendering;
-
-namespace HealPoint.BusinessLogic.Contracts;
+﻿namespace HealPoint.BusinessLogic.Contracts;
 public interface ISpecializationService
 {
 	IEnumerable<SpecializationDto> GetAllSpecializations();
-	List<SelectListItem> GetCategorySelectList();
+	IEnumerable<SpecializationDto> GetSpecializationsLookup();
 	SpecializationFormDto? GetSpecializationById(int id);
 	SpecializationDto CreateSpecialization(SpecializationFormDto specializationDto);
 	SpecializationDto? UpdateSpecialization(SpecializationFormDto specializationDto);
-	bool DeleteSpecialization(int id);
 	bool IsSpecializationAllowed(SpecializationFormDto model);
-	string? UpdateSpecializationStatus(int id);
-	List<SelectListItem> GetSpecializationSelectList();
+	bool? UpdateSpecializationStatus(int id);
 
 }

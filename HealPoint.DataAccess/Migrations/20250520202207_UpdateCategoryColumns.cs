@@ -5,18 +5,18 @@
 namespace HealPoint.DataAccess.Migrations
 {
     /// <inheritdoc />
-    public partial class UpdateCategoryColumns : Migration
+    public partial class UpdateDepartmentColumns : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropForeignKey(
-                name: "FK_Categories_Categories_ParentCategoryId",
-                table: "Categories");
+                name: "FK_Departments_Departments_ParentDepartmentId",
+                table: "Departments");
 
             migrationBuilder.AlterColumn<string>(
                 name: "Name",
-                table: "Categories",
+                table: "Departments",
                 type: "nvarchar(100)",
                 maxLength: 100,
                 nullable: false,
@@ -25,7 +25,7 @@ namespace HealPoint.DataAccess.Migrations
 
             migrationBuilder.AlterColumn<string>(
                 name: "ImagePath",
-                table: "Categories",
+                table: "Departments",
                 type: "nvarchar(255)",
                 maxLength: 255,
                 nullable: true,
@@ -35,7 +35,7 @@ namespace HealPoint.DataAccess.Migrations
 
             migrationBuilder.AlterColumn<string>(
                 name: "Description",
-                table: "Categories",
+                table: "Departments",
                 type: "nvarchar(500)",
                 maxLength: 500,
                 nullable: false,
@@ -44,23 +44,23 @@ namespace HealPoint.DataAccess.Migrations
 
             migrationBuilder.AddColumn<bool>(
                 name: "IsFeatured",
-                table: "Categories",
+                table: "Departments",
                 type: "bit",
                 nullable: false,
                 defaultValue: false);
 
             migrationBuilder.AddColumn<bool>(
                 name: "Status",
-                table: "Categories",
+                table: "Departments",
                 type: "bit",
                 nullable: false,
                 defaultValue: true);
 
             migrationBuilder.AddForeignKey(
-                name: "FK_Categories_Categories_ParentCategoryId",
-                table: "Categories",
-                column: "ParentCategoryId",
-                principalTable: "Categories",
+                name: "FK_Departments_Departments_ParentDepartmentId",
+                table: "Departments",
+                column: "ParentDepartmentId",
+                principalTable: "Departments",
                 principalColumn: "Id",
                 onDelete: ReferentialAction.Restrict);
         }
@@ -69,20 +69,20 @@ namespace HealPoint.DataAccess.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropForeignKey(
-                name: "FK_Categories_Categories_ParentCategoryId",
-                table: "Categories");
+                name: "FK_Departments_Departments_ParentDepartmentId",
+                table: "Departments");
 
             migrationBuilder.DropColumn(
                 name: "IsFeatured",
-                table: "Categories");
+                table: "Departments");
 
             migrationBuilder.DropColumn(
                 name: "Status",
-                table: "Categories");
+                table: "Departments");
 
             migrationBuilder.AlterColumn<string>(
                 name: "Name",
-                table: "Categories",
+                table: "Departments",
                 type: "nvarchar(max)",
                 nullable: false,
                 oldClrType: typeof(string),
@@ -91,7 +91,7 @@ namespace HealPoint.DataAccess.Migrations
 
             migrationBuilder.AlterColumn<string>(
                 name: "ImagePath",
-                table: "Categories",
+                table: "Departments",
                 type: "nvarchar(max)",
                 nullable: true,
                 oldClrType: typeof(string),
@@ -101,7 +101,7 @@ namespace HealPoint.DataAccess.Migrations
 
             migrationBuilder.AlterColumn<string>(
                 name: "Description",
-                table: "Categories",
+                table: "Departments",
                 type: "nvarchar(max)",
                 nullable: false,
                 oldClrType: typeof(string),
@@ -109,10 +109,10 @@ namespace HealPoint.DataAccess.Migrations
                 oldMaxLength: 500);
 
             migrationBuilder.AddForeignKey(
-                name: "FK_Categories_Categories_ParentCategoryId",
-                table: "Categories",
-                column: "ParentCategoryId",
-                principalTable: "Categories",
+                name: "FK_Departments_Departments_ParentDepartmentId",
+                table: "Departments",
+                column: "ParentDepartmentId",
+                principalTable: "Departments",
                 principalColumn: "Id");
         }
     }

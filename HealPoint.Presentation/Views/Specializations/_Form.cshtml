@@ -12,7 +12,7 @@
     {
         <input type="hidden" asp-for="Id" />
     }
-    <input type="hidden" asp-for="CategoryName" />
+    <input type="hidden" asp-for="DepartmentName" />
     <!--begin::Input group-->
     <div>
         <div class="form-floating mb-2">
@@ -35,11 +35,11 @@
     </div>
 
     <div class="form-floating mb-2">
-        <select asp-for="CategoryId" class="form-select form-select-solid js-select2" data-control="select2" data-placeholder="Select an option" asp-items="Model?.CategoryOptions">
+        <select asp-for="DepartmentId" class="form-select form-select-solid js-select2" data-control="select2" data-placeholder="Select an option" asp-items="Model?.DepartmentSelectList">
             <option value="">Select category</option>
         </select>
-        <label asp-for="CategoryId"></label>
-        <span asp-validation-for="CategoryId" class="text-danger"></span>
+        <label asp-for="DepartmentId"></label>
+        <span asp-validation-for="DepartmentId" class="text-danger"></span>
     </div>
     
 

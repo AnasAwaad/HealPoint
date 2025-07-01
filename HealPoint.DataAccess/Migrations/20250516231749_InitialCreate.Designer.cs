@@ -25,7 +25,7 @@ namespace HealPoint.DataAccess.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
-            modelBuilder.Entity("HealPoint.DataAccess.Entities.Category", b =>
+            modelBuilder.Entity("HealPoint.DataAccess.Entities.Department", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -65,23 +65,23 @@ namespace HealPoint.DataAccess.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int?>("ParentCategoryId")
+                    b.Property<int?>("ParentDepartmentId")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("ParentCategoryId");
+                    b.HasIndex("ParentDepartmentId");
 
-                    b.ToTable("Categories");
+                    b.ToTable("Departments");
                 });
 
-            modelBuilder.Entity("HealPoint.DataAccess.Entities.Category", b =>
+            modelBuilder.Entity("HealPoint.DataAccess.Entities.Department", b =>
                 {
-                    b.HasOne("HealPoint.DataAccess.Entities.Category", "ParentCategory")
+                    b.HasOne("HealPoint.DataAccess.Entities.Department", "ParentDepartment")
                         .WithMany()
-                        .HasForeignKey("ParentCategoryId");
+                        .HasForeignKey("ParentDepartmentId");
 
-                    b.Navigation("ParentCategory");
+                    b.Navigation("ParentDepartment");
                 });
 #pragma warning restore 612, 618
         }
