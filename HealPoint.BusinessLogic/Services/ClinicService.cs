@@ -86,4 +86,10 @@ public class ClinicService : IClinicService
 		return true;
 	}
 
+	public IEnumerable<ClinicListDto> GetClinicsLookup()
+	{
+		var clinics = _unitOfWork.Clinics.GetActiveClinics();
+
+		return _mapper.Map<IEnumerable<ClinicListDto>>(clinics);
+	}
 }
