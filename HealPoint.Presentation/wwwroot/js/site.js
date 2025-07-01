@@ -151,6 +151,10 @@ $(document).ready(function () {
     $(document).on('click', '.js-modal-save', function () {
         $('#ModalForm').submit();
     })
+
+    $('#logoutBtn').on('click', function () {
+        $('#logoutForm').submit()
+    })
 })
 
 function onModalFormSuccess(newRow) {

@@ -24,7 +24,7 @@ internal class AuthService(UserManager<ApplicationUser> userManager,
 		if (!await userManager.IsEmailConfirmedAsync(user))
 			return (SignInResult.NotAllowed, null);
 
-		var result = await signInManager.PasswordSignInAsync(model.Email, model.Password, false, lockoutOnFailure: false);
+		var result = await signInManager.PasswordSignInAsync(user, model.Password, false, lockoutOnFailure: false);
 
 		if (!result.Succeeded)
 			return (result, null);

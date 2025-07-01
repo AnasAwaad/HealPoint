@@ -1,0 +1,15 @@
+﻿using HealPoint.DataAccess.Enums;
+using Microsoft.AspNetCore.Mvc.Rendering;
+
+namespace HealPoint.BusinessLogic.DTOs;
+public class DoctorScheduleDto
+{
+	public int Id { get; set; }
+	public DateTime StartDate { get; set; }
+	public DateTime EndDate { get; set; }
+	public RecurrencePattern Recurrence { get; set; }
+	public int ClinicId { get; set; }
+	public IEnumerable<SelectListItem>? Clinics { get; set; } = new List<SelectListItem>();
+
+	public IList<DoctorScheduleDetailsDto> DoctorScheduleDetails = new List<DoctorScheduleDetailsDto>();
+}
