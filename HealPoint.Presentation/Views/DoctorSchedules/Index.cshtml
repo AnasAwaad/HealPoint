@@ -1,0 +1,136 @@
+﻿@{
+	ViewData["Title"] = "My Schedule";
+
+	var days = new string[]{
+		"Saturday",
+		"sunday",
+		"monday",
+		"tuesday",
+		"wednesday",
+		"thursday",
+		"friday"
+	};
+}
+
+<div class="d-flex flex-column flex-column-fluid" style="margin-top:30px;">
+
+	<!--begin::Content-->
+	<div id="kt_app_content" class="app-content  flex-column-fluid ">
+		<!--begin::Content container-->
+		<div id="kt_app_content_container">
+			<div class="page-title d-flex flex-column justify-content-center flex-wrap me-3 mb-4 ">
+				<!--begin::Title-->
+				<h1 class="page-heading d-flex text-gray-900 fw-bold fs-3 flex-column justify-content-center my-0">
+					My Schedule
+				</h1>
+				<!--end::Title-->
+				<!--begin::Breadcrumb-->
+				<ul class="breadcrumb breadcrumb-separatorless fw-semibold fs-7 my-0 pt-1">
+					<!--begin::Item-->
+					<li class="breadcrumb-item text-muted">
+						<a href="/" class="text-muted text-hover-primary">
+							Home
+						</a>
+					</li>
+					<!--end::Item-->
+					<!--begin::Item-->
+					<li class="breadcrumb-item">
+						<span class="bullet bg-gray-500 w-5px h-2px"></span>
+					</li>
+					<!--end::Item-->
+					<!--begin::Item-->
+					<li class="breadcrumb-item text-muted">
+						My Schedule
+					</li>
+
+				</ul>
+				<!--end::Breadcrumb-->
+			</div>
+			<!--begin::Doctor-->
+			<div class="card card-flush">
+				<!--begin::Card header-->
+				<div class="card-header d-flex align-items-center py-5 gap-2 gap-md-5">
+					<!--begin::Main column-->
+					<div class="d-flex flex-column flex-row-fluid gap-7 gap-lg-10">
+						<div class="row">
+							<!--begin:::Tabs-->
+							<ul class="col-8 nav nav-custom nav-tabs nav-line-tabs nav-line-tabs-2x border-0 fs-4 fw-semibold mb-n2" role="tablist">
+								@for (int day = 0; day < days.Length; day++)
+								{
+									<!--begin:::Tab item-->
+									<li class="nav-item" role="presentation">
+										<a class="nav-link pb-4 @(day == 0 ? "text-active-primary active" : "") " data-day="@days[day]" data-bs-toggle="tab" href="#doctor_Schedule_@days[day]" aria-selected="true" role="tab">@days[day]</a>
+									</li>
+									<!--end:::Tab item-->
+								}
+							</ul>
+							<!--end:::Tabs-->
+							<div class="col-4 d-flex justify-content-end">
+								<a href="javascript:;" data-url="/DoctorSchedules/Create" data-title="Add Time Slot" class="btn btn-primary js-render-modal">
+									Add Slot
+								</a>
+							</div>
+						</div>
+						<!--begin::Tab content-->
+						<div class="tab-content">
+							@for (int day = 0; day < days.Length; day++)
+							{
+								var isActive = (day == 0) ? "show active" : "";
+								<div class="tab-pane fade @isActive" id="doctor_Schedule_@days[day]">
+									<div class="d-flex flex-column gap-7 gap-lg-10">
+										<!--begin::General options-->
+										<div class="card card-flush py-4">
+											<div class="card-header">
+												<h3 class="card-title">Available Time Slots for @days[day]</h3>
+											</div>
+											<div class="card-body pt-0">
+												<div id="timeslot-container-@days[day]" class="timeslot-container">
+													<!-- Time slots will be loaded here via AJAX -->
+												</div>
+											</div>
+										</div>
+										<!--end::General options-->
+									</div>
+								</div>
+							}
+						</div>
+
+						<!--end::Tab content-->
+					</div>
+				</div>
+				<!--begin::Card body-->
+				<div class="card-body pt-0">
+
+
+				</div>
+				<!--end::Card body-->
+				<!--end::Content container-->
+			</div>
+			<!--end::Content-->
+
+</div>
+
+@Html.AntiForgeryToken()
+
+@section Scripts {
+	<partial name="_ValidationScriptsPartial" />
+	<script>
+		$(document).ready(function(){
+			$('a[data-bs-toggle="tab"]').on('click', function (e) {
+				const dayName = $(this).data('day');
+
+				const container = $(`#timeslot-container-${dayName}`);
+				$.ajax({
+					url:`/DoctorSchedules/GetDayTimeSlots?day=${dayName}`,
+					method:"GET",
+					success:function(data){
+						console.log(data)
+					},
+					error:function(err){
+						console.log(err)
+					}
+				})
+			});
+		})
+	</script>
+}

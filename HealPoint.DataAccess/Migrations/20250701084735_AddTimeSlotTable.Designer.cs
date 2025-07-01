@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace HealPoint.DataAccess.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20250630184123_AddDoctorTimeSlotTable")]
-    partial class AddDoctorTimeSlotTable
+    [Migration("20250701084735_AddTimeSlotTable")]
+    partial class AddTimeSlotTable
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -519,9 +519,6 @@ namespace HealPoint.DataAccess.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<TimeSpan>("BreakBetweenSessions")
-                        .HasColumnType("time");
-
                     b.Property<string>("CreatedById")
                         .HasColumnType("nvarchar(450)");
 
@@ -549,9 +546,6 @@ namespace HealPoint.DataAccess.Migrations
 
                     b.Property<DateTime?>("LastUpdatedOn")
                         .HasColumnType("datetime2");
-
-                    b.Property<TimeSpan>("SessionDuration")
-                        .HasColumnType("time");
 
                     b.Property<TimeOnly>("StartTime")
                         .HasColumnType("time");

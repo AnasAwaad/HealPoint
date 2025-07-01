@@ -53,5 +53,6 @@ public class DomainProfile : Profile
 
 		CreateMap<RegisterPatientDto, ApplicationUser>();
 
+		CreateMap<TimeSlot, TimeSlotDto>();
 	}
 }

@@ -39,4 +39,8 @@ internal class DoctorRepository : Repository<Doctor>, IDoctorRepository
 		return _context.Doctors.Where(d => d.EmergencyContactPhone == emergencyContactNumber).FirstOrDefault();
 	}
 
+	public Doctor? GetDoctorByUserId(string userId)
+	{
+		return _context.Doctors.Where(d => d.ApplicationUserId == userId).FirstOrDefault();
+	}
 }

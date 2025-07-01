@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace HealPoint.DataAccess.Migrations
 {
     /// <inheritdoc />
-    public partial class AddDoctorTimeSlotTable : Migration
+    public partial class AddTimeSlotTable : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -20,8 +20,6 @@ namespace HealPoint.DataAccess.Migrations
                     DayOfWeek = table.Column<int>(type: "int", nullable: false),
                     StartTime = table.Column<TimeOnly>(type: "time", nullable: false),
                     EndTime = table.Column<TimeOnly>(type: "time", nullable: false),
-                    SessionDuration = table.Column<TimeSpan>(type: "time", nullable: false),
-                    BreakBetweenSessions = table.Column<TimeSpan>(type: "time", nullable: false),
                     DoctorId = table.Column<int>(type: "int", nullable: false),
                     CreatedById = table.Column<string>(type: "nvarchar(450)", nullable: true),
                     CreatedOn = table.Column<DateTime>(type: "datetime2", nullable: false, defaultValueSql: "GETDATE()"),
