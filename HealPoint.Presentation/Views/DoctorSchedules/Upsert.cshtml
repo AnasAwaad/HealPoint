@@ -41,15 +41,11 @@
 			</div>
 			<!--begin::Clinic-->
 			<div class="card card-flush">
-				<!--begin::Card header-->
-				<div class="card-header d-flex align-items-center py-5 gap-2 gap-md-5">
-					<div class="card-title">
-					</div>
-				</div>
+				
 				<!--begin::Card body-->
 				<div class="card-body pt-0">
 
-					<form asp-action="Create" method="post" class="row g-5">
+					<form class="row g-5">
 						<div class="row">
 							<!-- Clinic -->
 							<div class="col-md-3">
@@ -96,7 +92,7 @@
 								{
 									<!--begin:::Tab item-->
 									<li class="nav-item" role="presentation">
-										<a class="nav-link pb-4 @(day == 0 ? "active text-active-primary":string.Empty)" data-bs-toggle="tab" data-day="@days[day]" href="#doctor_schedule_@days[day]" aria-selected="true" role="tab">@days[day]</a>
+										<a class="nav-link pb-4 @(day == 0 ? "active text-active-primary" : string.Empty)" data-bs-toggle="tab" data-day="@days[day]" href="#doctor_schedule_@days[day]" aria-selected="true" role="tab">@days[day]</a>
 									</li>
 									<!--end:::Tab item-->
 								}
@@ -104,7 +100,8 @@
 							<!--end:::Tabs-->
 							<!--begin::Tab content-->
 							<div class="tab-content">
-								@for (var day=0;day<days.Length;day++)
+								
+								@for (var day = 0; day < days.Length; day++)
 								{
 									<!--begin::Tab pane-->
 									<div class="tab-pane fade @(day == 0 ? "active show" : string.Empty)" id="doctor_schedule_@days[day]" role="tab-panel">
@@ -114,7 +111,7 @@
 												<!--begin::Card body-->
 												<div class="card-body pt-0">
 													<div class="table-responsive">
-														<table id="ScheduleTable" class="table table-row-bordered table-row-gray-300 gy-7">
+														<table class="table table-row-bordered table-row-gray-300 gy-7 schedule-table">
 															<thead class="fw-bold fs-6 text-gray-800">
 																<tr>
 																	<th>Start Date</th>
@@ -142,13 +139,12 @@
 														</table>
 													</div>
 
-													<input id="hdnLastIdx" type="hidden" value="0" />
 												</div>
 												<!--end::Card header-->
 											</div>
 											<!--end::General options-->
 										</div>
-										
+
 									</div>
 									<!--end::Tab pane-->
 								}
@@ -156,12 +152,13 @@
 							<!--end::Tab content-->
 						</div>
 						<!--end::Main column-->
-						
+
+						<input id="hdnLastIdx" type="hidden" value="6" />
 
 
 						<!-- Submit -->
 						<div class="col-12 mt-4 d-flex justify-content-end">
-							<button type="submit" class="btn btn-danger">Save Schedule</button>
+							<button id="submitFormBtn" class="btn btn-danger">Save Schedule</button>
 						</div>
 
 					</form>
@@ -175,71 +172,103 @@
 			<!--end::Content-->
 
 		</div>
-@section Scripts{
+
+	</div>
+</div>
+@section Scripts {
 	<script>
+		$(document).ready(function(){
+			$('#submitFormBtn').on('click',function(e){
+				e.preventDefault();
+				SubmitSchedule();
+			});
+		});
+		
 		function AddItem(btn) {
-			var table = document.getElementById('ScheduleTable');
-			var rows = table.getElementsByTagName('tr');
-			var rowOuterHtml = rows[rows.length - 1].innerHTML;
+			const table = btn.closest('table');
+			const day = table.dataset.day;
 
-			var lastRowIdx = document.getElementById('hdnLastIdx').value;
-			var nextRowIdx = parseInt(lastRowIdx) + 1;
-			document.getElementById('hdnLastIdx').value = nextRowIdx;
+			const newRow = document.createElement('tr');
+			newRow.innerHTML = `
+				<td><input class="form-control" type="time" /></td>
+				<td><input class="form-control" type="time" /></td>
+				<td>
+					<button type="button" class="btn btn-primary" onclick="AddItem(this)">Add</button>
+					<button type="button" class="btn btn-danger" onclick="DeleteItem(this)">Delete</button>
+				</td>
+				<input type="hidden" value="${day}" />
+			`;
 
-			// Replace index in HTML
-			rowOuterHtml = rowOuterHtml.replaceAll('_' + lastRowIdx + '_', '_' + nextRowIdx + '_');
-			rowOuterHtml = rowOuterHtml.replaceAll('[' + lastRowIdx + ']', '[' + nextRowIdx + ']');
-			rowOuterHtml = rowOuterHtml.replaceAll('-' + lastRowIdx + '-', '-' + nextRowIdx + '-');
-
-			// Add new row
-			var newRow = table.insertRow();
-			newRow.innerHTML = rowOuterHtml;
-
-			// Hide Add button, show Delete button in current row
-			var currentRow = btn.closest('tr');
-			if (currentRow) {
-				var addBtn = currentRow.querySelector('.btnAdd');
-				var deleteBtn = currentRow.querySelector('.btnDelete');
-
-				if (addBtn) addBtn.classList.add('d-none');
-				if (deleteBtn) deleteBtn.classList.remove('d-none');
-			}
+			table.querySelector('tbody').appendChild(newRow);
+			UpdateButtons(table);
 		}
 
 		function DeleteItem(btn) {
-			var row = btn.closest('tr');
-			if (row) row.remove();
-
-			// Show Add button in last row
-			var rows = document.querySelectorAll('#ScheduleTable tr');
-			if (rows.length > 0) {
-				var lastRow = rows[rows.length - 1];
-				var addBtn = lastRow.querySelector('.btnAdd');
-				var deleteBtn = lastRow.querySelector('.btnDelete');
-
-				if (addBtn) addBtn.classList.remove('d-none');
-				if (deleteBtn && rows.length === 1) {
-					deleteBtn.classList.add('d-none');
-				}
-			}
+			const table = btn.closest('table');
+			btn.closest('tr').remove();
+			RenameRowInputs(table);
+			UpdateButtons(table);
 		}
 
-		$(document).ready(function () {
-			$('a[data-bs-toggle="tab"]').on('click', function (e) {
-				const dayName = $(this).data('day');
-
-				const container = $(#timeslot-container-${dayName});
-				$.ajax({
-					url:/DoctorSchedules/GetDayTimeSlots?day=${dayName},
-					method:"GET",
-					success:function(data){
-						console.log(data)
-					},
-					error:function(err){
-						console.log(err)
-					}
-				})
+		function UpdateButtons(table) {
+			const rows = table.querySelectorAll('tbody tr');
+			rows.forEach((row, index) => {
+				const addBtn = row.querySelector('button.btn-primary');
+				const deleteBtn = row.querySelector('button.btn-danger');
+				if (addBtn) addBtn.classList.toggle('d-none', index !== rows.length - 1);
+				if (deleteBtn) deleteBtn.classList.toggle('d-none', index === rows.length - 1);
 			});
-		});
+		}
+
+		function SubmitSchedule(){
+			
+
+
+			var DoctorScheduleDetails=[]
+			$('.schedule-table').each(function(){
+				const day =$(this).data('day');
+				$(this).find('tbody tr').each(function(){
+					const startTime = $(this).find('input[type="time"]').eq(0).val();
+					const endTime = $(this).find('input[type="time"]').eq(1).val();
+					if(startTime && endTime){
+						DoctorScheduleDetails.push({
+							"Id":0,
+							"DayOfWeek": day,
+							"StartTime": startTime,
+							"EndTime": endTime
+						});
+					}
+				});
+
+			});
+
+			const model = {
+				ClinicId: document.getElementById('ClinicId').value,
+				StartDate: document.getElementById('StartDate').value,
+				EndDate: document.getElementById('EndDate').value,
+				Recurrence: document.getElementById('Recurrence').value,
+				DoctorScheduleDetails:DoctorScheduleDetails
+			};
+
+			console.log(model)
+
+			$.ajax({
+				url:'/DoctorSchedules/Create',
+				type: 'POST',
+				dataType: "json",
+				contentType: 'application/json',
+				data:JSON.stringify(model),
+				processData: false,
+				success: function (response) {
+					alert("success");
+				},
+				error: function (xhr) {
+					console.error(xhr);
+				}
+			});
+
+
+		}
+
 	</script>
 }

@@ -18,12 +18,25 @@ public class DoctorSchedulesController : Controller
 		return View("Upsert", PopulateLookups());
 	}
 
+	[HttpPost]
+	public IActionResult Create(DoctorScheduleDto doctorSchedule)
+	{
+		if (!ModelState.IsValid)
+		{
+			return View("Upsert", PopulateLookups(doctorSchedule));
+		}
+		// Here you would typically call a service to save the doctor schedule
+		// _doctorScheduleService.Create(doctorScheduleDto);
+		return Ok();
+	}
+
 	private DoctorScheduleDto PopulateLookups(DoctorScheduleDto? dto = null)
 	{
 		var doctorScheduleDto = dto ?? new DoctorScheduleDto();
 		var clinics = _clinicService.GetClinicsLookup();
 
 		doctorScheduleDto.Clinics = new SelectList(clinics, "Id", "Name");
+		doctorScheduleDto.DoctorScheduleDetails = new List<DoctorScheduleDetailsDto>();
 		doctorScheduleDto.DoctorScheduleDetails.Add(new DoctorScheduleDetailsDto { Id = 1 });
 
 		return doctorScheduleDto;
