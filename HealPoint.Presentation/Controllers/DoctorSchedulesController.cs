@@ -2,31 +2,43 @@
 using HealPoint.BusinessLogic.DTOs;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using System.Security.Claims;
 
 namespace HealPoint.Presentation.Controllers;
 public class DoctorSchedulesController : Controller
 {
 	private readonly IClinicService _clinicService;
+	private readonly IDoctorScheduleService _doctorScheduleService;
 
-	public DoctorSchedulesController(IClinicService clinicService)
+	public DoctorSchedulesController(IClinicService clinicService, IDoctorScheduleService doctorScheduleService)
 	{
 		_clinicService = clinicService;
+		_doctorScheduleService = doctorScheduleService;
 	}
 
 	public IActionResult Create()
 	{
-		return View("Upsert", PopulateLookups());
+		var doctorSchedules = _doctorScheduleService.GetAllWithDetails(User.FindFirst(ClaimTypes.NameIdentifier)!.Value);
+		return View("Upsert", PopulateLookups(doctorSchedules));
 	}
 
 	[HttpPost]
-	public IActionResult Create(DoctorScheduleDto doctorSchedule)
+	public IActionResult Create([FromBody] DoctorScheduleDto model)
 	{
 		if (!ModelState.IsValid)
 		{
-			return View("Upsert", PopulateLookups(doctorSchedule));
+			return View("Upsert", PopulateLookups(model));
 		}
-		// Here you would typically call a service to save the doctor schedule
-		// _doctorScheduleService.Create(doctorScheduleDto);
+
+		foreach (var item in model.DoctorScheduleDetails)
+		{
+			if (item.StartTime >= item.EndTime)
+			{
+				return BadRequest($"Start Time must be before End Time on {item.DayOfWeek}");
+			}
+		}
+
+		//_doctorScheduleService.Create(model, User.FindFirst(ClaimTypes.NameIdentifier)!.Value);
 		return Ok();
 	}
 
@@ -36,9 +48,12 @@ public class DoctorSchedulesController : Controller
 		var clinics = _clinicService.GetClinicsLookup();
 
 		doctorScheduleDto.Clinics = new SelectList(clinics, "Id", "Name");
-		doctorScheduleDto.DoctorScheduleDetails = new List<DoctorScheduleDetailsDto>();
-		doctorScheduleDto.DoctorScheduleDetails.Add(new DoctorScheduleDetailsDto { Id = 1 });
 
+		if (!doctorScheduleDto.DoctorScheduleDetails.Any())
+		{
+			doctorScheduleDto.DoctorScheduleDetails = new List<DoctorScheduleDetailsDto>();
+			doctorScheduleDto.DoctorScheduleDetails.Add(new DoctorScheduleDetailsDto { Id = 1 });
+		}
 		return doctorScheduleDto;
 	}
 }

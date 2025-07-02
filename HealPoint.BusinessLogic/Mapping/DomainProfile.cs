@@ -53,5 +53,10 @@ public class DomainProfile : Profile
 
 		CreateMap<RegisterPatientDto, ApplicationUser>();
 
+		CreateMap<DoctorScheduleDto, DoctorSchedule>()
+			.ReverseMap();
+
+		CreateMap<DoctorScheduleDetailsDto, DoctorScheduleDetails>()
+			.ReverseMap();
 	}
 }

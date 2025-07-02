@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace HealPoint.DataAccess.Migrations
 {
     /// <inheritdoc />
-    public partial class AddDoctorScheduleTableAndDetails : Migration
+    public partial class AddDoctorScheduleTableWithDetails : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -62,7 +62,6 @@ namespace HealPoint.DataAccess.Migrations
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     DoctorScheduleId = table.Column<int>(type: "int", nullable: false),
-                    DoctorScheduleId1 = table.Column<int>(type: "int", nullable: false),
                     DayOfWeek = table.Column<int>(type: "int", nullable: false),
                     StartTime = table.Column<TimeSpan>(type: "time", nullable: false),
                     EndTime = table.Column<TimeSpan>(type: "time", nullable: false),
@@ -90,12 +89,6 @@ namespace HealPoint.DataAccess.Migrations
                         column: x => x.DoctorScheduleId,
                         principalTable: "DoctorSchedules",
                         principalColumn: "Id");
-                    table.ForeignKey(
-                        name: "FK_DoctorScheduleDetails_DoctorSchedules_DoctorScheduleId1",
-                        column: x => x.DoctorScheduleId1,
-                        principalTable: "DoctorSchedules",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateIndex(
@@ -107,11 +100,6 @@ namespace HealPoint.DataAccess.Migrations
                 name: "IX_DoctorScheduleDetails_DoctorScheduleId",
                 table: "DoctorScheduleDetails",
                 column: "DoctorScheduleId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_DoctorScheduleDetails_DoctorScheduleId1",
-                table: "DoctorScheduleDetails",
-                column: "DoctorScheduleId1");
 
             migrationBuilder.CreateIndex(
                 name: "IX_DoctorScheduleDetails_LastUpdatedById",

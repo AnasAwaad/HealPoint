@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace HealPoint.DataAccess.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20250701161248_AddDoctorScheduleTableAndDetails")]
-    partial class AddDoctorScheduleTableAndDetails
+    [Migration("20250702163213_AddDoctorScheduleTableWithDetails")]
+    partial class AddDoctorScheduleTableWithDetails
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -532,9 +532,6 @@ namespace HealPoint.DataAccess.Migrations
                     b.Property<int>("DoctorScheduleId")
                         .HasColumnType("int");
 
-                    b.Property<int>("DoctorScheduleId1")
-                        .HasColumnType("int");
-
                     b.Property<TimeSpan>("EndTime")
                         .HasColumnType("time");
 
@@ -555,8 +552,6 @@ namespace HealPoint.DataAccess.Migrations
                     b.HasIndex("CreatedById");
 
                     b.HasIndex("DoctorScheduleId");
-
-                    b.HasIndex("DoctorScheduleId1");
 
                     b.HasIndex("LastUpdatedById");
 
@@ -885,16 +880,10 @@ namespace HealPoint.DataAccess.Migrations
                         .WithMany()
                         .HasForeignKey("CreatedById");
 
-                    b.HasOne("HealPoint.DataAccess.Entities.DoctorSchedule", null)
+                    b.HasOne("HealPoint.DataAccess.Entities.DoctorSchedule", "DoctorSchedule")
                         .WithMany("DoctorScheduleDetails")
                         .HasForeignKey("DoctorScheduleId")
                         .OnDelete(DeleteBehavior.NoAction)
-                        .IsRequired();
-
-                    b.HasOne("HealPoint.DataAccess.Entities.DoctorSchedule", "DoctorSchedule")
-                        .WithMany()
-                        .HasForeignKey("DoctorScheduleId1")
-                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("HealPoint.DataAccess.Entities.ApplicationUser", "LastUpdatedBy")

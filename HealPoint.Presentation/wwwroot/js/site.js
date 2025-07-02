@@ -155,6 +155,8 @@ $(document).ready(function () {
     $('#logoutBtn').on('click', function () {
         $('#logoutForm').submit()
     })
+
+    initFlatTimePickers();
 })
 
 function onModalFormSuccess(newRow) {
@@ -180,6 +182,24 @@ function onModalFormSuccess(newRow) {
 
     showSuccessMessage(message);
 
+}
+
+function initFlatTimePickers() {
+    flatpickr(".start-flat-time", {
+        enableTime: true,
+        noCalendar: true,
+        dateFormat: "H:i K",
+        time_24hr: false,
+        defaultDate: "09:00 AM"
+    });
+
+    flatpickr(".end-flat-time", {
+        enableTime: true,
+        noCalendar: true,
+        dateFormat: "H:i K",
+        time_24hr: false,
+        defaultDate: "09:30 AM"
+    });
 }
 
 function onResetPasswordFormSuccess() {

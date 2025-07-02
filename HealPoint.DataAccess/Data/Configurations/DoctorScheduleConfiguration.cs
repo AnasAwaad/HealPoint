@@ -16,7 +16,7 @@ internal class DoctorScheduleConfiguration : BaseEntityConfiguration<DoctorSched
 			   .OnDelete(DeleteBehavior.Cascade);
 
 		builder.HasMany(ds => ds.DoctorScheduleDetails)
-			.WithOne()
+			.WithOne(ds => ds.DoctorSchedule)
 			.HasForeignKey(ds => ds.DoctorScheduleId)
 			.OnDelete(DeleteBehavior.NoAction);
 	}

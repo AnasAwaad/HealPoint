@@ -43,10 +43,10 @@
 			<div class="card card-flush">
 				
 				<!--begin::Card body-->
-				<div class="card-body pt-0">
+				<div class="card-body pt-12">
 
 					<form class="row g-5">
-						<div class="row">
+						<div class="row pb-4">
 							<!-- Clinic -->
 							<div class="col-md-3">
 								<label asp-for="ClinicId" class="form-label">Clinic</label>
@@ -111,7 +111,7 @@
 												<!--begin::Card body-->
 												<div class="card-body pt-0">
 													<div class="table-responsive">
-														<table class="table table-row-bordered table-row-gray-300 gy-7 schedule-table">
+														<table class="table table-row-bordered table-row-gray-300 gy-7 schedule-table" data-day="@days[day]">
 															<thead class="fw-bold fs-6 text-gray-800">
 																<tr>
 																	<th>Start Date</th>
@@ -122,18 +122,21 @@
 															<tbody>
 																@for (int i = 0; i < Model.DoctorScheduleDetails.Count; i++)
 																{
-																	<tr>
-																		<td>
-																			<input class="form-control" type="time" asp-for="@Model.DoctorScheduleDetails[i].StartTime" />
-																		</td>
-																		<td>
-																			<input class="form-control" type="time" asp-for="@Model.DoctorScheduleDetails[i].EndTime" />
-																		</td>
-																		<td>
-																			<button onclick="AddItem(this)" type="button" class="btn btn-primary btnAdd">Add</button>
-																			<button onclick="DeleteItem(this)" type="button" class="btn btn-danger btnDelete d-none">Delete</button>
-																		</td>
-																	</tr>
+																	@if(Model.DoctorScheduleDetails[i].DayOfWeek == days[day])
+																	{
+																		<tr>
+																			<td>
+																				<input class="form-control start-flat-time" type="time" asp-for="@Model.DoctorScheduleDetails[i].StartTime" />
+																			</td>
+																			<td>
+																				<input class="form-control end-flat-time" type="time" asp-for="@Model.DoctorScheduleDetails[i].EndTime" />
+																			</td>
+																			<td>
+																				<button onclick="AddItem(this)" type="button" class="btn btn-primary btnAdd">Add</button>
+																				<button onclick="DeleteItem(this)" type="button" class="btn btn-danger btnDelete d-none">Delete</button>
+																			</td>
+																		</tr>
+																	}
 																}
 															</tbody>
 														</table>
@@ -190,8 +193,8 @@
 
 			const newRow = document.createElement('tr');
 			newRow.innerHTML = `
-				<td><input class="form-control" type="time" /></td>
-				<td><input class="form-control" type="time" /></td>
+				<td><input class="form-control start-flat-time" type="time" /></td>
+				<td><input class="form-control end-flat-time" type="time" /></td>
 				<td>
 					<button type="button" class="btn btn-primary" onclick="AddItem(this)">Add</button>
 					<button type="button" class="btn btn-danger" onclick="DeleteItem(this)">Delete</button>
@@ -206,7 +209,6 @@
 		function DeleteItem(btn) {
 			const table = btn.closest('table');
 			btn.closest('tr').remove();
-			RenameRowInputs(table);
 			UpdateButtons(table);
 		}
 
@@ -220,18 +222,17 @@
 			});
 		}
 
-		function SubmitSchedule(){
-			
+		function SubmitSchedule(btn){
 
+			var doctorScheduleDetails=[]
 
-			var DoctorScheduleDetails=[]
 			$('.schedule-table').each(function(){
 				const day =$(this).data('day');
 				$(this).find('tbody tr').each(function(){
 					const startTime = $(this).find('input[type="time"]').eq(0).val();
 					const endTime = $(this).find('input[type="time"]').eq(1).val();
 					if(startTime && endTime){
-						DoctorScheduleDetails.push({
+						doctorScheduleDetails.push({
 							"Id":0,
 							"DayOfWeek": day,
 							"StartTime": startTime,
@@ -247,23 +248,22 @@
 				StartDate: document.getElementById('StartDate').value,
 				EndDate: document.getElementById('EndDate').value,
 				Recurrence: document.getElementById('Recurrence').value,
-				DoctorScheduleDetails:DoctorScheduleDetails
+				DoctorScheduleDetails:doctorScheduleDetails
 			};
-
-			console.log(model)
 
 			$.ajax({
 				url:'/DoctorSchedules/Create',
 				type: 'POST',
 				dataType: "json",
-				contentType: 'application/json',
+				contentType: "application/json; charset=utf-8",
 				data:JSON.stringify(model),
-				processData: false,
 				success: function (response) {
 					alert("success");
 				},
-				error: function (xhr) {
-					console.error(xhr);
+				error: function (request,status,error) {
+					const message = request.responseText || "Something went wrong";
+
+					showErrorMessage(message);
 				}
 			});
 
