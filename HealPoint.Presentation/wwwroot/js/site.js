@@ -207,13 +207,13 @@ function initDateTimePickers() {
     flatpickr(".js-start-datepicker", {
         dateFormat: "Y-m-d",
         minDate: "today",
-        defaultDate: "today",
+        //defaultDate: "today",
     });
 
     flatpickr(".js-end-datepicker", {
         dateFormat: "Y-m-d",
         minDate: "today",
-        defaultDate: new Date().fp_incr(30),
+        //defaultDate: new Date().fp_incr(30),
     });
 
 }

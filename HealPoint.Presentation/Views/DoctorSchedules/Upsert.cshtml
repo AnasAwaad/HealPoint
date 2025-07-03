@@ -41,7 +41,7 @@
 			</div>
 			<!--begin::Clinic-->
 			<div class="card card-flush">
-				
+
 				<!--begin::Card body-->
 				<div class="card-body pt-12">
 
@@ -60,14 +60,14 @@
 							<!-- Start Date -->
 							<div class="col-md-3">
 								<label asp-for="StartDate" class="form-label">From</label>
-								<input asp-for="StartDate" type="date" class="form-control js-start-datepicker" required />
+								<input asp-for="StartDate" type="date" class="form-control js-start-datepicker" required placeholder="Select start date" />
 								<span asp-validation-for="StartDate" class="text-danger"></span>
 							</div>
 
 							<!-- End Date -->
 							<div class="col-md-3">
 								<label asp-for="EndDate" class="form-label">To</label>
-								<input asp-for="EndDate" type="date" class="form-control js-end-datepicker" required />
+								<input asp-for="EndDate" type="date" class="form-control js-end-datepicker" required placeholder="Select end date" />
 								<span asp-validation-for="EndDate" class="text-danger"></span>
 							</div>
 
@@ -76,9 +76,9 @@
 								<label asp-for="Recurrence" class="form-label">Recurs Every</label>
 								<select asp-for="Recurrence" class="form-select" required>
 									<option value="">-- Select Pattern --</option>
-									<option value="0">Every Week</option>
-									<option value="1">Every 2 Weeks</option>
-									<option value="2">Every Month</option>
+									<option value="1">Every Week</option>
+									<option value="2">Every 2 Weeks</option>
+									<option value="3">Every Month</option>
 								</select>
 								<span asp-validation-for="Recurrence" class="text-danger"></span>
 							</div>
@@ -101,49 +101,68 @@
 							<!--end:::Tabs-->
 							<!--begin::Tab content-->
 							<div class="tab-content">
-								
+
 								@for (var day = 0; day < days.Length; day++)
 								{
 									<!--begin::Tab pane-->
 									<div class="tab-pane fade @(day == 0 ? "active show" : string.Empty)" id="doctor_schedule_@days[day]" role="tab-panel">
 										<div class="d-flex flex-column gap-7 gap-lg-10">
 											<!--begin::General options-->
-											<div class="card card-flush py-4">
+											<div class="card card-flush py-4" >
 												<!--begin::Card body-->
-												<div class="card-body pt-0">
+												<div class="card-body pt-0" >
 													<div class="table-responsive" style="height:430px;overflow-y:auto;">
+														@{
+															var scheduleDetails = Model.DoctorScheduleDetails?.Where(s => s.DayOfWeek == days[day]).ToList();
+														}
 														<table class="table table-row-bordered table-row-gray-300 gy-7 schedule-table" data-day="@days[day]">
 															<thead class="fw-bold fs-6 text-gray-800">
 																<tr>
 																	<th>Start Date</th>
 																	<th>End Date</th>
-																	<th></th>
+																	<th>
+																		<button onclick="AddItem(this)" type="button" class="btn btn-primary btnAdd">Add</button>
+																	</th>
 																</tr>
 															</thead>
 															<tbody>
-
-																@for (int i = 0; i < Model.DoctorScheduleDetails.Count; i++)
+																	
+																@foreach (var scheduleDetail in scheduleDetails)
 																{
-																	@if(Model.DoctorScheduleDetails[i].DayOfWeek == days[day])
-																	{
-																		<tr>
+																	<tr>
 
-																			<td>
-																				<input class="form-control js-start-flat-time" type="time" asp-for="@Model.DoctorScheduleDetails[i].StartTime" />
-																			</td>
-																			<td>
-																				<input class="form-control js-end-flat-time" type="time" asp-for="@Model.DoctorScheduleDetails[i].EndTime" />
-																			</td>
-																			<td>
-																				<button onclick="AddItem(this)" type="button" class="btn btn-primary btnAdd">Add</button>
-																				<button onclick="DeleteItem(this)" type="button" class="btn btn-danger btnDelete d-none">Delete</button>
-																			</td>
-																			<input type="hidden" class="schedule-time-id" asp-for="@Model.DoctorScheduleDetails[i].Id" />
-																		</tr>
-																	}
+																		<td>
+																			<input class="form-control js-start-flat-time" type="time" asp-for="@scheduleDetail.StartTime" />
+																		</td>
+																		<td>
+																			<input class="form-control js-end-flat-time" type="time" asp-for="@scheduleDetail.EndTime" />
+																		</td>
+																		<td>
+																			<button onclick="DeleteItem(this)" type="button" class="btn btn-danger btnDelete">Delete</button>
+																		</td>
+																		<input type="hidden" class="schedule-time-id" asp-for="@scheduleDetail.Id" />
+																	</tr>
 																}
+																	
 															</tbody>
 														</table>
+														@if (!scheduleDetails.Any())
+														{
+															<div class="js-alert">
+																<div class="alert alert-dismissible bg-light-primary d-flex flex-column flex-sm-row w-100 p-5 mb-10">
+																	<!--begin::Icon-->
+																	<i class="ki-duotone ki-notification-bing fs-2hx text-primary me-4 mb-5 mb-sm-0"><span class="path1"></span><span class="path2"></span><span class="path3"></span></i>                    <!--end::Icon-->
+																	<!--begin::Content-->
+																	<div class="d-flex flex-column pe-0 pe-sm-10">
+																		<h4 class="fw-semibold">No Schedule Entries Found</h4>
+																		<span>There are no schedule entries for this day. Please use the "Add" button to create one.</span>
+																	</div>
+																	<!--end::Content-->
+																</div>
+															</div>
+																
+														}
+														
 													</div>
 
 												</div>
@@ -183,17 +202,22 @@
 	</div>
 </div>
 @section Scripts {
+	<partial name="_ValidationScriptsPartial" />
 	<script>
+
 		$(document).ready(function(){
 			$('#submitFormBtn').on('click',function(e){
 				e.preventDefault();
+
+				var $form = $(this).closest('form');
+
+				if (!$form.valid()) {
+					return;
+				}
 				SubmitSchedule();
 			});
-			document.querySelectorAll('.schedule-table').forEach(table => {
-				UpdateButtons(table);
-			});
 		});
-		
+
 		function AddItem(btn) {
 			const table = btn.closest('table');
 			const day = table.dataset.day;
@@ -203,32 +227,22 @@
 				<td><input class="form-control js-start-flat-time" value="09:00" /></td>
 				<td><input class="form-control js-end-flat-time" value="09:30" /></td>
 				<td>
-					<button type="button" class="btn btn-primary" onclick="AddItem(this)">Add</button>
 					<button type="button" class="btn btn-danger" onclick="DeleteItem(this)">Delete</button>
 				</td>
 				<input type="hidden" class="schedule-time-id" value="0" />
 			`;
 
 			table.querySelector('tbody').appendChild(newRow);
-			UpdateButtons(table);
 			initFlatTimePickers();
+			$('.js-alert').hide();
 		}
 
 		function DeleteItem(btn) {
 			const table = btn.closest('table');
 			btn.closest('tr').remove();
-			UpdateButtons(table);
 		}
 
-		function UpdateButtons(table) {
-			const rows = table.querySelectorAll('tbody tr');
-			rows.forEach((row, index) => {
-				const addBtn = row.querySelector('button.btn-primary');
-				const deleteBtn = row.querySelector('button.btn-danger');
-				if (addBtn) addBtn.classList.toggle('d-none', index !== rows.length - 1);
-				if (deleteBtn) deleteBtn.classList.toggle('d-none', index === rows.length - 1);
-			});
-		}
+
 
 		function SubmitSchedule(btn){
 
@@ -265,7 +279,7 @@
 			};
 			console.log(model)
 			$.ajax({
-				url:"/DoctorSchedules/@(Model.Id > 0 ? "Update":"Create")",
+				url:"/DoctorSchedules/@(Model.Id > 0 ? "Update" : "Create")",
 				type: 'POST',
 				dataType: "json",
 				contentType: "application/json; charset=utf-8",

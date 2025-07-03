@@ -26,17 +26,15 @@ public class DoctorSchedulesController : Controller
 	public IActionResult Create([FromBody] DoctorScheduleDto model)
 	{
 		if (!ModelState.IsValid)
-		{
-			return View("Upsert", PopulateLookups(model));
-		}
+			return BadRequest();
 
-		//foreach (var item in model.DoctorScheduleDetails)
-		//{
-		//	if (item.StartTime >= item.EndTime)
-		//	{
-		//		return BadRequest($"Start Time must be before End Time on {item.DayOfWeek}");
-		//	}
-		//}
+		foreach (var item in model.DoctorScheduleDetails)
+		{
+			if (TimeSpan.Parse(item.StartTime) >= TimeSpan.Parse(item.EndTime))
+			{
+				return BadRequest($"Start Time must be before End Time on {item.DayOfWeek}");
+			}
+		}
 
 		_doctorScheduleService.Create(model, User.FindFirst(ClaimTypes.NameIdentifier)!.Value);
 		return Ok(new { success = true, message = "Doctor schedule created successfully" });
@@ -46,7 +44,7 @@ public class DoctorSchedulesController : Controller
 	public IActionResult Update([FromBody] DoctorScheduleDto model)
 	{
 		if (!ModelState.IsValid)
-			return View("Upsert", PopulateLookups(model));
+			return BadRequest();
 
 		foreach (var item in model.DoctorScheduleDetails)
 		{
@@ -65,20 +63,6 @@ public class DoctorSchedulesController : Controller
 		var clinics = _clinicService.GetClinicsLookup();
 
 		doctorScheduleDto.Clinics = new SelectList(clinics, "Id", "Name");
-
-		if (!(doctorScheduleDto.DoctorScheduleDetails?.Count > 0))
-		{
-			doctorScheduleDto.DoctorScheduleDetails = new List<DoctorScheduleDetailsDto>
-			{
-				new DoctorScheduleDetailsDto { DayOfWeek = "Sunday",    StartTime = "09:00", EndTime = "09:30" },
-				new DoctorScheduleDetailsDto { DayOfWeek = "Monday",    StartTime = "09:00", EndTime = "09:30" },
-				new DoctorScheduleDetailsDto { DayOfWeek = "Tuesday",   StartTime = "09:00", EndTime = "09:30" },
-				new DoctorScheduleDetailsDto { DayOfWeek = "Wednesday", StartTime = "09:00", EndTime = "09:30" },
-				new DoctorScheduleDetailsDto { DayOfWeek = "Thursday",  StartTime = "09:00", EndTime = "09:30" },
-				new DoctorScheduleDetailsDto { DayOfWeek = "Friday",    StartTime = "09:00", EndTime = "09:30" },
-				new DoctorScheduleDetailsDto { DayOfWeek = "Saturday",  StartTime = "09:00", EndTime = "09:30" }
-			};
-		}
 
 		return doctorScheduleDto;
 	}
