@@ -157,6 +157,7 @@ $(document).ready(function () {
     })
 
     initFlatTimePickers();
+    initDateTimePickers();
 })
 
 function onModalFormSuccess(newRow) {
@@ -185,21 +186,36 @@ function onModalFormSuccess(newRow) {
 }
 
 function initFlatTimePickers() {
-    flatpickr(".start-flat-time", {
+    flatpickr(".js-start-flat-time", {
         enableTime: true,
         noCalendar: true,
-        dateFormat: "H:i K",
+        dateFormat: "H:i",
         time_24hr: false,
-        //defaultDate: "09:00 AM"
+        //defaultDate: "09:00 AM",
     });
 
-    flatpickr(".end-flat-time", {
+    flatpickr(".js-end-flat-time", {
         enableTime: true,
         noCalendar: true,
-        dateFormat: "H:i K",
+        dateFormat: "H:i",
         time_24hr: false,
         /*defaultDate: "09:30 AM"*/
     });
+}
+
+function initDateTimePickers() {
+    flatpickr(".js-start-datepicker", {
+        dateFormat: "Y-m-d",
+        minDate: "today",
+        defaultDate: "today",
+    });
+
+    flatpickr(".js-end-datepicker", {
+        dateFormat: "Y-m-d",
+        minDate: "today",
+        defaultDate: new Date().fp_incr(30),
+    });
+
 }
 
 function onResetPasswordFormSuccess() {
@@ -217,7 +233,22 @@ function onModalFormFailure(res) {
     $('#myModal').modal('hide');
     showErrorMessage("An error happen while creating category");
 }
+function showSuccessSwal(message) {
+    Swal.fire({
+        icon: "success",
+        title: "Success",
+        showConfirmButton: true,
+        text: message
+    });
+}
 
+function showErrorSwal(message) {
+    Swal.fire({
+        icon: "error",
+        title: "Oops...",
+        text: message,
+    });
+}
 function showSuccessMessage(message) {
     Toastify({
         text: message,

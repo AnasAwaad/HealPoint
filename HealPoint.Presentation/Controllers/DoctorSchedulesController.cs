@@ -69,15 +69,18 @@ public class DoctorSchedulesController : Controller
 
 		if (!(doctorScheduleDto.DoctorScheduleDetails?.Count > 0))
 		{
-			doctorScheduleDto.DoctorScheduleDetails = new List<DoctorScheduleDetailsDto>();
-			doctorScheduleDto.DoctorScheduleDetails.Add(new DoctorScheduleDetailsDto { DayOfWeek = "Sunday" });
-			doctorScheduleDto.DoctorScheduleDetails.Add(new DoctorScheduleDetailsDto { DayOfWeek = "Monday" });
-			doctorScheduleDto.DoctorScheduleDetails.Add(new DoctorScheduleDetailsDto { DayOfWeek = "Tuesday" });
-			doctorScheduleDto.DoctorScheduleDetails.Add(new DoctorScheduleDetailsDto { DayOfWeek = "Wednesday" });
-			doctorScheduleDto.DoctorScheduleDetails.Add(new DoctorScheduleDetailsDto { DayOfWeek = "Thursday" });
-			doctorScheduleDto.DoctorScheduleDetails.Add(new DoctorScheduleDetailsDto { DayOfWeek = "Friday" });
-			doctorScheduleDto.DoctorScheduleDetails.Add(new DoctorScheduleDetailsDto { DayOfWeek = "Saturday" });
+			doctorScheduleDto.DoctorScheduleDetails = new List<DoctorScheduleDetailsDto>
+			{
+				new DoctorScheduleDetailsDto { DayOfWeek = "Sunday",    StartTime = "09:00", EndTime = "09:00" },
+				new DoctorScheduleDetailsDto { DayOfWeek = "Monday",    StartTime = "09:00", EndTime = "09:00" },
+				new DoctorScheduleDetailsDto { DayOfWeek = "Tuesday",   StartTime = "09:00", EndTime = "09:00" },
+				new DoctorScheduleDetailsDto { DayOfWeek = "Wednesday", StartTime = "09:00", EndTime = "09:00" },
+				new DoctorScheduleDetailsDto { DayOfWeek = "Thursday",  StartTime = "09:00", EndTime = "09:00" },
+				new DoctorScheduleDetailsDto { DayOfWeek = "Friday",    StartTime = "09:00", EndTime = "09:00" },
+				new DoctorScheduleDetailsDto { DayOfWeek = "Saturday",  StartTime = "09:00", EndTime = "09:00" }
+			};
 		}
+
 		return doctorScheduleDto;
 	}
 }

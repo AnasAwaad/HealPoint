@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using HealPoint.DataAccess.Entities;
+using HealPoint.DataAccess.Enums;
 
 namespace HealPoint.BusinessLogic.Mapping;
 public class DomainProfile : Profile
@@ -54,10 +55,16 @@ public class DomainProfile : Profile
 		CreateMap<RegisterPatientDto, ApplicationUser>();
 
 		CreateMap<DoctorScheduleDto, DoctorSchedule>()
+			.ForMember(dest => dest.StartDate, opt => opt.MapFrom(src => DateTime.Parse(src.StartDate)))
+			.ForMember(dest => dest.EndDate, opt => opt.MapFrom(src => DateTime.Parse(src.EndDate)))
+			.ForMember(dest => dest.Recurrence, opt => opt.MapFrom(src => Enum.Parse<RecurrencePattern>(src.Recurrence)))
 			.ForMember(dest => dest.DoctorScheduleDetails, opt => opt.MapFrom(src => src.DoctorScheduleDetails))
 			.ReverseMap();
-
 		CreateMap<DoctorScheduleDetailsDto, DoctorScheduleDetails>()
+			.ForMember(dest => dest.DayOfWeek, opt => opt.MapFrom(src => Enum.Parse<System.DayOfWeek>(src.DayOfWeek)))
+			.ForMember(dest => dest.StartTime, opt => opt.MapFrom(src => TimeSpan.Parse(src.StartTime)))
+			.ForMember(dest => dest.EndTime, opt => opt.MapFrom(src => TimeSpan.Parse(src.EndTime)))
 			.ReverseMap();
+
 	}
 }

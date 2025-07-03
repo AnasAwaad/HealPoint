@@ -60,14 +60,14 @@
 							<!-- Start Date -->
 							<div class="col-md-3">
 								<label asp-for="StartDate" class="form-label">From</label>
-								<input asp-for="StartDate" type="date" class="form-control" required />
+								<input asp-for="StartDate" type="date" class="form-control js-start-datepicker" required />
 								<span asp-validation-for="StartDate" class="text-danger"></span>
 							</div>
 
 							<!-- End Date -->
 							<div class="col-md-3">
 								<label asp-for="EndDate" class="form-label">To</label>
-								<input asp-for="EndDate" type="date" class="form-control" required />
+								<input asp-for="EndDate" type="date" class="form-control js-end-datepicker" required />
 								<span asp-validation-for="EndDate" class="text-danger"></span>
 							</div>
 
@@ -76,9 +76,9 @@
 								<label asp-for="Recurrence" class="form-label">Recurs Every</label>
 								<select asp-for="Recurrence" class="form-select" required>
 									<option value="">-- Select Pattern --</option>
-									<option value="1">Every Week</option>
-									<option value="2">Every 2 Weeks</option>
-									<option value="3">Every Month</option>
+									<option value="0">Every Week</option>
+									<option value="1">Every 2 Weeks</option>
+									<option value="2">Every Month</option>
 								</select>
 								<span asp-validation-for="Recurrence" class="text-danger"></span>
 							</div>
@@ -129,10 +129,10 @@
 																		<tr>
 
 																			<td>
-																				<input class="form-control" type="time" asp-for="@Model.DoctorScheduleDetails[i].StartTime" />
+																				<input class="form-control js-start-flat-time" type="time" asp-for="@Model.DoctorScheduleDetails[i].StartTime" />
 																			</td>
 																			<td>
-																				<input class="form-control" type="time" asp-for="@Model.DoctorScheduleDetails[i].EndTime" />
+																				<input class="form-control js-end-flat-time" type="time" asp-for="@Model.DoctorScheduleDetails[i].EndTime" />
 																			</td>
 																			<td>
 																				<button onclick="AddItem(this)" type="button" class="btn btn-primary btnAdd">Add</button>
@@ -189,6 +189,9 @@
 				e.preventDefault();
 				SubmitSchedule();
 			});
+			document.querySelectorAll('.schedule-table').forEach(table => {
+				UpdateButtons(table);
+			});
 		});
 		
 		function AddItem(btn) {
@@ -197,8 +200,8 @@
 
 			const newRow = document.createElement('tr');
 			newRow.innerHTML = `
-				<td><input class="form-control" type="time" /></td>
-				<td><input class="form-control" type="time" /></td>
+				<td><input class="form-control" type="time js-start-flat-time" value="09:00" /></td>
+				<td><input class="form-control" type="time js-end-flat-time" value="09:30" /></td>
 				<td>
 					<button type="button" class="btn btn-primary" onclick="AddItem(this)">Add</button>
 					<button type="button" class="btn btn-danger" onclick="DeleteItem(this)">Delete</button>
@@ -233,8 +236,8 @@
 			$('.schedule-table').each(function(){
 				const day =$(this).data('day');
 				$(this).find('tbody tr').each(function(){
-					const startTime = $(this).find('input[type="time"]').eq(0).val();
-					const endTime = $(this).find('input[type="time"]').eq(1).val();
+					const startTime = $(this).find('.js-start-flat-time').eq(0).val();
+					const endTime = $(this).find('.js-end-flat-time').eq(0).val();
 					const id = $(this).find('.schedule-time-id').val();
 					console.log(id)
 					console.log(startTime , endTime);
@@ -268,7 +271,7 @@
 				data:JSON.stringify(model),
 				success: function (response) {
 					if(response.success) {
-						showSuccessMessage(response.message);
+						showSuccessSwal(response.message);
 					}
 				},
 				error: function (request,status,error) {
