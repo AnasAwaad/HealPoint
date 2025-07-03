@@ -200,8 +200,8 @@
 
 			const newRow = document.createElement('tr');
 			newRow.innerHTML = `
-				<td><input class="form-control" type="time js-start-flat-time" value="09:00" /></td>
-				<td><input class="form-control" type="time js-end-flat-time" value="09:30" /></td>
+				<td><input class="form-control js-start-flat-time" value="09:00" /></td>
+				<td><input class="form-control js-end-flat-time" value="09:30" /></td>
 				<td>
 					<button type="button" class="btn btn-primary" onclick="AddItem(this)">Add</button>
 					<button type="button" class="btn btn-danger" onclick="DeleteItem(this)">Delete</button>
@@ -211,6 +211,7 @@
 
 			table.querySelector('tbody').appendChild(newRow);
 			UpdateButtons(table);
+			initFlatTimePickers();
 		}
 
 		function DeleteItem(btn) {
@@ -259,7 +260,7 @@
 				ClinicId: document.getElementById('ClinicId').value,
 				StartDate: document.getElementById('StartDate').value,
 				EndDate: document.getElementById('EndDate').value,
-				Recurrence: document.getElementById('Recurrence').value,
+				Recurrence: parseInt(document.getElementById('Recurrence').value),
 				DoctorScheduleDetails:doctorScheduleDetails
 			};
 			console.log(model)
@@ -277,7 +278,7 @@
 				error: function (request,status,error) {
 					const message = request.responseText || "Something went wrong";
 
-					showErrorMessage("Something went wrong");
+					showErrorSwal(message);
 				}
 			});
 
