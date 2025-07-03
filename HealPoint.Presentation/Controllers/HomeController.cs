@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
 
 namespace HealPoint.Presentation.Controllers;
+
 [Authorize]
 public class HomeController : Controller
 {

@@ -41,6 +41,7 @@ internal class DoctorRepository : Repository<Doctor>, IDoctorRepository
 
 	public Doctor? GetDoctorByUserId(string userId)
 	{
-		return _context.Doctors.Where(d => d.ApplicationUserId == userId).FirstOrDefault();
+		return _context.Doctors
+			.FirstOrDefault(d => d.ApplicationUserId == userId && !d.IsDeleted);
 	}
 }

@@ -32,6 +32,14 @@
         "flatpickr.min.js",
         "flatpickr.min.css"
       ]
+    },
+    {
+      "library": "sweetalert2@11.22.2",
+      "destination": "wwwroot/lib/sweetalert2/",
+      "files": [
+        "sweetalert2.all.min.js",
+        "sweetalert2.min.css"
+      ]
     }
   ]
 }

@@ -1,49 +1,69 @@
 ﻿using HealPoint.BusinessLogic.Contracts;
 using HealPoint.BusinessLogic.DTOs;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using System.Security.Claims;
 
 namespace HealPoint.Presentation.Controllers;
 public class DoctorSchedulesController : Controller
 {
-	private readonly ITimeSlotService _timeSlotService;
+	private readonly IClinicService _clinicService;
+	private readonly IDoctorScheduleService _doctorScheduleService;
 
-	public DoctorSchedulesController(ITimeSlotService timeSlotService)
+	public DoctorSchedulesController(IClinicService clinicService, IDoctorScheduleService doctorScheduleService)
 	{
-		_timeSlotService = timeSlotService;
-	}
-
-	public IActionResult Index()
-	{
-		return View();
-	}
-
-	public IActionResult GetDayTimeSlots(string day)
-	{
-		if (!Enum.TryParse<DayOfWeek>(day, out var dayOfWeek))
-			return BadRequest("Invalid day");
-
-		var userId = User.FindFirst(ClaimTypes.NameIdentifier)!.Value;
-
-		var slots = _timeSlotService.GetTimeSlots(userId, dayOfWeek);
-
-		return PartialView("_DayTimeSlotsPartial", slots);
-
+		_clinicService = clinicService;
+		_doctorScheduleService = doctorScheduleService;
 	}
 
 	public IActionResult Create()
 	{
-		return PartialView("_Form");
+		var doctorSchedules = _doctorScheduleService.GetAllWithDetails(User.FindFirst(ClaimTypes.NameIdentifier)!.Value);
+		return View("Upsert", PopulateLookups(doctorSchedules));
 	}
 
 	[HttpPost]
-	[ValidateAntiForgeryToken]
-	public IActionResult Create(TimeSlotDto model)
+	public IActionResult Create([FromBody] DoctorScheduleDto model)
 	{
 		if (!ModelState.IsValid)
 			return BadRequest();
 
-		_timeSlotService.CreateTimeSlot(model, User.FindFirst(ClaimTypes.NameIdentifier)!.Value);
-		return Ok();
+		foreach (var item in model.DoctorScheduleDetails)
+		{
+			if (TimeSpan.Parse(item.StartTime) >= TimeSpan.Parse(item.EndTime))
+			{
+				return BadRequest($"Start Time must be before End Time on {item.DayOfWeek}");
+			}
+		}
+
+		_doctorScheduleService.Create(model, User.FindFirst(ClaimTypes.NameIdentifier)!.Value);
+		return Ok(new { success = true, message = "Doctor schedule created successfully" });
+	}
+
+	[HttpPost]
+	public IActionResult Update([FromBody] DoctorScheduleDto model)
+	{
+		if (!ModelState.IsValid)
+			return BadRequest();
+
+		foreach (var item in model.DoctorScheduleDetails)
+		{
+			if (TimeSpan.Parse(item.StartTime) >= TimeSpan.Parse(item.EndTime))
+			{
+				return BadRequest($"Start Time must be before End Time on {item.DayOfWeek}");
+			}
+		}
+		_doctorScheduleService.Update(model, User.FindFirst(ClaimTypes.NameIdentifier)!.Value);
+		return Ok(new { success = true, message = "Doctor schedule updated successfully" });
+	}
+
+	private DoctorScheduleDto PopulateLookups(DoctorScheduleDto? dto = null)
+	{
+		var doctorScheduleDto = dto ?? new DoctorScheduleDto();
+		var clinics = _clinicService.GetClinicsLookup();
+
+		doctorScheduleDto.Clinics = new SelectList(clinics, "Id", "Name");
+
+		return doctorScheduleDto;
 	}
 }

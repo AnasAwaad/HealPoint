@@ -160,32 +160,13 @@ $(document).ready(function () {
         $('#ModalForm').submit();
     })
 
-    // Handle logout functionality
     $('#logoutBtn').on('click', function () {
-        $('#logoutForm').submit();
+        $('#logoutForm').submit()
     })
 
-
+    initFlatTimePickers();
+    initDateTimePickers();
 })
-
-// Function to initialize flatpickr
-function initializeFlatpickr() {
-    flatpickr("input[name='StartTime'].flat-time", {
-        enableTime: true,
-        noCalendar: true,
-        dateFormat: "H:i",
-        time_24hr: false,
-        defaultDate: "09:00"
-    });
-
-    flatpickr("input[name='EndTime'].flat-time", {
-        enableTime: true,
-        noCalendar: true,
-        dateFormat: "H:i",
-        time_24hr: false,
-        defaultDate: "09:30"
-    });
-}
 
 function onModalFormSuccess(newRow) {
     var message;
@@ -212,16 +193,39 @@ function onModalFormSuccess(newRow) {
 
 }
 
-function onTimeSlotSaveSuccess() {
-    $('#myModal').modal('hide');
+function initFlatTimePickers() {
+    flatpickr(".js-start-flat-time", {
+        enableTime: true,
+        noCalendar: true,
+        dateFormat: "H:i",
+        time_24hr: false,
+        //defaultDate: "09:00 AM",
+    });
 
-    showSuccessMessage("Doctor time slot added successfully");
+    flatpickr(".js-end-flat-time", {
+        enableTime: true,
+        noCalendar: true,
+        dateFormat: "H:i",
+        time_24hr: false,
+        /*defaultDate: "09:30 AM"*/
+    });
 }
 
-function onTimeSlotSaveFailure() {
-    $('#myModal').modal('hide');
-    showErrorMessage("An error happen while adding time slot");
+function initDateTimePickers() {
+    flatpickr(".js-start-datepicker", {
+        dateFormat: "Y-m-d",
+        minDate: "today",
+        //defaultDate: "today",
+    });
+
+    flatpickr(".js-end-datepicker", {
+        dateFormat: "Y-m-d",
+        minDate: "today",
+        //defaultDate: new Date().fp_incr(30),
+    });
+
 }
+
 function onResetPasswordFormSuccess() {
     $('#myModal').modal('hide');
 
@@ -237,7 +241,22 @@ function onModalFormFailure(res) {
     $('#myModal').modal('hide');
     showErrorMessage("An error happen while creating category");
 }
+function showSuccessSwal(message) {
+    Swal.fire({
+        icon: "success",
+        title: "Success",
+        showConfirmButton: true,
+        text: message
+    });
+}
 
+function showErrorSwal(message) {
+    Swal.fire({
+        icon: "error",
+        title: "Oops...",
+        text: message,
+    });
+}
 function showSuccessMessage(message) {
     Toastify({
         text: message,

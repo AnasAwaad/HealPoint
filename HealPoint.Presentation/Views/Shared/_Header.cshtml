@@ -185,16 +185,17 @@
 							<a href="../../demo1/dist/account/settings.html" class="menu-link px-5">Account Settings</a>
 						</div>
 						<!--end::Menu item-->
+						<!--begin::Menu item-->
 						@if (SignInManager.IsSignedIn(User))
 						{
-							<!--begin::Menu item-->
+							
 							<div class="menu-item px-5">
 								<form id="logoutForm" class="form-inline" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })">
-									<a id="logoutBtn" class="menu-link px-5">Sign Out</a>
+									<a id="logoutBtn" type="submit" class="menu-link px-5">Sign Out</a>
 								</form>
 							</div>
-							<!--end::Menu item-->
 						}
+						<!--end::Menu item-->
 					</div>
 					<!--end::User account menu-->
 					<!--end::Menu wrapper-->

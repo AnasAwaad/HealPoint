@@ -1,0 +1,303 @@
+﻿@model DoctorScheduleDto
+
+@{
+	ViewData["Title"] = "Doctor Schedule";
+	var days = new[] { "Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday" };
+}
+
+<div class="d-flex flex-column flex-column-fluid" style="margin-top:30px;">
+
+	<!--begin::Content-->
+	<div id="kt_app_content" class="app-content  flex-column-fluid ">
+		<!--begin::Content container-->
+		<div id="kt_app_content_container">
+			<div class="page-title d-flex flex-column justify-content-center flex-wrap me-3 mb-4 ">
+				<!--begin::Title-->
+				<h1 class="page-heading d-flex text-gray-900 fw-bold fs-3 flex-column justify-content-center my-0">
+					Doctor Schedules
+				</h1>
+				<!--end::Title-->
+				<!--begin::Breadcrumb-->
+				<ul class="breadcrumb breadcrumb-separatorless fw-semibold fs-7 my-0 pt-1">
+					<!--begin::Item-->
+					<li class="breadcrumb-item text-muted">
+						<a href="/" class="text-muted text-hover-primary">
+							Home
+						</a>
+					</li>
+					<!--end::Item-->
+					<!--begin::Item-->
+					<li class="breadcrumb-item">
+						<span class="bullet bg-gray-500 w-5px h-2px"></span>
+					</li>
+					<!--end::Item-->
+					<!--begin::Item-->
+					<li class="breadcrumb-item text-muted">
+						Doctor Schedules
+					</li>
+
+				</ul>
+				<!--end::Breadcrumb-->
+			</div>
+			<!--begin::Clinic-->
+			<div class="card card-flush">
+
+				<!--begin::Card body-->
+				<div class="card-body pt-12">
+
+					<form class="row g-5">
+						<input type="hidden" asp-for="Id" id="scheduleId" />
+						<div class="row pb-4">
+							<!-- Clinic -->
+							<div class="col-md-3">
+								<label asp-for="ClinicId" class="form-label">Clinic</label>
+								<select asp-for="ClinicId" asp-items="Model.Clinics" class="form-select" required>
+									<option value="">-- Select Clinic --</option>
+								</select>
+								<span asp-validation-for="ClinicId" class="text-danger"></span>
+							</div>
+
+							<!-- Start Date -->
+							<div class="col-md-3">
+								<label asp-for="StartDate" class="form-label">From</label>
+								<input asp-for="StartDate" type="date" class="form-control js-start-datepicker" required placeholder="Select start date" />
+								<span asp-validation-for="StartDate" class="text-danger"></span>
+							</div>
+
+							<!-- End Date -->
+							<div class="col-md-3">
+								<label asp-for="EndDate" class="form-label">To</label>
+								<input asp-for="EndDate" type="date" class="form-control js-end-datepicker" required placeholder="Select end date" />
+								<span asp-validation-for="EndDate" class="text-danger"></span>
+							</div>
+
+							<!-- Recurrence -->
+							<div class="col-md-3">
+								<label asp-for="Recurrence" class="form-label">Recurs Every</label>
+								<select asp-for="Recurrence" class="form-select" required>
+									<option value="">-- Select Pattern --</option>
+									<option value="1">Every Week</option>
+									<option value="2">Every 2 Weeks</option>
+									<option value="3">Every Month</option>
+								</select>
+								<span asp-validation-for="Recurrence" class="text-danger"></span>
+							</div>
+						</div>
+
+
+						<!--begin::Main column-->
+						<div class="d-flex flex-column flex-row-fluid gap-7 gap-lg-10">
+							<!--begin:::Tabs-->
+							<ul class="nav nav-custom nav-tabs nav-line-tabs nav-line-tabs-2x border-0 fs-4 fw-semibold mb-n2" role="tablist">
+								@for (var day = 0; day < days.Length; day++)
+								{
+									<!--begin:::Tab item-->
+									<li class="nav-item" role="presentation">
+										<a class="nav-link pb-4 @(day == 0 ? "active text-active-primary" : string.Empty)" data-bs-toggle="tab" data-day="@days[day]" href="#doctor_schedule_@days[day]" aria-selected="true" role="tab">@days[day]</a>
+									</li>
+									<!--end:::Tab item-->
+								}
+							</ul>
+							<!--end:::Tabs-->
+							<!--begin::Tab content-->
+							<div class="tab-content">
+
+								@for (var day = 0; day < days.Length; day++)
+								{
+									<!--begin::Tab pane-->
+									<div class="tab-pane fade @(day == 0 ? "active show" : string.Empty)" id="doctor_schedule_@days[day]" role="tab-panel">
+										<div class="d-flex flex-column gap-7 gap-lg-10">
+											<!--begin::General options-->
+											<div class="card card-flush py-4" >
+												<!--begin::Card body-->
+												<div class="card-body pt-0" >
+													<div class="table-responsive" style="height:430px;overflow-y:auto;">
+														@{
+															var scheduleDetails = Model.DoctorScheduleDetails?.Where(s => s.DayOfWeek == days[day]).ToList();
+														}
+														<table class="table table-row-bordered table-row-gray-300 gy-7 schedule-table" data-day="@days[day]">
+															<thead class="fw-bold fs-6 text-gray-800">
+																<tr>
+																	<th>Start Date</th>
+																	<th>End Date</th>
+																	<th>
+																		<button onclick="AddItem(this)" type="button" class="btn btn-primary btnAdd">Add</button>
+																	</th>
+																</tr>
+															</thead>
+															<tbody>
+																	
+																@foreach (var scheduleDetail in scheduleDetails)
+																{
+																	<tr>
+
+																		<td>
+																			<input class="form-control js-start-flat-time" type="time" asp-for="@scheduleDetail.StartTime" />
+																		</td>
+																		<td>
+																			<input class="form-control js-end-flat-time" type="time" asp-for="@scheduleDetail.EndTime" />
+																		</td>
+																		<td>
+																			<button onclick="DeleteItem(this)" type="button" class="btn btn-danger btnDelete">Delete</button>
+																		</td>
+																		<input type="hidden" class="schedule-time-id" asp-for="@scheduleDetail.Id" />
+																	</tr>
+																}
+																	
+															</tbody>
+														</table>
+														@if (!scheduleDetails.Any())
+														{
+															<div class="js-alert">
+																<div class="alert alert-dismissible bg-light-primary d-flex flex-column flex-sm-row w-100 p-5 mb-10">
+																	<!--begin::Icon-->
+																	<i class="ki-duotone ki-notification-bing fs-2hx text-primary me-4 mb-5 mb-sm-0"><span class="path1"></span><span class="path2"></span><span class="path3"></span></i>                    <!--end::Icon-->
+																	<!--begin::Content-->
+																	<div class="d-flex flex-column pe-0 pe-sm-10">
+																		<h4 class="fw-semibold">No Schedule Entries Found</h4>
+																		<span>There are no schedule entries for this day. Please use the "Add" button to create one.</span>
+																	</div>
+																	<!--end::Content-->
+																</div>
+															</div>
+																
+														}
+														
+													</div>
+
+												</div>
+												<!--end::Card header-->
+											</div>
+											<!--end::General options-->
+										</div>
+
+									</div>
+									<!--end::Tab pane-->
+								}
+							</div>
+							<!--end::Tab content-->
+						</div>
+						<!--end::Main column-->
+
+						<input id="hdnLastIdx" type="hidden" value="6" />
+
+
+						<!-- Submit -->
+						<div class="col-12 mt-4 d-flex justify-content-end">
+							<button id="submitFormBtn" class="btn btn-danger">Save Schedule</button>
+						</div>
+
+					</form>
+
+
+
+				</div>
+				<!--end::Card body-->
+				<!--end::Content container-->
+			</div>
+			<!--end::Content-->
+
+		</div>
+
+	</div>
+</div>
+@section Scripts {
+	<partial name="_ValidationScriptsPartial" />
+	<script>
+
+		$(document).ready(function(){
+			$('#submitFormBtn').on('click',function(e){
+				e.preventDefault();
+
+				var $form = $(this).closest('form');
+
+				if (!$form.valid()) {
+					return;
+				}
+				SubmitSchedule();
+			});
+		});
+
+		function AddItem(btn) {
+			const table = btn.closest('table');
+			const day = table.dataset.day;
+
+			const newRow = document.createElement('tr');
+			newRow.innerHTML = `
+				<td><input class="form-control js-start-flat-time" value="09:00" /></td>
+				<td><input class="form-control js-end-flat-time" value="09:30" /></td>
+				<td>
+					<button type="button" class="btn btn-danger" onclick="DeleteItem(this)">Delete</button>
+				</td>
+				<input type="hidden" class="schedule-time-id" value="0" />
+			`;
+
+			table.querySelector('tbody').appendChild(newRow);
+			initFlatTimePickers();
+			$('.js-alert').hide();
+		}
+
+		function DeleteItem(btn) {
+			const table = btn.closest('table');
+			btn.closest('tr').remove();
+		}
+
+
+
+		function SubmitSchedule(btn){
+
+			var doctorScheduleDetails=[]
+
+			$('.schedule-table').each(function(){
+				const day =$(this).data('day');
+				$(this).find('tbody tr').each(function(){
+					const startTime = $(this).find('.js-start-flat-time').eq(0).val();
+					const endTime = $(this).find('.js-end-flat-time').eq(0).val();
+					const id = $(this).find('.schedule-time-id').val();
+					console.log(id)
+					console.log(startTime , endTime);
+					if(startTime && endTime){
+						console.log(day)
+						doctorScheduleDetails.push({
+							"Id": parseInt(id) || 0,
+							"DayOfWeek": day,
+							"StartTime": startTime,
+							"EndTime": endTime
+						});
+					}
+				});
+
+			});
+
+			const model = {
+				Id : document.getElementById('scheduleId').value,
+				ClinicId: document.getElementById('ClinicId').value,
+				StartDate: document.getElementById('StartDate').value,
+				EndDate: document.getElementById('EndDate').value,
+				Recurrence: parseInt(document.getElementById('Recurrence').value),
+				DoctorScheduleDetails:doctorScheduleDetails
+			};
+			console.log(model)
+			$.ajax({
+				url:"/DoctorSchedules/@(Model.Id > 0 ? "Update" : "Create")",
+				type: 'POST',
+				dataType: "json",
+				contentType: "application/json; charset=utf-8",
+				data:JSON.stringify(model),
+				success: function (response) {
+					if(response.success) {
+						showSuccessSwal(response.message);
+					}
+				},
+				error: function (request,status,error) {
+					const message = request.responseText || "Something went wrong";
+
+					showErrorSwal(message);
+				}
+			});
+
+
+		}
+
+	</script>
+}

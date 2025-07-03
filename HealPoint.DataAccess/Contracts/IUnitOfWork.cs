@@ -6,7 +6,7 @@ public interface IUnitOfWork : IDisposable
 	IClinicSessionRepository ClinicSessions { get; }
 	ISpecializationRepository Specializations { get; }
 	IDoctorRepository Doctors { get; }
-	ITimeSlotRepository TimeSlots { get; }
+	IDoctorScheduleRepository DoctorSchedules { get; }
 
 	void SaveChanges();
 }

@@ -18,7 +18,8 @@ public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
 	public DbSet<Clinic> Clinics { get; set; }
 	public DbSet<ClinicSession> ClinicSessions { get; set; }
 	public DbSet<Doctor> Doctors { get; set; }
-	public DbSet<TimeSlot> TimeSlots { get; set; }
+	public DbSet<DoctorSchedule> DoctorSchedules { get; set; }
+	public DbSet<DoctorScheduleDetails> DoctorScheduleDetails { get; set; }
 	public DbSet<Specialization> Specializations { get; set; }
 
 }
