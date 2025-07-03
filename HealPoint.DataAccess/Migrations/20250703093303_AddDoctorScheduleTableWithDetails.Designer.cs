@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace HealPoint.DataAccess.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20250702163213_AddDoctorScheduleTableWithDetails")]
+    [Migration("20250703093303_AddDoctorScheduleTableWithDetails")]
     partial class AddDoctorScheduleTableWithDetails
     {
         /// <inheritdoc />
@@ -883,7 +883,7 @@ namespace HealPoint.DataAccess.Migrations
                     b.HasOne("HealPoint.DataAccess.Entities.DoctorSchedule", "DoctorSchedule")
                         .WithMany("DoctorScheduleDetails")
                         .HasForeignKey("DoctorScheduleId")
-                        .OnDelete(DeleteBehavior.NoAction)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("HealPoint.DataAccess.Entities.ApplicationUser", "LastUpdatedBy")

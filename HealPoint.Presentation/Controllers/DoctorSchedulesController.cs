@@ -30,16 +30,34 @@ public class DoctorSchedulesController : Controller
 			return View("Upsert", PopulateLookups(model));
 		}
 
-		foreach (var item in model.DoctorScheduleDetails)
-		{
-			if (item.StartTime >= item.EndTime)
-			{
-				return BadRequest($"Start Time must be before End Time on {item.DayOfWeek}");
-			}
-		}
+		//foreach (var item in model.DoctorScheduleDetails)
+		//{
+		//	if (item.StartTime >= item.EndTime)
+		//	{
+		//		return BadRequest($"Start Time must be before End Time on {item.DayOfWeek}");
+		//	}
+		//}
 
-		//_doctorScheduleService.Create(model, User.FindFirst(ClaimTypes.NameIdentifier)!.Value);
-		return Ok();
+		_doctorScheduleService.Create(model, User.FindFirst(ClaimTypes.NameIdentifier)!.Value);
+		return Ok(new { success = true, message = "Doctor schedule created successfully" });
+	}
+
+	[HttpPost]
+	public IActionResult Update([FromBody] DoctorScheduleDto model)
+	{
+		if (!ModelState.IsValid)
+		{
+			return View("Upsert", PopulateLookups(model));
+		}
+		//foreach (var item in model.DoctorScheduleDetails)
+		//{
+		//	if (TimeSpan.Compare(item.StartTime, item.EndTime) == 1)
+		//	{
+		//		return BadRequest($"Start Time must be before End Time on {item.DayOfWeek}");
+		//	}
+		//}
+		_doctorScheduleService.Update(model, User.FindFirst(ClaimTypes.NameIdentifier)!.Value);
+		return Ok(new { success = true, message = "Doctor schedule updated successfully" });
 	}
 
 	private DoctorScheduleDto PopulateLookups(DoctorScheduleDto? dto = null)
@@ -49,10 +67,16 @@ public class DoctorSchedulesController : Controller
 
 		doctorScheduleDto.Clinics = new SelectList(clinics, "Id", "Name");
 
-		if (!doctorScheduleDto.DoctorScheduleDetails.Any())
+		if (!(doctorScheduleDto.DoctorScheduleDetails?.Count > 0))
 		{
 			doctorScheduleDto.DoctorScheduleDetails = new List<DoctorScheduleDetailsDto>();
-			doctorScheduleDto.DoctorScheduleDetails.Add(new DoctorScheduleDetailsDto { Id = 1 });
+			doctorScheduleDto.DoctorScheduleDetails.Add(new DoctorScheduleDetailsDto { DayOfWeek = "Sunday" });
+			doctorScheduleDto.DoctorScheduleDetails.Add(new DoctorScheduleDetailsDto { DayOfWeek = "Monday" });
+			doctorScheduleDto.DoctorScheduleDetails.Add(new DoctorScheduleDetailsDto { DayOfWeek = "Tuesday" });
+			doctorScheduleDto.DoctorScheduleDetails.Add(new DoctorScheduleDetailsDto { DayOfWeek = "Wednesday" });
+			doctorScheduleDto.DoctorScheduleDetails.Add(new DoctorScheduleDetailsDto { DayOfWeek = "Thursday" });
+			doctorScheduleDto.DoctorScheduleDetails.Add(new DoctorScheduleDetailsDto { DayOfWeek = "Friday" });
+			doctorScheduleDto.DoctorScheduleDetails.Add(new DoctorScheduleDetailsDto { DayOfWeek = "Saturday" });
 		}
 		return doctorScheduleDto;
 	}

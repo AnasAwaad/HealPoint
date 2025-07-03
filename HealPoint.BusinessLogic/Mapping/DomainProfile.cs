@@ -54,6 +54,7 @@ public class DomainProfile : Profile
 		CreateMap<RegisterPatientDto, ApplicationUser>();
 
 		CreateMap<DoctorScheduleDto, DoctorSchedule>()
+			.ForMember(dest => dest.DoctorScheduleDetails, opt => opt.MapFrom(src => src.DoctorScheduleDetails))
 			.ReverseMap();
 
 		CreateMap<DoctorScheduleDetailsDto, DoctorScheduleDetails>()

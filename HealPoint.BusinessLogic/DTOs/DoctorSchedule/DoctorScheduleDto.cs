@@ -10,5 +10,5 @@ public class DoctorScheduleDto
 	public int ClinicId { get; set; }
 	public IEnumerable<SelectListItem>? Clinics { get; set; } = new List<SelectListItem>();
 
-	public List<DoctorScheduleDetailsDto> DoctorScheduleDetails { get; set; }
+	public List<DoctorScheduleDetailsDto>? DoctorScheduleDetails { get; set; }
 }

@@ -88,7 +88,8 @@ namespace HealPoint.DataAccess.Migrations
                         name: "FK_DoctorScheduleDetails_DoctorSchedules_DoctorScheduleId",
                         column: x => x.DoctorScheduleId,
                         principalTable: "DoctorSchedules",
-                        principalColumn: "Id");
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateIndex(

@@ -46,6 +46,7 @@
 				<div class="card-body pt-12">
 
 					<form class="row g-5">
+						<input type="hidden" asp-for="Id" id="scheduleId" />
 						<div class="row pb-4">
 							<!-- Clinic -->
 							<div class="col-md-3">
@@ -110,7 +111,7 @@
 											<div class="card card-flush py-4">
 												<!--begin::Card body-->
 												<div class="card-body pt-0">
-													<div class="table-responsive">
+													<div class="table-responsive" style="height:430px;overflow-y:auto;">
 														<table class="table table-row-bordered table-row-gray-300 gy-7 schedule-table" data-day="@days[day]">
 															<thead class="fw-bold fs-6 text-gray-800">
 																<tr>
@@ -120,21 +121,24 @@
 																</tr>
 															</thead>
 															<tbody>
+
 																@for (int i = 0; i < Model.DoctorScheduleDetails.Count; i++)
 																{
 																	@if(Model.DoctorScheduleDetails[i].DayOfWeek == days[day])
 																	{
 																		<tr>
+
 																			<td>
-																				<input class="form-control start-flat-time" type="time" asp-for="@Model.DoctorScheduleDetails[i].StartTime" />
+																				<input class="form-control" type="time" asp-for="@Model.DoctorScheduleDetails[i].StartTime" />
 																			</td>
 																			<td>
-																				<input class="form-control end-flat-time" type="time" asp-for="@Model.DoctorScheduleDetails[i].EndTime" />
+																				<input class="form-control" type="time" asp-for="@Model.DoctorScheduleDetails[i].EndTime" />
 																			</td>
 																			<td>
 																				<button onclick="AddItem(this)" type="button" class="btn btn-primary btnAdd">Add</button>
 																				<button onclick="DeleteItem(this)" type="button" class="btn btn-danger btnDelete d-none">Delete</button>
 																			</td>
+																			<input type="hidden" class="schedule-time-id" asp-for="@Model.DoctorScheduleDetails[i].Id" />
 																		</tr>
 																	}
 																}
@@ -193,13 +197,13 @@
 
 			const newRow = document.createElement('tr');
 			newRow.innerHTML = `
-				<td><input class="form-control start-flat-time" type="time" /></td>
-				<td><input class="form-control end-flat-time" type="time" /></td>
+				<td><input class="form-control" type="time" /></td>
+				<td><input class="form-control" type="time" /></td>
 				<td>
 					<button type="button" class="btn btn-primary" onclick="AddItem(this)">Add</button>
 					<button type="button" class="btn btn-danger" onclick="DeleteItem(this)">Delete</button>
 				</td>
-				<input type="hidden" value="${day}" />
+				<input type="hidden" class="schedule-time-id" value="0" />
 			`;
 
 			table.querySelector('tbody').appendChild(newRow);
@@ -231,9 +235,13 @@
 				$(this).find('tbody tr').each(function(){
 					const startTime = $(this).find('input[type="time"]').eq(0).val();
 					const endTime = $(this).find('input[type="time"]').eq(1).val();
+					const id = $(this).find('.schedule-time-id').val();
+					console.log(id)
+					console.log(startTime , endTime);
 					if(startTime && endTime){
+						console.log(day)
 						doctorScheduleDetails.push({
-							"Id":0,
+							"Id": parseInt(id) || 0,
 							"DayOfWeek": day,
 							"StartTime": startTime,
 							"EndTime": endTime
@@ -244,26 +252,29 @@
 			});
 
 			const model = {
+				Id : document.getElementById('scheduleId').value,
 				ClinicId: document.getElementById('ClinicId').value,
 				StartDate: document.getElementById('StartDate').value,
 				EndDate: document.getElementById('EndDate').value,
 				Recurrence: document.getElementById('Recurrence').value,
 				DoctorScheduleDetails:doctorScheduleDetails
 			};
-
+			console.log(model)
 			$.ajax({
-				url:'/DoctorSchedules/Create',
+				url:"/DoctorSchedules/@(Model.Id > 0 ? "Update":"Create")",
 				type: 'POST',
 				dataType: "json",
 				contentType: "application/json; charset=utf-8",
 				data:JSON.stringify(model),
 				success: function (response) {
-					alert("success");
+					if(response.success) {
+						showSuccessMessage(response.message);
+					}
 				},
 				error: function (request,status,error) {
 					const message = request.responseText || "Something went wrong";
 
-					showErrorMessage(message);
+					showErrorMessage("Something went wrong");
 				}
 			});
 

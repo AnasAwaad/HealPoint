@@ -190,7 +190,7 @@ function initFlatTimePickers() {
         noCalendar: true,
         dateFormat: "H:i K",
         time_24hr: false,
-        defaultDate: "09:00 AM"
+        //defaultDate: "09:00 AM"
     });
 
     flatpickr(".end-flat-time", {
@@ -198,7 +198,7 @@ function initFlatTimePickers() {
         noCalendar: true,
         dateFormat: "H:i K",
         time_24hr: false,
-        defaultDate: "09:30 AM"
+        /*defaultDate: "09:30 AM"*/
     });
 }
 

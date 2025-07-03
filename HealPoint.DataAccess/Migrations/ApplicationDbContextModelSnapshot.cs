@@ -880,7 +880,7 @@ namespace HealPoint.DataAccess.Migrations
                     b.HasOne("HealPoint.DataAccess.Entities.DoctorSchedule", "DoctorSchedule")
                         .WithMany("DoctorScheduleDetails")
                         .HasForeignKey("DoctorScheduleId")
-                        .OnDelete(DeleteBehavior.NoAction)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("HealPoint.DataAccess.Entities.ApplicationUser", "LastUpdatedBy")
