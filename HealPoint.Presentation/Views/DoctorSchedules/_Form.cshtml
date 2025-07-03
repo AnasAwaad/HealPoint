@@ -1,0 +1,32 @@
+﻿@model TimeSlotDto
+
+<form 
+    id="ModalForm"
+    asp-action="Create"
+    data-ajax-method="post"
+    data-ajax="true"
+    data-ajax-success="onTimeSlotSaveSuccess"
+    data-ajax-failure="onTimeSlotSaveFailure">
+
+    
+    <input type="hidden" asp-for="DayOfWeek"/>
+    <!--begin::Input group-->
+    <div>
+        <div class="mb-2">
+            <label asp-for="StartTime"></label>
+            <input asp-for="StartTime" type="text" class="form-control flat-time" placeholder="Select start time" />
+            <span asp-validation-for="StartTime" class="text-danger"></span>
+        </div>
+
+    </div>
+    <!--end::Input group-->
+    <!--begin::Input group-->
+    <div>
+        <div class="mb-2">
+            <label asp-for="EndTime"></label>
+            <input asp-for="EndTime" type="text" class="form-control flat-time" placeholder="Select end time" />
+            <span asp-validation-for="EndTime" class="text-danger"></span>
+        </div>
+    </div>
+
+</form>
