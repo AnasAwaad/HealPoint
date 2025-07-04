@@ -1,5 +1,4 @@
 ﻿using HealPoint.BusinessLogic.Contracts;
-using HealPoint.BusinessLogic.Mapping;
 using HealPoint.BusinessLogic.Services;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.Extensions.DependencyInjection;
@@ -17,13 +16,14 @@ public static class AddBusinessLogicExtensions
 		services.AddScoped<IDoctorService, DoctorService>();
 		services.AddScoped<IDoctorScheduleService, DoctorScheduleService>();
 		services.AddScoped<IAuthService, AuthService>();
+		services.AddScoped<IServiceManager, ServiceManager>();
 
 
 
 		services.AddTransient<IFileStorageService, FileStorageService>();
 		services.AddTransient<IEmailSender, EmailSender>();
 
-		services.AddAutoMapper(typeof(DomainProfile));
+		services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
 		return services;
 	}

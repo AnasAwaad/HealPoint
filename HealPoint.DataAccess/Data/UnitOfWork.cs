@@ -12,6 +12,7 @@ internal class UnitOfWork : IUnitOfWork
 	private readonly Lazy<IClinicSessionRepository> _clinicSessionRepository;
 	private readonly Lazy<IDoctorRepository> _doctorRepository;
 	private readonly Lazy<IDoctorScheduleRepository> _doctorScheduleRepository;
+	private readonly Lazy<IServiceRepository> _serviceRepository;
 
 	public UnitOfWork(ApplicationDbContext context)
 	{
@@ -23,16 +24,16 @@ internal class UnitOfWork : IUnitOfWork
 		_clinicSessionRepository = new Lazy<IClinicSessionRepository>(new ClinicSessionRepository(_context));
 		_doctorRepository = new Lazy<IDoctorRepository>(new DoctorRepository(_context));
 		_doctorScheduleRepository = new Lazy<IDoctorScheduleRepository>(new DoctorScheduleRepository(_context));
+		_serviceRepository = new Lazy<IServiceRepository>(new ServiceRepository(_context));
 	}
 
 	public ISpecializationRepository Specializations => _specializationRepository.Value;
-
 	public IDepartmentRepository Departments => _departmentRepository.Value;
-
 	public IClinicRepository Clinics => _clinicRepository.Value;
 	public IClinicSessionRepository ClinicSessions => _clinicSessionRepository.Value;
 	public IDoctorRepository Doctors => _doctorRepository.Value;
 	public IDoctorScheduleRepository DoctorSchedules => _doctorScheduleRepository.Value;
+	public IServiceRepository Services => _serviceRepository.Value;
 
 	public void SaveChanges()
 	{
