@@ -73,6 +73,7 @@ internal class DoctorConfiguration : BaseEntityConfiguration<Doctor>, IEntityTyp
 			.HasMaxLength(450)
 			.IsRequired(false);
 
+		// Configure the relationship with Specialization, Department, ApplicationUser and DoctorService
 		builder.HasOne(d => d.Specialization)
 			.WithMany(s => s.Doctors)
 			.HasForeignKey(d => d.SpecializationId)
@@ -88,5 +89,10 @@ internal class DoctorConfiguration : BaseEntityConfiguration<Doctor>, IEntityTyp
 			.WithOne(u => u.Doctor)
 			.HasForeignKey<Doctor>(d => d.ApplicationUserId)
 			.OnDelete(DeleteBehavior.SetNull);
+
+		builder.HasMany(d => d.DoctorServices)
+			.WithOne(ds => ds.Doctor)
+			.HasForeignKey(ds => ds.DoctorId)
+			.OnDelete(DeleteBehavior.Cascade);
 	}
 }
