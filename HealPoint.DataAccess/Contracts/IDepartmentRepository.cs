@@ -1,5 +1,6 @@
 ﻿namespace HealPoint.DataAccess.Contracts;
-public interface ITimeSlotRepository : IRepository<TimeSlot>
+public interface IDepartmentRepository : IRepository<Department>
 {
-	IEnumerable<TimeSlot> GetByDayAndDoctorIdAsync(int doctorId, DayOfWeek day);
+	bool IsDepartmentNameAllowed(string departmentName, int? excludeDepartmentId = null);
+	IEnumerable<Department> GetActiveDepartments();
 }

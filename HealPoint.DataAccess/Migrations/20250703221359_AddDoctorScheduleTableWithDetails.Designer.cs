@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace HealPoint.DataAccess.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20250703093303_AddDoctorScheduleTableWithDetails")]
+    [Migration("20250703221359_AddDoctorScheduleTableWithDetails")]
     partial class AddDoctorScheduleTableWithDetails
     {
         /// <inheritdoc />

@@ -126,27 +126,29 @@
 																</tr>
 															</thead>
 															<tbody>
-																	
-																@foreach (var scheduleDetail in scheduleDetails)
+																@if(scheduleDetails is not null)
 																{
-																	<tr>
+																	@foreach (var scheduleDetail in scheduleDetails)
+																	{
+																		<tr>
 
-																		<td>
-																			<input class="form-control js-start-flat-time" type="time" asp-for="@scheduleDetail.StartTime" />
-																		</td>
-																		<td>
-																			<input class="form-control js-end-flat-time" type="time" asp-for="@scheduleDetail.EndTime" />
-																		</td>
-																		<td>
-																			<button onclick="DeleteItem(this)" type="button" class="btn btn-danger btnDelete">Delete</button>
-																		</td>
-																		<input type="hidden" class="schedule-time-id" asp-for="@scheduleDetail.Id" />
-																	</tr>
+																			<td>
+																				<input class="form-control js-start-flat-time" type="time" asp-for="@scheduleDetail.StartTime" />
+																			</td>
+																			<td>
+																				<input class="form-control js-end-flat-time" type="time" asp-for="@scheduleDetail.EndTime" />
+																			</td>
+																			<td>
+																				<button onclick="DeleteItem(this)" type="button" class="btn btn-danger btnDelete">Delete</button>
+																			</td>
+																			<input type="hidden" class="schedule-time-id" asp-for="@scheduleDetail.Id" />
+																		</tr>
+																	}
 																}
 																	
 															</tbody>
 														</table>
-														@if (!scheduleDetails.Any())
+														@if (scheduleDetails is null)
 														{
 															<div class="js-alert">
 																<div class="alert alert-dismissible bg-light-primary d-flex flex-column flex-sm-row w-100 p-5 mb-10">
@@ -234,7 +236,7 @@
 
 			table.querySelector('tbody').appendChild(newRow);
 			initFlatTimePickers();
-			$('.js-alert').hide();
+			$(btn).parents('.table-responsive').find('.js-alert').hide();
 		}
 
 		function DeleteItem(btn) {
