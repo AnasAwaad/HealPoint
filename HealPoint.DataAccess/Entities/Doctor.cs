@@ -1,4 +1,6 @@
 ﻿
+using HealPoint.DataAccess.Enums;
+
 namespace HealPoint.DataAccess.Entities;
 public class Doctor : BaseEntity
 {
@@ -26,7 +28,7 @@ public class Doctor : BaseEntity
 	public DateOnly? LicenseExpiryDate { get; set; }
 	public string? Qualifications { get; set; }
 	public int? YearOfExperience { get; set; }
-
+	public DoctorOperationMode OperationMode { get; set; }
 	//Education & Training
 	public string? Education { get; set; }
 	public string? Certifications { get; set; }

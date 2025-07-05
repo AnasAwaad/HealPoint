@@ -1,9 +1,9 @@
 ﻿namespace HealPoint.BusinessLogic.Contracts;
 public interface IServiceManager
 {
-	ServiceDto CreateService(ServiceFormDto model);
+	Task<ServiceDto> CreateServiceAsync(ServiceFormDto model);
 	IEnumerable<ServiceDto> GetAllServices();
 	ServiceFormDto? GetServiceById(int id);
-	ServiceDto? UpdateService(ServiceFormDto model);
+	Task<ServiceDto?> UpdateServiceAsync(ServiceFormDto model);
 	(bool? isDeleted, string? lastUpdatedOn) UpdateServiceStatus(int id);
 }

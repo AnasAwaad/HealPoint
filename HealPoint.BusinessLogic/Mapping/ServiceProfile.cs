@@ -6,7 +6,8 @@ internal class ServiceProfile : Profile
 {
 	public ServiceProfile()
 	{
-		CreateMap<Service, ServiceDto>();
+		CreateMap<Service, ServiceDto>()
+			.ReverseMap();
 
 		CreateMap<ServiceFormDto, Service>()
 			.ReverseMap();

@@ -35,12 +35,12 @@ public class ServicesController : Controller
 	[AjaxOnly]
 	[HttpPost]
 	[ValidateAntiForgeryToken]
-	public IActionResult Create(ServiceFormDto model)
+	public async Task<IActionResult> Create(ServiceFormDto model)
 	{
 		if (!ModelState.IsValid)
 			return BadRequest();
 
-		var service = _serviceManager.CreateService(model);
+		var service = await _serviceManager.CreateServiceAsync(model);
 
 		return PartialView("_ServiceRow", service);
 	}
@@ -54,12 +54,12 @@ public class ServicesController : Controller
 	[AjaxOnly]
 	[HttpPost]
 	[ValidateAntiForgeryToken]
-	public IActionResult Update(ServiceFormDto model)
+	public async Task<IActionResult> Update(ServiceFormDto model)
 	{
 		if (!ModelState.IsValid)
 			return BadRequest();
 
-		var serviceDto = _serviceManager.UpdateService(model);
+		var serviceDto = await _serviceManager.UpdateServiceAsync(model);
 
 		if (serviceDto == null)
 			return NotFound();

@@ -4,11 +4,16 @@ using HealPoint.DataAccess.Contracts;
 using HealPoint.DataAccess.Entities;
 
 namespace HealPoint.BusinessLogic.Services;
-internal class ServiceManager(IUnitOfWork unitOfWork, IMapper mapper) : IServiceManager
+internal class ServiceManager(IUnitOfWork unitOfWork, IMapper mapper, IFileStorageService fileStorage) : IServiceManager
 {
-	public ServiceDto CreateService(ServiceFormDto model)
+	public async Task<ServiceDto> CreateServiceAsync(ServiceFormDto model)
 	{
 		var service = mapper.Map<Service>(model);
+
+		service.CreatedOn = DateTime.Now;
+
+		var imagePath = await fileStorage.UploadFileAsync(model.ImageFile, $"services");
+		service.ImageUrl = imagePath ?? "/images/services/default-service.png";
 
 		unitOfWork.Services.Insert(service);
 		unitOfWork.SaveChanges();
@@ -29,7 +34,7 @@ internal class ServiceManager(IUnitOfWork unitOfWork, IMapper mapper) : IService
 		return mapper.Map<ServiceFormDto>(service);
 	}
 
-	public ServiceDto? UpdateService(ServiceFormDto model)
+	public async Task<ServiceDto?> UpdateServiceAsync(ServiceFormDto model)
 	{
 		var existingService = unitOfWork.Services.FindById(model.Id);
 
@@ -37,6 +42,15 @@ internal class ServiceManager(IUnitOfWork unitOfWork, IMapper mapper) : IService
 			return null;
 
 		mapper.Map(model, existingService);
+
+		if (model.ImageFile is not null)
+		{
+			fileStorage.DeleteFile(model.ImageUrl);
+			var imagePath = await fileStorage.UploadFileAsync(model.ImageFile, "services");
+
+			existingService.ImageUrl = imagePath ?? "/images/services/default-service.png";
+		}
+
 		existingService.LastUpdatedOn = DateTime.Now;
 
 		unitOfWork.SaveChanges();

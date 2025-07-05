@@ -1,4 +1,5 @@
 ﻿using HealPoint.DataAccess.Consts;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System.ComponentModel.DataAnnotations;
 
@@ -12,4 +13,8 @@ public class ServiceFormDto
 
 	[MaxLength(500, ErrorMessage = Errors.MaxLengthExceeded)]
 	public string? Description { get; set; }
+
+	[Display(Name = "Image")]
+	public string? ImageUrl { get; set; }
+	public IFormFile? ImageFile { get; set; }
 }

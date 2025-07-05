@@ -1,4 +1,6 @@
-﻿namespace HealPoint.DataAccess.Data.Configurations;
+﻿using HealPoint.DataAccess.Enums;
+
+namespace HealPoint.DataAccess.Data.Configurations;
 internal class DoctorConfiguration : BaseEntityConfiguration<Doctor>, IEntityTypeConfiguration<Doctor>
 {
 	public void Configure(EntityTypeBuilder<Doctor> builder)
@@ -51,6 +53,9 @@ internal class DoctorConfiguration : BaseEntityConfiguration<Doctor>, IEntityTyp
 
 		builder.Property(d => d.YearOfExperience)
 			.HasMaxLength(30);
+
+		builder.Property(d => d.OperationMode)
+			.HasDefaultValue(DoctorOperationMode.Telehealth);
 
 		// --- Education & Training
 

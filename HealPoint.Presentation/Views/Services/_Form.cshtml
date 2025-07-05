@@ -6,17 +6,72 @@
     data-ajax-method="post"
     data-ajax="true"
     data-ajax-success="onModalFormSuccess"
-    data-ajax-failure="onModalFormFailure">
+    data-ajax-failure="onModalFormFailure"
+    enctype="multipart/form-data">
 
     @if (Model?.Id > 0)
     {
         <input type="hidden" asp-for="Id" />
     }
+    
+    <!--begin::Image input-->
+    <div class="mb-4">
+        <label asp-for="ImageUrl" class="mb-3 fs-6"></label>
+        <div>
+			<!--begin::Image placeholder-->
+			<style>
+				.image-input-placeholder {
+					background-image: url('@(Model?.ImageUrl ??"/assets/images/blank-image.svg")');
+				}
+
+				[data-bs-theme="dark"] .image-input-placeholder {
+					background-image: url('@(Model?.ImageUrl ?? "/assets/images/blank-image-dark.svg")');
+				}</style>
+			<!--end::Image placeholder-->
+			<!--begin::Image input-->
+			<div class="image-input image-input-outline image-input-placeholder image-input-empty" data-kt-image-input="true">
+				<div class="image-input-wrapper w-125px h-125px"
+					 style="background-image: url('@(Model?.ImageUrl ?? "/assets/images/blank-image.svg")')">
+				</div>
+				<!--begin::Label-->
+				<label class="btn btn-icon btn-circle btn-active-color-primary w-25px h-25px bg-body shadow" data-kt-image-input-action="change" data-bs-toggle="tooltip" aria-label="Change avatar" data-bs-original-title="Change avatar" data-kt-initialized="1">
+					<i class="ki-duotone ki-pencil fs-7">
+						<span class="path1"></span>
+						<span class="path2"></span>
+					</i>
+					<!--begin::Inputs-->
+					<input asp-for="ImageFile" type="file" accept=".png, .jpg, .jpeg">
+					<input type="hidden" name="avatar_remove" value="1">
+					<!--end::Inputs-->
+				</label>
+				<!--end::Label-->
+				<!--begin::Cancel-->
+				<span class="btn btn-icon btn-circle btn-active-color-primary w-25px h-25px bg-body shadow" data-kt-image-input-action="cancel" data-bs-toggle="tooltip" aria-label="Cancel avatar" data-bs-original-title="Cancel avatar" data-kt-initialized="1">
+					<i class="ki-duotone ki-cross fs-2">
+						<span class="path1"></span>
+						<span class="path2"></span>
+					</i>
+				</span>
+				<!--end::Cancel-->
+				<!--begin::Remove-->
+				<span class="btn btn-icon btn-circle btn-active-color-primary w-25px h-25px bg-body shadow" data-kt-image-input-action="remove" data-bs-toggle="tooltip" aria-label="Remove avatar" data-bs-original-title="Remove avatar" data-kt-initialized="1">
+					<i class="ki-duotone ki-cross fs-2">
+						<span class="path1"></span>
+						<span class="path2"></span>
+					</i>
+				</span>
+				<!--end::Remove-->
+        </div>
+
+    </div>
+    <!--end::Image input-->
+	</div>
     <!--begin::Input group-->
+
     <div>
-        <div class="form-floating mb-2">
+        <div class="mb-4">
+			<label asp-for="Name"></label>
             <input asp-for="Name" type="text" class="form-control form-control-solid" placeholder="Name" />
-            <label asp-for="Name"></label>
             <span asp-validation-for="Name" class="text-danger"></span>
 
         </div>
@@ -25,9 +80,9 @@
     <!--end::Input group-->
     <!--begin::Input group-->
     <div>
-        <div class="form-floating mb-2">
+        <div class="mb-4">
+			<label asp-for="Description"></label>
             <input asp-for="Description " type="text" class="form-control form-control-solid" placeholder="Description" />
-            <label asp-for="Description"></label>
             <span asp-validation-for="Description" class="text-danger"></span>
         </div>
 
