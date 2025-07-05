@@ -45,6 +45,43 @@ public class ServicesController : Controller
 		return PartialView("_ServiceRow", service);
 	}
 
+	[AjaxOnly]
+	public IActionResult Update(int id)
+	{
+		return PartialView("_Form", _serviceManager.GetServiceById(id));
+	}
+
+	[AjaxOnly]
+	[HttpPost]
+	[ValidateAntiForgeryToken]
+	public IActionResult Update(ServiceFormDto model)
+	{
+		if (!ModelState.IsValid)
+			return BadRequest();
+
+		var serviceDto = _serviceManager.UpdateService(model);
+
+		if (serviceDto == null)
+			return NotFound();
+
+		return PartialView("_ServiceRow", serviceDto);
+	}
+
+
+	[AjaxOnly]
+	[HttpPost]
+	[ValidateAntiForgeryToken]
+	public IActionResult ChangeServiceStatus(int id)
+	{
+		(bool? isDeleted, string? lastUpdatedOn) = _serviceManager.UpdateServiceStatus(id);
+
+		if (isDeleted is null)
+			return NotFound();
+
+		return Ok(new { isDeleted, lastUpdatedOn });
+	}
+
+
 	#endregion
 
 }

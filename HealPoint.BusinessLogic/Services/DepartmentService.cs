@@ -42,7 +42,7 @@ public class DepartmentService : IDepartmentService
 
 		_unitOfWork.SaveChanges();
 
-		return _mapper.Map<DepartmentDto>(existingDepartment); ;
+		return _mapper.Map<DepartmentDto>(existingDepartment);
 	}
 
 	public DepartmentDto CreateDepartment(DepartmentFormDto departmentDto)

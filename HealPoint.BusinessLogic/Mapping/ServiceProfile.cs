@@ -8,6 +8,7 @@ internal class ServiceProfile : Profile
 	{
 		CreateMap<Service, ServiceDto>();
 
-		CreateMap<ServiceFormDto, Service>();
+		CreateMap<ServiceFormDto, Service>()
+			.ReverseMap();
 	}
 }
