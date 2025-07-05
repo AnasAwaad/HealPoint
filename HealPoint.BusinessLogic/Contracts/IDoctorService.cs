@@ -1,8 +1,11 @@
-﻿namespace HealPoint.BusinessLogic.Contracts;
+﻿using HealPoint.DataAccess.Entities;
+
+namespace HealPoint.BusinessLogic.Contracts;
 public interface IDoctorService
 {
 	IEnumerable<DoctorDto> GetAll();
 	DoctorFormDto? GetById(int id);
+	Doctor? GetByUserId(string userId);
 	Task CreateAsync(DoctorFormDto dto);
 	bool IsAllowedMobileNumber(string phoneNumber, int? id);
 	bool IsAllowedContactEmail(string phoneNumber, int? id);

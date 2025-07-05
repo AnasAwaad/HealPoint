@@ -11,5 +11,8 @@ internal class ServiceProfile : Profile
 
 		CreateMap<ServiceFormDto, Service>()
 			.ReverseMap();
+
+		CreateMap<Service, DoctorServiceItemDto>();
+
 	}
 }

@@ -1,0 +1,43 @@
+﻿@model DoctorSettingDto
+
+@{
+	ViewData["Title"] = "Doctor Settings";
+}
+
+<div class="container my-5">
+
+    <div class="row align-items-center mb-4">
+        <div class="col">
+            <h4 class="mb-0">Choose your Service you want to offer</h4>
+        </div>
+        <div class="col-auto">
+            <button class="btn btn-dark px-4">Update Service</button>
+        </div>
+    </div>
+
+    <div class="row g-3">
+        @foreach (var service in Model.AvailableServices)
+        {
+            <div class="col col-md-3">
+                <div class="card h-100 border-2 @(Model.SelectedServiceId.Equals(service.Id) ? "border-primary" : "border-light-subtle") shadow-sm">
+
+                    <div class="card-body d-flex">
+                        <div class="me-3 fs-3 text-primary">
+                            <img src="@service.ImageUrl" alt="@service.Name" width="50"/>
+                        </div>
+
+                        <div>
+                            <h6 class="fw-semibold text-primary mb-1">@service.Name</h6>
+                            <small class="text-muted">
+                                @service.Description
+                            </small>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        }
+        
+
+    </div>
+</div>

@@ -6,4 +6,5 @@ public interface IServiceManager
 	ServiceFormDto? GetServiceById(int id);
 	Task<ServiceDto?> UpdateServiceAsync(ServiceFormDto model);
 	(bool? isDeleted, string? lastUpdatedOn) UpdateServiceStatus(int id);
+	IEnumerable<DoctorServiceItemDto> GetActiveServicesForDoctor();
 }

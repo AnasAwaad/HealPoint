@@ -261,6 +261,11 @@ internal class DoctorService(IUnitOfWork unitOfWork,
 		return user is null || user.DoctorId.Equals(id);
 	}
 
+	public Doctor? GetByUserId(string userId)
+	{
+		return unitOfWork.Doctors.GetDoctorByUserId(userId);
+	}
+
 
 	#endregion
 }

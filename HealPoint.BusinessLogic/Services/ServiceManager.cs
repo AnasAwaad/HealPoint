@@ -27,6 +27,13 @@ internal class ServiceManager(IUnitOfWork unitOfWork, IMapper mapper, IFileStora
 		return mapper.Map<IEnumerable<ServiceDto>>(services);
 	}
 
+	public IEnumerable<DoctorServiceItemDto> GetActiveServicesForDoctor()
+	{
+		var services = unitOfWork.Services.GetActiveServices();
+
+		return mapper.Map<IEnumerable<DoctorServiceItemDto>>(services);
+	}
+
 	public ServiceFormDto? GetServiceById(int id)
 	{
 		var service = unitOfWork.Services.FindById(id);
@@ -50,6 +57,8 @@ internal class ServiceManager(IUnitOfWork unitOfWork, IMapper mapper, IFileStora
 
 			existingService.ImageUrl = imagePath ?? "/images/services/default-service.png";
 		}
+		else
+			existingService.ImageUrl = model.ImageUrl;
 
 		existingService.LastUpdatedOn = DateTime.Now;
 

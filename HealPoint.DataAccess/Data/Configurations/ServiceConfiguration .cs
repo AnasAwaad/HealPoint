@@ -21,10 +21,10 @@ internal class ServiceConfiguration : BaseEntityConfiguration<Service>, IEntityT
 
 		// Configure the relationship with DoctorService
 
-		builder.HasMany(c => c.DoctorServices)
-		.WithOne(ds => ds.Service)
-		.HasForeignKey(ds => ds.ServiceId)
-		.OnDelete(DeleteBehavior.Cascade);
+		builder.HasMany(c => c.Doctors)
+		.WithOne(d => d.Service)
+		.HasForeignKey(d => d.ServiceId)
+		.OnDelete(DeleteBehavior.Restrict);
 
 	}
 

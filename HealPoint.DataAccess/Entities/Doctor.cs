@@ -37,6 +37,9 @@ public class Doctor : BaseEntity
 	public int DepartmentId { get; set; }
 	public Department? Department { get; set; }
 	public string? Position { get; set; }
+	public int? ServiceId { get; set; }
+	public Service? Service { get; set; }
+
 
 	// Account Link
 	public string Email { get; set; } // Used for login
@@ -44,5 +47,4 @@ public class Doctor : BaseEntity
 	public ApplicationUser? ApplicationUser { get; set; }
 
 	public ICollection<DoctorSchedule> Schedules { get; set; } = new List<DoctorSchedule>();
-	public ICollection<DoctorService> DoctorServices { get; set; } = new List<DoctorService>();
 }

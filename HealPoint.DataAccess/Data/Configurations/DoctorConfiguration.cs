@@ -95,9 +95,9 @@ internal class DoctorConfiguration : BaseEntityConfiguration<Doctor>, IEntityTyp
 			.HasForeignKey<Doctor>(d => d.ApplicationUserId)
 			.OnDelete(DeleteBehavior.SetNull);
 
-		builder.HasMany(d => d.DoctorServices)
-			.WithOne(ds => ds.Doctor)
-			.HasForeignKey(ds => ds.DoctorId)
-			.OnDelete(DeleteBehavior.Cascade);
+		builder.HasOne(d => d.Service)
+			.WithMany(s => s.Doctors)
+			.HasForeignKey(ds => ds.ServiceId)
+			.OnDelete(DeleteBehavior.Restrict);
 	}
 }
