@@ -15,4 +15,5 @@ public interface IDoctorService
 	Task UpdateAsync(DoctorFormDto dto);
 	Task ToggleDoctorStatusAsync(int id);
 	void ChangeService(int doctorId, int selectedServiceId);
+	void ChangeSpecialization(int doctorId, int selectedSpecializationId);
 }
