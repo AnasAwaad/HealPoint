@@ -1,4 +1,6 @@
-﻿namespace HealPoint.DataAccess.Data.Configurations;
+﻿using HealPoint.DataAccess.Enums;
+
+namespace HealPoint.DataAccess.Data.Configurations;
 internal class DoctorConfiguration : BaseEntityConfiguration<Doctor>, IEntityTypeConfiguration<Doctor>
 {
 	public void Configure(EntityTypeBuilder<Doctor> builder)
@@ -52,6 +54,9 @@ internal class DoctorConfiguration : BaseEntityConfiguration<Doctor>, IEntityTyp
 		builder.Property(d => d.YearOfExperience)
 			.HasMaxLength(30);
 
+		builder.Property(d => d.OperationMode)
+			.HasDefaultValue(DoctorOperationMode.Telehealth);
+
 		// --- Education & Training
 
 		builder.Property(d => d.Education)
@@ -73,6 +78,7 @@ internal class DoctorConfiguration : BaseEntityConfiguration<Doctor>, IEntityTyp
 			.HasMaxLength(450)
 			.IsRequired(false);
 
+		// Configure the relationship with Specialization, Department, ApplicationUser and DoctorService
 		builder.HasOne(d => d.Specialization)
 			.WithMany(s => s.Doctors)
 			.HasForeignKey(d => d.SpecializationId)
@@ -88,5 +94,10 @@ internal class DoctorConfiguration : BaseEntityConfiguration<Doctor>, IEntityTyp
 			.WithOne(u => u.Doctor)
 			.HasForeignKey<Doctor>(d => d.ApplicationUserId)
 			.OnDelete(DeleteBehavior.SetNull);
+
+		builder.HasOne(d => d.Service)
+			.WithMany(s => s.Doctors)
+			.HasForeignKey(ds => ds.ServiceId)
+			.OnDelete(DeleteBehavior.Restrict);
 	}
 }

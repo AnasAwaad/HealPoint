@@ -41,8 +41,13 @@ $(document).ready(function () {
                 // Re-enable client-side validation for the new form
                 $.validator.unobtrusive.parse(myModal);
 
-                initializeFlatpickr();
+                //initializeFlatpickr();
 
+
+                // Reinitialize the image input component within the modal
+                if (typeof KTComponents !== 'undefined' && typeof KTComponents.init === 'function') {
+                    KTComponents.init();
+                }
 
                 var dayName = $('.js-day-name.active').data('day');
                 $('#DayOfWeek').val(dayName);

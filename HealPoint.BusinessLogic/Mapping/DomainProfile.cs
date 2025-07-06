@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using HealPoint.BusinessLogic.DTOs.Specialization;
 using HealPoint.DataAccess.Entities;
 
 namespace HealPoint.BusinessLogic.Mapping;
@@ -17,7 +18,7 @@ public class DomainProfile : Profile
 
 		CreateMap<SpecializationFormDto, Specialization>().ReverseMap();
 		CreateMap<SpecializationFormDto, DepartmentDto>().ReverseMap();
-
+		CreateMap<Specialization, DoctorSpecializationItemDto>();
 
 		// Clinics
 		CreateMap<Clinic, ClinicListDto>()

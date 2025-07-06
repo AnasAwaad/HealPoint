@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace HealPoint.DataAccess.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20250701084735_AddTimeSlotTable")]
-    partial class AddTimeSlotTable
+    [Migration("20250706162327_AddSymptomAndDoctoSymptomTables")]
+    partial class AddSymptomAndDoctoSymptomTables
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -413,6 +413,11 @@ namespace HealPoint.DataAccess.Migrations
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)");
 
+                    b.Property<int>("OperationMode")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasDefaultValue(0);
+
                     b.Property<string>("Position")
                         .HasMaxLength(100)
                         .HasColumnType("nvarchar(100)");
@@ -428,6 +433,9 @@ namespace HealPoint.DataAccess.Migrations
                     b.Property<string>("Qualifications")
                         .HasMaxLength(500)
                         .HasColumnType("nvarchar(500)");
+
+                    b.Property<int?>("ServiceId")
+                        .HasColumnType("int");
 
                     b.Property<int>("SpecializationId")
                         .HasColumnType("int");
@@ -452,9 +460,177 @@ namespace HealPoint.DataAccess.Migrations
 
                     b.HasIndex("LastUpdatedById");
 
+                    b.HasIndex("ServiceId");
+
                     b.HasIndex("SpecializationId");
 
                     b.ToTable("Doctors");
+                });
+
+            modelBuilder.Entity("HealPoint.DataAccess.Entities.DoctorSchedule", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("ClinicId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("CreatedById")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<DateTime>("CreatedOn")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("datetime2")
+                        .HasDefaultValueSql("GETDATE()");
+
+                    b.Property<int>("DoctorId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("EndDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<bool>("IsDeleted")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bit")
+                        .HasDefaultValue(false);
+
+                    b.Property<string>("LastUpdatedById")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<DateTime?>("LastUpdatedOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("Recurrence")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("StartDate")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ClinicId");
+
+                    b.HasIndex("CreatedById");
+
+                    b.HasIndex("DoctorId");
+
+                    b.HasIndex("LastUpdatedById");
+
+                    b.ToTable("DoctorSchedules");
+                });
+
+            modelBuilder.Entity("HealPoint.DataAccess.Entities.DoctorScheduleDetails", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("CreatedById")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<DateTime>("CreatedOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("DayOfWeek")
+                        .HasColumnType("int");
+
+                    b.Property<int>("DoctorScheduleId")
+                        .HasColumnType("int");
+
+                    b.Property<TimeSpan>("EndTime")
+                        .HasColumnType("time");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("LastUpdatedById")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<DateTime?>("LastUpdatedOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<TimeSpan>("StartTime")
+                        .HasColumnType("time");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CreatedById");
+
+                    b.HasIndex("DoctorScheduleId");
+
+                    b.HasIndex("LastUpdatedById");
+
+                    b.ToTable("DoctorScheduleDetails");
+                });
+
+            modelBuilder.Entity("HealPoint.DataAccess.Entities.DoctorSymptom", b =>
+                {
+                    b.Property<int>("DoctorId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("SymptomId")
+                        .HasColumnType("int");
+
+                    b.HasKey("DoctorId", "SymptomId");
+
+                    b.HasIndex("SymptomId");
+
+                    b.ToTable("DoctorSymptoms");
+                });
+
+            modelBuilder.Entity("HealPoint.DataAccess.Entities.Service", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("CreatedById")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<DateTime>("CreatedOn")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("datetime2")
+                        .HasDefaultValueSql("GETDATE()");
+
+                    b.Property<string>("Description")
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar(500)");
+
+                    b.Property<string>("ImageUrl")
+                        .IsRequired()
+                        .HasMaxLength(255)
+                        .HasColumnType("nvarchar(255)");
+
+                    b.Property<bool>("IsDeleted")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bit")
+                        .HasDefaultValue(false);
+
+                    b.Property<string>("LastUpdatedById")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<DateTime?>("LastUpdatedOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CreatedById");
+
+                    b.HasIndex("LastUpdatedById");
+
+                    b.ToTable("Services");
                 });
 
             modelBuilder.Entity("HealPoint.DataAccess.Entities.Specialization", b =>
@@ -511,7 +687,7 @@ namespace HealPoint.DataAccess.Migrations
                     b.ToTable("Specializations");
                 });
 
-            modelBuilder.Entity("HealPoint.DataAccess.Entities.TimeSlot", b =>
+            modelBuilder.Entity("HealPoint.DataAccess.Entities.Symptom", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -527,15 +703,6 @@ namespace HealPoint.DataAccess.Migrations
                         .HasColumnType("datetime2")
                         .HasDefaultValueSql("GETDATE()");
 
-                    b.Property<int>("DayOfWeek")
-                        .HasColumnType("int");
-
-                    b.Property<int>("DoctorId")
-                        .HasColumnType("int");
-
-                    b.Property<TimeOnly>("EndTime")
-                        .HasColumnType("time");
-
                     b.Property<bool>("IsDeleted")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("bit")
@@ -547,18 +714,21 @@ namespace HealPoint.DataAccess.Migrations
                     b.Property<DateTime?>("LastUpdatedOn")
                         .HasColumnType("datetime2");
 
-                    b.Property<TimeOnly>("StartTime")
-                        .HasColumnType("time");
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
 
                     b.HasKey("Id");
 
                     b.HasIndex("CreatedById");
 
-                    b.HasIndex("DoctorId");
-
                     b.HasIndex("LastUpdatedById");
 
-                    b.ToTable("TimeSlots");
+                    b.HasIndex("Name")
+                        .IsUnique();
+
+                    b.ToTable("Symptoms");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
@@ -775,6 +945,11 @@ namespace HealPoint.DataAccess.Migrations
                         .WithMany()
                         .HasForeignKey("LastUpdatedById");
 
+                    b.HasOne("HealPoint.DataAccess.Entities.Service", "Service")
+                        .WithMany("Doctors")
+                        .HasForeignKey("ServiceId")
+                        .OnDelete(DeleteBehavior.Restrict);
+
                     b.HasOne("HealPoint.DataAccess.Entities.Specialization", "Specialization")
                         .WithMany("Doctors")
                         .HasForeignKey("SpecializationId")
@@ -789,7 +964,97 @@ namespace HealPoint.DataAccess.Migrations
 
                     b.Navigation("LastUpdatedBy");
 
+                    b.Navigation("Service");
+
                     b.Navigation("Specialization");
+                });
+
+            modelBuilder.Entity("HealPoint.DataAccess.Entities.DoctorSchedule", b =>
+                {
+                    b.HasOne("HealPoint.DataAccess.Entities.Clinic", "Clinic")
+                        .WithMany()
+                        .HasForeignKey("ClinicId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("HealPoint.DataAccess.Entities.ApplicationUser", "CreatedBy")
+                        .WithMany()
+                        .HasForeignKey("CreatedById");
+
+                    b.HasOne("HealPoint.DataAccess.Entities.Doctor", "Doctor")
+                        .WithMany("Schedules")
+                        .HasForeignKey("DoctorId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("HealPoint.DataAccess.Entities.ApplicationUser", "LastUpdatedBy")
+                        .WithMany()
+                        .HasForeignKey("LastUpdatedById");
+
+                    b.Navigation("Clinic");
+
+                    b.Navigation("CreatedBy");
+
+                    b.Navigation("Doctor");
+
+                    b.Navigation("LastUpdatedBy");
+                });
+
+            modelBuilder.Entity("HealPoint.DataAccess.Entities.DoctorScheduleDetails", b =>
+                {
+                    b.HasOne("HealPoint.DataAccess.Entities.ApplicationUser", "CreatedBy")
+                        .WithMany()
+                        .HasForeignKey("CreatedById");
+
+                    b.HasOne("HealPoint.DataAccess.Entities.DoctorSchedule", "DoctorSchedule")
+                        .WithMany("DoctorScheduleDetails")
+                        .HasForeignKey("DoctorScheduleId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("HealPoint.DataAccess.Entities.ApplicationUser", "LastUpdatedBy")
+                        .WithMany()
+                        .HasForeignKey("LastUpdatedById");
+
+                    b.Navigation("CreatedBy");
+
+                    b.Navigation("DoctorSchedule");
+
+                    b.Navigation("LastUpdatedBy");
+                });
+
+            modelBuilder.Entity("HealPoint.DataAccess.Entities.DoctorSymptom", b =>
+                {
+                    b.HasOne("HealPoint.DataAccess.Entities.Doctor", "Doctor")
+                        .WithMany("Symptoms")
+                        .HasForeignKey("DoctorId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("HealPoint.DataAccess.Entities.Symptom", "Symptom")
+                        .WithMany("Doctors")
+                        .HasForeignKey("SymptomId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("Doctor");
+
+                    b.Navigation("Symptom");
+                });
+
+            modelBuilder.Entity("HealPoint.DataAccess.Entities.Service", b =>
+                {
+                    b.HasOne("HealPoint.DataAccess.Entities.ApplicationUser", "CreatedBy")
+                        .WithMany()
+                        .HasForeignKey("CreatedById");
+
+                    b.HasOne("HealPoint.DataAccess.Entities.ApplicationUser", "LastUpdatedBy")
+                        .WithMany()
+                        .HasForeignKey("LastUpdatedById");
+
+                    b.Navigation("CreatedBy");
+
+                    b.Navigation("LastUpdatedBy");
                 });
 
             modelBuilder.Entity("HealPoint.DataAccess.Entities.Specialization", b =>
@@ -815,25 +1080,17 @@ namespace HealPoint.DataAccess.Migrations
                     b.Navigation("LastUpdatedBy");
                 });
 
-            modelBuilder.Entity("HealPoint.DataAccess.Entities.TimeSlot", b =>
+            modelBuilder.Entity("HealPoint.DataAccess.Entities.Symptom", b =>
                 {
                     b.HasOne("HealPoint.DataAccess.Entities.ApplicationUser", "CreatedBy")
                         .WithMany()
                         .HasForeignKey("CreatedById");
-
-                    b.HasOne("HealPoint.DataAccess.Entities.Doctor", "Doctor")
-                        .WithMany("TimeSlots")
-                        .HasForeignKey("DoctorId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
 
                     b.HasOne("HealPoint.DataAccess.Entities.ApplicationUser", "LastUpdatedBy")
                         .WithMany()
                         .HasForeignKey("LastUpdatedById");
 
                     b.Navigation("CreatedBy");
-
-                    b.Navigation("Doctor");
 
                     b.Navigation("LastUpdatedBy");
                 });
@@ -906,10 +1163,27 @@ namespace HealPoint.DataAccess.Migrations
 
             modelBuilder.Entity("HealPoint.DataAccess.Entities.Doctor", b =>
                 {
-                    b.Navigation("TimeSlots");
+                    b.Navigation("Schedules");
+
+                    b.Navigation("Symptoms");
+                });
+
+            modelBuilder.Entity("HealPoint.DataAccess.Entities.DoctorSchedule", b =>
+                {
+                    b.Navigation("DoctorScheduleDetails");
+                });
+
+            modelBuilder.Entity("HealPoint.DataAccess.Entities.Service", b =>
+                {
+                    b.Navigation("Doctors");
                 });
 
             modelBuilder.Entity("HealPoint.DataAccess.Entities.Specialization", b =>
+                {
+                    b.Navigation("Doctors");
+                });
+
+            modelBuilder.Entity("HealPoint.DataAccess.Entities.Symptom", b =>
                 {
                     b.Navigation("Doctors");
                 });

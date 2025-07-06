@@ -1,4 +1,6 @@
 ﻿
+using HealPoint.DataAccess.Enums;
+
 namespace HealPoint.DataAccess.Entities;
 public class Doctor : BaseEntity
 {
@@ -26,7 +28,7 @@ public class Doctor : BaseEntity
 	public DateOnly? LicenseExpiryDate { get; set; }
 	public string? Qualifications { get; set; }
 	public int? YearOfExperience { get; set; }
-
+	public DoctorOperationMode OperationMode { get; set; }
 	//Education & Training
 	public string? Education { get; set; }
 	public string? Certifications { get; set; }
@@ -35,6 +37,9 @@ public class Doctor : BaseEntity
 	public int DepartmentId { get; set; }
 	public Department? Department { get; set; }
 	public string? Position { get; set; }
+	public int? ServiceId { get; set; }
+	public Service? Service { get; set; }
+
 
 	// Account Link
 	public string Email { get; set; } // Used for login
@@ -42,4 +47,5 @@ public class Doctor : BaseEntity
 	public ApplicationUser? ApplicationUser { get; set; }
 
 	public ICollection<DoctorSchedule> Schedules { get; set; } = new List<DoctorSchedule>();
+	public ICollection<DoctorSymptom> Symptoms { get; set; } = new List<DoctorSymptom>();
 }

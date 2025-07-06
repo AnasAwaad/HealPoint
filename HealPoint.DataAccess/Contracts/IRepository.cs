@@ -10,4 +10,6 @@ public interface IRepository<TEntity> where TEntity : class
 	void Update(TEntity entity);
 
 	void Insert(TEntity entity);
+
+	void RemoveRange(IEnumerable<TEntity> entities);
 }

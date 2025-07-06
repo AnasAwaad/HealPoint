@@ -1,0 +1,5 @@
+﻿.card.active {
+    background-color: #e7f1ff;
+    border: 2px solid #0d6efd !important;
+    transition: background-color 0.3s ease, border 0.3s ease;
+}

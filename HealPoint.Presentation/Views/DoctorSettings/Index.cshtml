@@ -1,0 +1,158 @@
+﻿@using HealPoint.DataAccess.Enums
+@model DoctorSettingDto
+
+@{
+	ViewData["Title"] = "Doctor Settings";
+}
+
+@section Styles {
+    <link rel="stylesheet" href="~/css/doctor-settings.css" />
+}
+
+<div class="container my-5">
+    <div class="border bg-white rounded p-4 shadow-sm">
+        <div class="row align-items-center mb-4">
+            <div class="col">
+                <h4 class="mb-0">Choose your Operation Mode</h4>
+            </div>
+            <div class="col-auto">
+                <button class="btn btn-dark px-4" id="btnUpdateOperationMode">Update Operation Mode</button>
+            </div>
+        </div>
+
+        <input type="hidden" asp-for="OperationMode" id="operationModeInput" />
+
+        <div class="row g-3">
+            <div class="col col-md-2">
+                <div class="card cursor-pointer js-operation-mode-card border-2 @(Model.OperationMode == DoctorOperationMode.InPerson ? "active" : "") shadow-sm"
+                     data-operation-mode="@((int)DoctorOperationMode.InPerson)">
+                    <div class="card-body py-4 ">
+                        <div class="text-primary d-flex justify-content-center">
+                            <i class="bi bi-geo-alt fs-1"></i>
+                        </div>
+                        <h6 class="fw-semibold text-primary pt-4 text-center">In person doctor visit</h6>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col col-md-2">
+                <div class="card cursor-pointer js-operation-mode-card border-2 @(Model.OperationMode == DoctorOperationMode.Telehealth ? "active" : "") shadow-sm"
+                     data-operation-mode="@((int)DoctorOperationMode.Telehealth)">
+                    <div class="card-body py-4">
+                        <div class="text-primary d-flex justify-content-center">
+                            <i class="bi bi-camera-video fs-1"></i>
+                        </div>
+                        <h6 class="fw-semibold text-primary pt-4 text-center">Telehealth visit</h6>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="container my-5">
+    <div class="border bg-white rounded p-4 shadow-sm">
+        <div class="row align-items-center mb-4">
+            <div class="col">
+                <h4 class="mb-0">Choose your Service you want to offer</h4>
+            </div>
+            <div class="col-auto">
+                <button class="btn btn-dark px-4" id="btnUpdateService">Update Service</button>
+            </div>
+        </div>
+
+	    <input type="hidden" asp-for="DoctorId" />
+        <input type="hidden" asp-for="@Model.SelectedServiceId"/>
+        <div class="row g-3">
+        @foreach (var service in Model.AvailableServices)
+        {
+            <div class="col col-md-3">
+                <div class="card cursor-pointer js-service-card h-100 border-2 @(Model.SelectedServiceId.Equals(service.Id) ? "active" : "") shadow-sm" data-service-id="@service.Id">
+
+                    <div class="card-body d-flex">
+                        <div class="me-3 fs-3 text-primary">
+                            <img src="@service.ImageUrl" alt="@service.Name" width="50"/>
+                        </div>
+
+                        <div>
+                            <h6 class="fw-semibold text-primary mb-1">@service.Name</h6>
+                            <small class="text-muted">
+                                @service.Description
+                            </small>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        }
+        
+
+    </div>
+    </div>
+</div>
+
+<div class="container my-5">
+    <div class="border bg-white rounded p-4 shadow-sm">
+        <div class="row align-items-center mb-4">
+            <div class="col">
+                <h4 class="mb-0">Choose your Specialization you want to offer</h4>
+            </div>
+            <div class="col-auto">
+                <button class="btn btn-dark px-4" id="btnUpdateSpecialization">Update Specialization</button>
+            </div>
+        </div>
+
+        <input type="hidden" asp-for="@Model.SelectedSpecializationId" />
+
+        <div class="row g-3">
+        @foreach (var specialization in Model.Specializations)
+        {
+            <div class="col col-md-3">
+                <div class="card cursor-pointer js-spec-card h-100 border-2 @(Model.SelectedSpecializationId.Equals(specialization.Id) ? "active" : "") shadow-sm" data-spec-id="@specialization.Id">
+                    <div class="p-6 d-flex">
+                         <h6 class="fw-semibold text-primary mb-1">@specialization.Name</h6>
+                    </div>
+
+                </div>
+            </div>
+        }
+
+
+    </div>
+    </div>
+</div>
+
+<div class="container my-5">
+    <div class="border bg-white rounded p-4 shadow-sm">
+        <div class="row align-items-center mb-4">
+            <div class="col">
+                <h4 class="mb-0">Select the symptots</h4>
+            </div>
+            <div class="col-auto">
+                <button class="btn btn-dark px-4" id="btnUpdateSymptoms">Update Symptoms</button>
+            </div>
+        </div>
+
+        <div class="row g-3">
+            @foreach (var symptom in Model.Symptoms)
+            {
+                var isSelected = Model.SelectedSymptoms.Contains(symptom.Id);
+
+                <div class="col col-md-3">
+                    <div data-symptom-id="@symptom.Id" data-selected="@(isSelected ? "true":"false")" class="card cursor-pointer js-symptom-card h-100 border-2 @(isSelected ? "active" : "") shadow-sm">
+                        <div class="p-6 d-flex">
+                            <h6 class="fw-semibold text-primary mb-1">@symptom.Name</h6>
+                        </div>
+
+                    </div>
+                </div>
+            }
+
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script src="~/js/doctor-settings.js"></script>
+}

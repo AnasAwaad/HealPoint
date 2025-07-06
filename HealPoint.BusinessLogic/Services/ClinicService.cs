@@ -29,7 +29,7 @@ public class ClinicService : IClinicService
 
 		clinic.CreatedOn = DateTime.Now;
 
-		var imagePath = await _fileStorage.UploadFileAsync(clinicDto.ImageFile, $"clinics");
+		var imagePath = await _fileStorage.UploadFileAsync(clinicDto.ImageFile, "clinics");
 		clinic.ImagePath = imagePath ?? "/images/clinics/default-clinic.png";
 
 		_unitOfWork.Clinics.Insert(clinic);
@@ -58,7 +58,7 @@ public class ClinicService : IClinicService
 		if (clinicDto.ImageFile is not null)
 		{
 			_fileStorage.DeleteFile(clinicDto.ImagePath);
-			var imagePath = await _fileStorage.UploadFileAsync(clinicDto.ImageFile, $"clinics/{clinicDto.Name}");
+			var imagePath = await _fileStorage.UploadFileAsync(clinicDto.ImageFile, "clinics");
 
 			existingClinic.ImagePath = imagePath ?? "/images/clinics/default-clinic.png";
 

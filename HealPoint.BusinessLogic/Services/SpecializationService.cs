@@ -1,8 +1,8 @@
 ﻿using AutoMapper;
 using HealPoint.BusinessLogic.Contracts;
+using HealPoint.BusinessLogic.DTOs.Specialization;
 using HealPoint.DataAccess.Contracts;
 using HealPoint.DataAccess.Entities;
-using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace HealPoint.BusinessLogic.Services;
 public class SpecializationService : ISpecializationService
@@ -88,4 +88,9 @@ public class SpecializationService : ISpecializationService
 		return existingSpecialization.IsDeleted;
 	}
 
+	public IEnumerable<DoctorSpecializationItemDto> GetActiveSpecializationsForDoctor()
+	{
+		var specializations = _unitOfWork.Specializations.GetActiveSpecializations();
+		return _mapper.Map<IEnumerable<DoctorSpecializationItemDto>>(specializations);
+	}
 }

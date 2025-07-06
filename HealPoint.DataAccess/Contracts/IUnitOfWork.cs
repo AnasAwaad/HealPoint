@@ -7,6 +7,8 @@ public interface IUnitOfWork : IDisposable
 	ISpecializationRepository Specializations { get; }
 	IDoctorRepository Doctors { get; }
 	IDoctorScheduleRepository DoctorSchedules { get; }
+	IServiceRepository Services { get; }
+	ISymptomRepository Symptoms { get; }
 
 	void SaveChanges();
 }

@@ -1,10 +1,12 @@
 ﻿using HealPoint.BusinessLogic.Contracts;
 using HealPoint.BusinessLogic.DTOs;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using System.Security.Claims;
 
 namespace HealPoint.Presentation.Controllers;
+[Authorize]
 public class DoctorSchedulesController : Controller
 {
 	private readonly IClinicService _clinicService;
