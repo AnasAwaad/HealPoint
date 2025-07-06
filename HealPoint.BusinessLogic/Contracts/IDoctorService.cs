@@ -14,4 +14,5 @@ public interface IDoctorService
 	bool IsAllowedEmail(string email, int? id);
 	Task UpdateAsync(DoctorFormDto dto);
 	Task ToggleDoctorStatusAsync(int id);
+	void ChangeService(int doctorId, int selectedServiceId);
 }

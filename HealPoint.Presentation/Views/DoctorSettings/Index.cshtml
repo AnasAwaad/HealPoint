@@ -11,15 +11,17 @@
             <h4 class="mb-0">Choose your Service you want to offer</h4>
         </div>
         <div class="col-auto">
-            <button class="btn btn-dark px-4">Update Service</button>
+            <button class="btn btn-dark px-4" id="btnUpdateService">Update Service</button>
         </div>
     </div>
+
+	<input type="hidden" asp-for="DoctorId" />
 
     <div class="row g-3">
         @foreach (var service in Model.AvailableServices)
         {
             <div class="col col-md-3">
-                <div class="card h-100 border-2 @(Model.SelectedServiceId.Equals(service.Id) ? "border-primary" : "border-light-subtle") shadow-sm">
+                <div class="card cursor-pointer js-selectable-card h-100 border-2 @(Model.SelectedServiceId.Equals(service.Id) ? "border-primary" : "") shadow-sm" data-service-id="@service.Id">
 
                     <div class="card-body d-flex">
                         <div class="me-3 fs-3 text-primary">
@@ -41,3 +43,47 @@
 
     </div>
 </div>
+
+@section Scripts {
+    <script>
+        var selectedServiceId;
+
+        $(document).ready(function () {
+            $('.js-selectable-card').on('click', function () {
+                $('.js-selectable-card').removeClass('border-primary');
+                $(this).addClass('border-primary');
+
+                var serviceId = $(this).data('service-id');
+				selectedServiceId = serviceId;
+
+            });
+        });
+
+        $('#btnUpdateService').on('click', function () {
+            
+            if (selectedServiceId == undefined) {
+                showErrorSwal('Please select a service.');
+                return;
+            }
+
+
+            const model ={
+                DoctorId: parseInt($('#DoctorId').val()),
+                SelectedServiceId: parseInt(selectedServiceId)
+			};
+            
+            $.ajax({
+                url: "/DoctorSettings/UpdateService",
+                type: 'POST',
+				contentType: 'application/json',
+				data: JSON.stringify(model),
+                success: function (response) {
+                    showSuccessSwal(response);
+                },
+                error: function () {
+                    showErrorSwal('An error occurred while updating the service.');
+                }
+            });
+		});
+    </script>
+}

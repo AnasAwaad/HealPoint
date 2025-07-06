@@ -31,11 +31,22 @@ public class DoctorSettingsController : Controller
 
 		var model = new DoctorSettingDto
 		{
+			DoctorId = doctor.Id,
 			AvailableServices = _serviceManager.GetActiveServicesForDoctor(),
 			SelectedServiceId = doctor.ServiceId
 		};
 
 		return View(model);
+	}
+
+	[HttpPost]
+	public IActionResult UpdateService([FromBody] DoctorSettingDto model)
+	{
+		if (!model.SelectedServiceId.HasValue || model.SelectedServiceId.Equals(0))
+			return BadRequest("Selected service ID cannot be zero.");
+
+		_doctorService.ChangeService(model.DoctorId, model.SelectedServiceId.Value);
+		return Ok();
 	}
 	#endregion
 }

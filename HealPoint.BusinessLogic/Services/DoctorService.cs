@@ -266,6 +266,17 @@ internal class DoctorService(IUnitOfWork unitOfWork,
 		return unitOfWork.Doctors.GetDoctorByUserId(userId);
 	}
 
+	public void ChangeService(int doctorId, int selectedServiceId)
+	{
+		var doctor = unitOfWork.Doctors.FindById(doctorId);
+
+		if (doctor is null)
+			throw new KeyNotFoundException($"Doctor with ID {doctorId} not found.");
+
+		doctor.ServiceId = selectedServiceId;
+
+		unitOfWork.SaveChanges();
+	}
 
 	#endregion
 }
