@@ -47,4 +47,5 @@ public class Doctor : BaseEntity
 	public ApplicationUser? ApplicationUser { get; set; }
 
 	public ICollection<DoctorSchedule> Schedules { get; set; } = new List<DoctorSchedule>();
+	public ICollection<DoctorSymptom> Symptoms { get; set; } = new List<DoctorSymptom>();
 }

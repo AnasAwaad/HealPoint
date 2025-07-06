@@ -22,5 +22,7 @@ public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
 	public DbSet<DoctorScheduleDetails> DoctorScheduleDetails { get; set; }
 	public DbSet<Specialization> Specializations { get; set; }
 	public DbSet<Service> Services { get; set; }
+	public DbSet<Symptom> Symptoms { get; set; }
+	public DbSet<DoctorSymptom> DoctorSymptoms { get; set; }
 
 }
