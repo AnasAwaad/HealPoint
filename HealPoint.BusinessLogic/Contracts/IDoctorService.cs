@@ -1,4 +1,5 @@
 ﻿using HealPoint.DataAccess.Entities;
+using HealPoint.DataAccess.Enums;
 
 namespace HealPoint.BusinessLogic.Contracts;
 public interface IDoctorService
@@ -17,4 +18,5 @@ public interface IDoctorService
 	void ChangeService(int doctorId, int selectedServiceId);
 	void ChangeSpecialization(int doctorId, int selectedSpecializationId);
 	void UpdateSymptoms(int doctorId, IList<int> selectedSymptoms);
+	void UpdateOperationModel(int doctorId, DoctorOperationMode operationMode);
 }

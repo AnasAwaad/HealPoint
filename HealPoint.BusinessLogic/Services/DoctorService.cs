@@ -2,6 +2,7 @@
 using HealPoint.BusinessLogic.Contracts;
 using HealPoint.DataAccess.Contracts;
 using HealPoint.DataAccess.Entities;
+using HealPoint.DataAccess.Enums;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
@@ -305,6 +306,18 @@ internal class DoctorService(IUnitOfWork unitOfWork,
 		{
 			doctor.Symptoms.Add(new DoctorSymptom { SymptomId = symptomId });
 		}
+
+		unitOfWork.SaveChanges();
+	}
+
+	public void UpdateOperationModel(int doctorId, DoctorOperationMode operationMode)
+	{
+		var doctor = unitOfWork.Doctors.FindById(doctorId);
+
+		if (doctor is null)
+			throw new KeyNotFoundException($"Doctor with ID {doctorId} not found.");
+
+		doctor.OperationMode = operationMode;
 
 		unitOfWork.SaveChanges();
 	}

@@ -94,4 +94,34 @@ $(document).ready(function () {
             error: () => showErrorSwal('An error occurred while updating the symptoms.')
         });
     });
+
+
+    $(document).on('click', '.js-operation-mode-card', function () {
+        $('.js-operation-mode-card').removeClass('active');
+        $(this).addClass('active');
+
+        const selectedMode = $(this).data('operation-mode');
+        $('#operationModeInput').val(selectedMode);
+    });
+
+    $('#btnUpdateOperationMode').on('click', function () {
+        const doctorId = $('input[name="DoctorId"]').val();
+        const operationMode = $('#operationModeInput').val();
+
+        $.ajax({
+            type: "POST",
+            url: '/DoctorSettings/UpdateOperationMode',
+            contentType: 'application/json',
+            data: JSON.stringify({
+                DoctorId: parseInt(doctorId),
+                OperationMode: parseInt(operationMode)
+            }),
+            success: function () {
+                showSuccessSwal("Operation mode updated successfully!");
+            },
+            error: function () {
+                showSuccessSwal("Something went wrong!");
+            }
+        });
+    });
 });

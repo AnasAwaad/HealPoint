@@ -1,6 +1,7 @@
 ﻿
 using HealPoint.BusinessLogic.DTO;
 using HealPoint.BusinessLogic.DTOs.Specialization;
+using HealPoint.DataAccess.Enums;
 
 namespace HealPoint.BusinessLogic.DTOs;
 public class DoctorSettingDto
@@ -12,4 +13,6 @@ public class DoctorSettingDto
 	public IList<int> SelectedSymptoms { get; set; } = new List<int>();
 	public int? SelectedServiceId { get; set; }
 	public int? SelectedSpecializationId { get; set; }
+	public DoctorOperationMode OperationMode { get; set; }
+
 }

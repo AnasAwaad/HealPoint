@@ -1,4 +1,5 @@
-﻿@model DoctorSettingDto
+﻿@using HealPoint.DataAccess.Enums
+@model DoctorSettingDto
 
 @{
 	ViewData["Title"] = "Doctor Settings";
@@ -7,6 +8,48 @@
 @section Styles {
     <link rel="stylesheet" href="~/css/doctor-settings.css" />
 }
+
+<div class="container my-5">
+    <div class="border bg-white rounded p-4 shadow-sm">
+        <div class="row align-items-center mb-4">
+            <div class="col">
+                <h4 class="mb-0">Choose your Operation Mode</h4>
+            </div>
+            <div class="col-auto">
+                <button class="btn btn-dark px-4" id="btnUpdateOperationMode">Update Operation Mode</button>
+            </div>
+        </div>
+
+        <input type="hidden" asp-for="OperationMode" id="operationModeInput" />
+
+        <div class="row g-3">
+            <div class="col col-md-2">
+                <div class="card cursor-pointer js-operation-mode-card border-2 @(Model.OperationMode == DoctorOperationMode.InPerson ? "active" : "") shadow-sm"
+                     data-operation-mode="@((int)DoctorOperationMode.InPerson)">
+                    <div class="card-body py-4 ">
+                        <div class="text-primary d-flex justify-content-center">
+                            <i class="bi bi-geo-alt fs-1"></i>
+                        </div>
+                        <h6 class="fw-semibold text-primary pt-4 text-center">In person doctor visit</h6>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col col-md-2">
+                <div class="card cursor-pointer js-operation-mode-card border-2 @(Model.OperationMode == DoctorOperationMode.Telehealth ? "active" : "") shadow-sm"
+                     data-operation-mode="@((int)DoctorOperationMode.Telehealth)">
+                    <div class="card-body py-4">
+                        <div class="text-primary d-flex justify-content-center">
+                            <i class="bi bi-camera-video fs-1"></i>
+                        </div>
+                        <h6 class="fw-semibold text-primary pt-4 text-center">Telehealth visit</h6>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
 
 <div class="container my-5">
     <div class="border bg-white rounded p-4 shadow-sm">

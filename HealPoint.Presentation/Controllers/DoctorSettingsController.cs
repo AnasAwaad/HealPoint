@@ -42,6 +42,7 @@ public class DoctorSettingsController : Controller
 			SelectedServiceId = doctor.ServiceId,
 			SelectedSpecializationId = doctor.SpecializationId,
 			SelectedSymptoms = doctor.Symptoms.Select(s => s.SymptomId).ToList(),
+			OperationMode = doctor.OperationMode
 		};
 
 		return View(model);
@@ -74,6 +75,13 @@ public class DoctorSettingsController : Controller
 			return BadRequest("Please select at least one symptom.");
 
 		_doctorService.UpdateSymptoms(model.DoctorId, model.SelectedSymptoms);
+		return Ok();
+	}
+
+	[HttpPost]
+	public IActionResult UpdateOperationMode([FromBody] DoctorSettingDto model)
+	{
+		_doctorService.UpdateOperationModel(model.DoctorId, model.OperationMode);
 		return Ok();
 	}
 	#endregion
