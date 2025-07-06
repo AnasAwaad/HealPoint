@@ -8,8 +8,8 @@ public class DomainProfile : Profile
 	{
 		// Departments
 		CreateMap<DepartmentDto, Department>().ReverseMap();
-		CreateMap<ServiceFormDto, Department>().ReverseMap();
-		CreateMap<ServiceFormDto, DepartmentDto>().ReverseMap();
+		CreateMap<DepartmentFormDto, Department>().ReverseMap();
+		CreateMap<DepartmentFormDto, DepartmentDto>().ReverseMap();
 
 		// Specialization
 		CreateMap<SpecializationDto, Specialization>().ReverseMap()

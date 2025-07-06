@@ -8,6 +8,7 @@ public interface IUnitOfWork : IDisposable
 	IDoctorRepository Doctors { get; }
 	IDoctorScheduleRepository DoctorSchedules { get; }
 	IServiceRepository Services { get; }
+	ISymptomRepository Symptoms { get; }
 
 	void SaveChanges();
 }
