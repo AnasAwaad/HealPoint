@@ -5,7 +5,7 @@ public interface ISpecializationService
 {
 	IEnumerable<SpecializationDto> GetAllSpecializations();
 	IEnumerable<SpecializationDto> GetSpecializationsLookup();
-	IEnumerable<DoctorSpecializationItemDto> GetActiveServicesForDoctor();
+	IEnumerable<DoctorSpecializationItemDto> GetActiveSpecializationsForDoctor();
 	SpecializationFormDto? GetSpecializationById(int id);
 	SpecializationDto CreateSpecialization(SpecializationFormDto specializationDto);
 	SpecializationDto? UpdateSpecialization(SpecializationFormDto specializationDto);

@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace HealPoint.DataAccess.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20250706120456_AddSymptomAndDoctoSymptomTables")]
+    [Migration("20250706162327_AddSymptomAndDoctoSymptomTables")]
     partial class AddSymptomAndDoctoSymptomTables
     {
         /// <inheritdoc />
@@ -576,26 +576,7 @@ namespace HealPoint.DataAccess.Migrations
                     b.Property<int>("SymptomId")
                         .HasColumnType("int");
 
-                    b.Property<string>("CreatedById")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<DateTime>("CreatedOn")
-                        .HasColumnType("datetime2");
-
-                    b.Property<bool>("IsDeleted")
-                        .HasColumnType("bit");
-
-                    b.Property<string>("LastUpdatedById")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<DateTime?>("LastUpdatedOn")
-                        .HasColumnType("datetime2");
-
                     b.HasKey("DoctorId", "SymptomId");
-
-                    b.HasIndex("CreatedById");
-
-                    b.HasIndex("LastUpdatedById");
 
                     b.HasIndex("SymptomId");
 
@@ -1044,19 +1025,11 @@ namespace HealPoint.DataAccess.Migrations
 
             modelBuilder.Entity("HealPoint.DataAccess.Entities.DoctorSymptom", b =>
                 {
-                    b.HasOne("HealPoint.DataAccess.Entities.ApplicationUser", "CreatedBy")
-                        .WithMany()
-                        .HasForeignKey("CreatedById");
-
                     b.HasOne("HealPoint.DataAccess.Entities.Doctor", "Doctor")
                         .WithMany("Symptoms")
                         .HasForeignKey("DoctorId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
-
-                    b.HasOne("HealPoint.DataAccess.Entities.ApplicationUser", "LastUpdatedBy")
-                        .WithMany()
-                        .HasForeignKey("LastUpdatedById");
 
                     b.HasOne("HealPoint.DataAccess.Entities.Symptom", "Symptom")
                         .WithMany("Doctors")
@@ -1064,11 +1037,7 @@ namespace HealPoint.DataAccess.Migrations
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
-                    b.Navigation("CreatedBy");
-
                     b.Navigation("Doctor");
-
-                    b.Navigation("LastUpdatedBy");
 
                     b.Navigation("Symptom");
                 });

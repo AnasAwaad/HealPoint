@@ -44,4 +44,18 @@ internal class DoctorRepository : Repository<Doctor>, IDoctorRepository
 		return _context.Doctors
 			.FirstOrDefault(d => d.ApplicationUserId == userId && !d.IsDeleted);
 	}
+
+	public Doctor? GetDoctorWithSymptomsByUserId(string userId)
+	{
+		return _context.Doctors
+			.Include(d => d.Symptoms)
+			.FirstOrDefault(d => d.ApplicationUserId == userId && !d.IsDeleted);
+	}
+
+	public Doctor? GetDoctorWithSymptomsByDoctorId(int id)
+	{
+		return _context.Doctors
+			.Include(d => d.Symptoms)
+			.FirstOrDefault(d => d.Id == id && !d.IsDeleted);
+	}
 }

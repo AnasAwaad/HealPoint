@@ -10,15 +10,17 @@ public class DoctorSettingsController : Controller
 	private readonly IServiceManager _serviceManager;
 	private readonly ISpecializationService _specializationService;
 	private readonly IDoctorService _doctorService;
+	private readonly ISymptomService _symptomService;
 
 	#endregion
 
 	#region Ctor
-	public DoctorSettingsController(IServiceManager serviceManager, IDoctorService doctorService, ISpecializationService specializationService)
+	public DoctorSettingsController(IServiceManager serviceManager, IDoctorService doctorService, ISpecializationService specializationService, ISymptomService symptomService)
 	{
 		_serviceManager = serviceManager;
 		_doctorService = doctorService;
 		_specializationService = specializationService;
+		_symptomService = symptomService;
 	}
 	#endregion
 
@@ -26,7 +28,7 @@ public class DoctorSettingsController : Controller
 	#region Actions
 	public IActionResult Index()
 	{
-		var doctor = _doctorService.GetByUserId(User.GetUserId());
+		var doctor = _doctorService.GetWithSymptomsByUserId(User.GetUserId());
 
 		if (doctor is null)
 			return NotFound();
@@ -34,10 +36,12 @@ public class DoctorSettingsController : Controller
 		var model = new DoctorSettingDto
 		{
 			DoctorId = doctor.Id,
-			Specializations = _specializationService.GetActiveServicesForDoctor(),
+			Specializations = _specializationService.GetActiveSpecializationsForDoctor(),
 			AvailableServices = _serviceManager.GetActiveServicesForDoctor(),
+			Symptoms = _symptomService.GetActiveSymptomsForDoctor(),
 			SelectedServiceId = doctor.ServiceId,
-			SelectedSpecializationId = doctor.SpecializationId
+			SelectedSpecializationId = doctor.SpecializationId,
+			SelectedSymptoms = doctor.Symptoms.Select(s => s.SymptomId).ToList(),
 		};
 
 		return View(model);
@@ -60,6 +64,16 @@ public class DoctorSettingsController : Controller
 			return BadRequest("Please select service.");
 
 		_doctorService.ChangeSpecialization(model.DoctorId, model.SelectedSpecializationId.Value);
+		return Ok();
+	}
+
+	[HttpPost]
+	public IActionResult UpdateSymptoms([FromBody] DoctorSettingDto model)
+	{
+		if (model.SelectedSymptoms is null || !model.SelectedSymptoms.Any())
+			return BadRequest("Please select at least one symptom.");
+
+		_doctorService.UpdateSymptoms(model.DoctorId, model.SelectedSymptoms);
 		return Ok();
 	}
 	#endregion

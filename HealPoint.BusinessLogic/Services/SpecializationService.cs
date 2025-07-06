@@ -88,7 +88,7 @@ public class SpecializationService : ISpecializationService
 		return existingSpecialization.IsDeleted;
 	}
 
-	public IEnumerable<DoctorSpecializationItemDto> GetActiveServicesForDoctor()
+	public IEnumerable<DoctorSpecializationItemDto> GetActiveSpecializationsForDoctor()
 	{
 		var specializations = _unitOfWork.Specializations.GetActiveSpecializations();
 		return _mapper.Map<IEnumerable<DoctorSpecializationItemDto>>(specializations);

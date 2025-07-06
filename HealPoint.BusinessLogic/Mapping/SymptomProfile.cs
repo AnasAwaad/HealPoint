@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using HealPoint.BusinessLogic.DTO;
 using HealPoint.DataAccess.Entities;
 
 namespace HealPoint.BusinessLogic.Mapping;
@@ -11,5 +12,6 @@ internal class SymptomProfile : Profile
 		CreateMap<SymptomFormDto, Symptom>().ReverseMap();
 		CreateMap<SymptomFormDto, SymptomDto>().ReverseMap();
 
+		CreateMap<Symptom, DoctorSymptomItemDto>();
 	}
 }

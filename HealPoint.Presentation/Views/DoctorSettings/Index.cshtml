@@ -7,8 +7,8 @@
 @section Styles {
     <style>
         .card.active {
-            background-color: #e7f1ff; /* Light blue */
-            border: 2px solid #0d6efd !important; /* Bootstrap primary */
+            background-color: #e7f1ff;
+            border: 2px solid #0d6efd !important;
             transition: background-color 0.3s ease, border 0.3s ease;
         }
     </style>
@@ -85,8 +85,42 @@
     </div>
 </div>
 
+<div class="container my-5">
+
+    <div class="row align-items-center mb-4">
+        <div class="col">
+            <h4 class="mb-0">Select the symptots</h4>
+        </div>
+        <div class="col-auto">
+            <button class="btn btn-dark px-4" id="btnUpdateSymptoms">Update Symptoms</button>
+        </div>
+    </div>
+
+    @* <input type="hidden" asp-for="@Model.SelectedSpecializationId" /> *@
+
+    <div class="row g-3">
+        @foreach (var symptom in Model.Symptoms)
+        {
+            var isSelected = Model.SelectedSymptoms.Contains(symptom.Id);
+
+            <div class="col col-md-3">
+                <div data-symptom-id="@symptom.Id" data-selected="@(isSelected ? "true":"false")" class="card cursor-pointer js-symptom-card h-100 border-2 @(isSelected ? "active" : "") shadow-sm">
+                    <div class="p-6 d-flex">
+                        <h6 class="fw-semibold text-primary mb-1">@symptom.Name</h6>
+                    </div>
+
+                </div>
+            </div>
+        }
+
+
+    </div>
+</div>
+
 @section Scripts {
     <script>
+
+        let selectedSymptomIds=[];
 
         $(document).ready(function () {
             // service click
@@ -107,6 +141,26 @@
                 $('#SelectedSpecializationId').val(id);
                 console.log(id)
             });
+
+            // collect all selected symptoms
+            $('.js-symptom-card[data-selected="true"]').each(function () {
+                const id = $(this).data('symptom-id');
+                selectedSymptomIds.push(id);
+			});
+
+            // symptom click
+            $('.js-symptom-card').on('click',function(){
+                const card = $(this)
+                const id = card.data('symptom-id');
+                if(card.hasClass('active')){
+                    card.removeClass('active');
+					selectedSymptomIds = selectedSymptomIds.filter(s => s !== id);
+                }else{
+					card.addClass('active');
+					selectedSymptomIds.push(id);
+                }
+                console.log(selectedSymptomIds);
+            })
         });
         
         $('#btnUpdateService').on('click', function () {
@@ -145,5 +199,21 @@
             });
 
         });
+
+
+        $('#btnUpdateSymptoms').on('click', function () {
+            if (selectedSymptomIds.length === 0) return showErrorSwal('Please select at least one symptom.');
+            $.ajax({
+                url: '/DoctorSettings/UpdateSymptoms',
+                method: 'POST',
+                contentType: 'application/json',
+                data: JSON.stringify({
+                    DoctorId: parseInt($('#DoctorId').val()),
+                    SelectedSymptoms: selectedSymptomIds
+                }),
+                success: () => showSuccessSwal('Your symptoms are updated successfully.'),
+                error: () => showErrorSwal('An error occurred while updating the symptoms.')
+            });
+		});
     </script>
 }

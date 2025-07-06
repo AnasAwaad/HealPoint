@@ -37,6 +37,11 @@ internal abstract class Repository<TEntity> : IRepository<TEntity> where TEntity
 		_dbSet.Add(entity);
 	}
 
+	public virtual void RemoveRange(IEnumerable<TEntity> entities)
+	{
+		_dbSet.RemoveRange(entities);
+	}
+
 	public virtual void Update(TEntity entity)
 	{
 		_dbSet.Update(entity);

@@ -1,4 +1,6 @@
-﻿namespace HealPoint.BusinessLogic.Contracts;
+﻿using HealPoint.BusinessLogic.DTO;
+
+namespace HealPoint.BusinessLogic.Contracts;
 public interface ISymptomService
 {
 	IEnumerable<SymptomDto> GetAllSymptoms();
@@ -9,4 +11,5 @@ public interface ISymptomService
 	(bool? isDeleted, string? lastUpdatedOn) UpdateSymptomStatus(int id);
 	bool DeleteSymptom(int id);
 	bool IsSymptomAllowed(SymptomFormDto department);
+	IEnumerable<DoctorSymptomItemDto> GetActiveSymptomsForDoctor();
 }

@@ -261,9 +261,9 @@ internal class DoctorService(IUnitOfWork unitOfWork,
 		return user is null || user.DoctorId.Equals(id);
 	}
 
-	public Doctor? GetByUserId(string userId)
+	public Doctor? GetWithSymptomsByUserId(string userId)
 	{
-		return unitOfWork.Doctors.GetDoctorByUserId(userId);
+		return unitOfWork.Doctors.GetDoctorWithSymptomsByUserId(userId);
 	}
 
 	public void ChangeService(int doctorId, int selectedServiceId)
@@ -286,6 +286,25 @@ internal class DoctorService(IUnitOfWork unitOfWork,
 			throw new KeyNotFoundException($"Doctor with ID {doctorId} not found.");
 
 		doctor.SpecializationId = selectedSpecializationId;
+
+		unitOfWork.SaveChanges();
+	}
+
+	public void UpdateSymptoms(int doctorId, IList<int> selectedSymptoms)
+	{
+		var doctor = unitOfWork.Doctors.GetDoctorWithSymptomsByDoctorId(doctorId);
+
+		if (doctor is null)
+			throw new KeyNotFoundException($"Doctor with ID {doctorId} not found.");
+
+		doctor.LastUpdatedOn = DateTime.Now;
+
+		doctor.Symptoms = new List<DoctorSymptom>();
+
+		foreach (var symptomId in selectedSymptoms)
+		{
+			doctor.Symptoms.Add(new DoctorSymptom { SymptomId = symptomId });
+		}
 
 		unitOfWork.SaveChanges();
 	}

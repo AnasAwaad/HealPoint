@@ -5,7 +5,7 @@ public interface IDoctorService
 {
 	IEnumerable<DoctorDto> GetAll();
 	DoctorFormDto? GetById(int id);
-	Doctor? GetByUserId(string userId);
+	Doctor? GetWithSymptomsByUserId(string userId);
 	Task CreateAsync(DoctorFormDto dto);
 	bool IsAllowedMobileNumber(string phoneNumber, int? id);
 	bool IsAllowedContactEmail(string phoneNumber, int? id);
@@ -16,4 +16,5 @@ public interface IDoctorService
 	Task ToggleDoctorStatusAsync(int id);
 	void ChangeService(int doctorId, int selectedServiceId);
 	void ChangeSpecialization(int doctorId, int selectedSpecializationId);
+	void UpdateSymptoms(int doctorId, IList<int> selectedSymptoms);
 }
