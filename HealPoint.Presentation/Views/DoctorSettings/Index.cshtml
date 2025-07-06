@@ -5,30 +5,23 @@
 }
 
 @section Styles {
-    <style>
-        .card.active {
-            background-color: #e7f1ff;
-            border: 2px solid #0d6efd !important;
-            transition: background-color 0.3s ease, border 0.3s ease;
-        }
-    </style>
-    
+    <link rel="stylesheet" href="~/css/doctor-settings.css" />
 }
 
 <div class="container my-5">
-
-    <div class="row align-items-center mb-4">
-        <div class="col">
-            <h4 class="mb-0">Choose your Service you want to offer</h4>
+    <div class="border bg-white rounded p-4 shadow-sm">
+        <div class="row align-items-center mb-4">
+            <div class="col">
+                <h4 class="mb-0">Choose your Service you want to offer</h4>
+            </div>
+            <div class="col-auto">
+                <button class="btn btn-dark px-4" id="btnUpdateService">Update Service</button>
+            </div>
         </div>
-        <div class="col-auto">
-            <button class="btn btn-dark px-4" id="btnUpdateService">Update Service</button>
-        </div>
-    </div>
 
-	<input type="hidden" asp-for="DoctorId" />
-    <input type="hidden" asp-for="@Model.SelectedServiceId"/>
-    <div class="row g-3">
+	    <input type="hidden" asp-for="DoctorId" />
+        <input type="hidden" asp-for="@Model.SelectedServiceId"/>
+        <div class="row g-3">
         @foreach (var service in Model.AvailableServices)
         {
             <div class="col col-md-3">
@@ -53,22 +46,23 @@
         
 
     </div>
+    </div>
 </div>
 
 <div class="container my-5">
-
-    <div class="row align-items-center mb-4">
-        <div class="col">
-            <h4 class="mb-0">Choose your Specialization you want to offer</h4>
+    <div class="border bg-white rounded p-4 shadow-sm">
+        <div class="row align-items-center mb-4">
+            <div class="col">
+                <h4 class="mb-0">Choose your Specialization you want to offer</h4>
+            </div>
+            <div class="col-auto">
+                <button class="btn btn-dark px-4" id="btnUpdateSpecialization">Update Specialization</button>
+            </div>
         </div>
-        <div class="col-auto">
-            <button class="btn btn-dark px-4" id="btnUpdateSpecialization">Update Specialization</button>
-        </div>
-    </div>
 
-    <input type="hidden" asp-for="@Model.SelectedSpecializationId" />
+        <input type="hidden" asp-for="@Model.SelectedSpecializationId" />
 
-    <div class="row g-3">
+        <div class="row g-3">
         @foreach (var specialization in Model.Specializations)
         {
             <div class="col col-md-3">
@@ -83,137 +77,39 @@
 
 
     </div>
+    </div>
 </div>
 
 <div class="container my-5">
-
-    <div class="row align-items-center mb-4">
-        <div class="col">
-            <h4 class="mb-0">Select the symptots</h4>
-        </div>
-        <div class="col-auto">
-            <button class="btn btn-dark px-4" id="btnUpdateSymptoms">Update Symptoms</button>
-        </div>
-    </div>
-
-    @* <input type="hidden" asp-for="@Model.SelectedSpecializationId" /> *@
-
-    <div class="row g-3">
-        @foreach (var symptom in Model.Symptoms)
-        {
-            var isSelected = Model.SelectedSymptoms.Contains(symptom.Id);
-
-            <div class="col col-md-3">
-                <div data-symptom-id="@symptom.Id" data-selected="@(isSelected ? "true":"false")" class="card cursor-pointer js-symptom-card h-100 border-2 @(isSelected ? "active" : "") shadow-sm">
-                    <div class="p-6 d-flex">
-                        <h6 class="fw-semibold text-primary mb-1">@symptom.Name</h6>
-                    </div>
-
-                </div>
+    <div class="border bg-white rounded p-4 shadow-sm">
+        <div class="row align-items-center mb-4">
+            <div class="col">
+                <h4 class="mb-0">Select the symptots</h4>
             </div>
-        }
+            <div class="col-auto">
+                <button class="btn btn-dark px-4" id="btnUpdateSymptoms">Update Symptoms</button>
+            </div>
+        </div>
 
+        <div class="row g-3">
+            @foreach (var symptom in Model.Symptoms)
+            {
+                var isSelected = Model.SelectedSymptoms.Contains(symptom.Id);
 
+                <div class="col col-md-3">
+                    <div data-symptom-id="@symptom.Id" data-selected="@(isSelected ? "true":"false")" class="card cursor-pointer js-symptom-card h-100 border-2 @(isSelected ? "active" : "") shadow-sm">
+                        <div class="p-6 d-flex">
+                            <h6 class="fw-semibold text-primary mb-1">@symptom.Name</h6>
+                        </div>
+
+                    </div>
+                </div>
+            }
+
+        </div>
     </div>
 </div>
 
 @section Scripts {
-    <script>
-
-        let selectedSymptomIds=[];
-
-        $(document).ready(function () {
-            // service click
-            $('.js-service-card').on('click', function () {
-                $('.js-service-card').removeClass('active');
-                $(this).addClass('active');
-
-                const id = $(this).data('service-id');
-                $('#SelectedServiceId').val(id);
-            });
-
-            // specialization click
-            $('.js-spec-card').on('click', function () {
-                $('.js-spec-card').removeClass('active');
-                $(this).addClass('active');
-
-                const id = $(this).data('spec-id');
-                $('#SelectedSpecializationId').val(id);
-                console.log(id)
-            });
-
-            // collect all selected symptoms
-            $('.js-symptom-card[data-selected="true"]').each(function () {
-                const id = $(this).data('symptom-id');
-                selectedSymptomIds.push(id);
-			});
-
-            // symptom click
-            $('.js-symptom-card').on('click',function(){
-                const card = $(this)
-                const id = card.data('symptom-id');
-                if(card.hasClass('active')){
-                    card.removeClass('active');
-					selectedSymptomIds = selectedSymptomIds.filter(s => s !== id);
-                }else{
-					card.addClass('active');
-					selectedSymptomIds.push(id);
-                }
-                console.log(selectedSymptomIds);
-            })
-        });
-        
-        $('#btnUpdateService').on('click', function () {
-            const serviceId = parseInt($('#SelectedServiceId').val());
-            if (!serviceId) return showErrorSwal('Please select a service.');
-
-            $.ajax({
-                url: '/DoctorSettings/UpdateService',
-                method: 'POST',
-                contentType: 'application/json',
-                data: JSON.stringify({
-                    DoctorId: parseInt($('#DoctorId').val()),
-                    SelectedServiceId: serviceId
-                }),
-                success: ()=>showSuccessSwal('Your service is updated successfully.'),
-                error: () => showErrorSwal('An error occurred while updating the service.')
-            });
-        });
-
-        $('#btnUpdateSpecialization').on('click', function () {
-
-            const specId = parseInt($('#SelectedSpecializationId').val());
-            if (!specId) return showErrorSwal('Please select a specialization.');
-
-
-            $.ajax({
-                url: '/DoctorSettings/UpdateSpecialization',
-                method: 'POST',
-                contentType: 'application/json',
-                data: JSON.stringify({
-                    DoctorId: parseInt($('#DoctorId').val()),
-                    SelectedSpecializationId: specId
-                }),
-                success: () =>showSuccessSwal('Your specialization is updated successfully.'),
-                error: () => showErrorSwal('An error occurred while updating the specialization.')
-            });
-
-        });
-
-
-        $('#btnUpdateSymptoms').on('click', function () {
-            if (selectedSymptomIds.length === 0) return showErrorSwal('Please select at least one symptom.');
-            $.ajax({
-                url: '/DoctorSettings/UpdateSymptoms',
-                method: 'POST',
-                contentType: 'application/json',
-                data: JSON.stringify({
-                    DoctorId: parseInt($('#DoctorId').val()),
-                    SelectedSymptoms: selectedSymptomIds
-                }),
-                success: () => showSuccessSwal('Your symptoms are updated successfully.'),
-                error: () => showErrorSwal('An error occurred while updating the symptoms.')
-            });
-		});
-    </script>
+    <script src="~/js/doctor-settings.js"></script>
 }
