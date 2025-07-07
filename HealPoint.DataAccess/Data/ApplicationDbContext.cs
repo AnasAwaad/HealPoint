@@ -24,5 +24,6 @@ public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
 	public DbSet<Service> Services { get; set; }
 	public DbSet<Symptom> Symptoms { get; set; }
 	public DbSet<DoctorSymptom> DoctorSymptoms { get; set; }
+	public DbSet<Patient> Patients { get; set; }
 
 }

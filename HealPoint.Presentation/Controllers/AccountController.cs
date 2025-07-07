@@ -59,9 +59,9 @@ public class AccountController : Controller
 
 			return role switch
 			{
-				"Patient" => RedirectToAction("Index", "Patients"),
-				"Doctor" => RedirectToAction("Index", "Doctors"),
-				"Admin" => RedirectToAction("Index", "Home"),
+				"Patient" => RedirectToAction("Index", "Home"),
+				"Doctor" => RedirectToAction("Create", "DoctorSchedules"),
+				"Admin" => RedirectToAction("Index", "Doctors"),
 				_ => RedirectToAction("Index", "Home")
 			};
 		}
