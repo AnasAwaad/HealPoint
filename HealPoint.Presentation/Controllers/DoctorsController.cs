@@ -35,7 +35,7 @@ public class DoctorsController : Controller
 	#endregion
 
 	#region Actions
-	public async Task<IActionResult> Index()
+	public IActionResult Index()
 	{
 		return View(_doctorService.GetAll());
 	}

@@ -3,7 +3,7 @@
 	var controller = ViewContext.RouteData.Values["controller"]?.ToString();
 
 	string layout = "";
-	if (controller == "Account" || controller == "Clinics" || controller == "Departments" || controller == "DoctorSchedules" || controller == "DoctorSettings" || controller == "Doctors" || controller == "Services" || controller == "Specializations" || controller == "Symptoms")
+	if (controller == "Account" || controller == "Clinics" || controller == "Departments" || controller == "DoctorSchedules" || controller == "DoctorSettings" || controller == "Doctors" || controller=="Patients" || controller == "Services" || controller == "Specializations" || controller == "Symptoms")
 	{
 		layout = "~/Views/Shared/_DashboardLayout.cshtml";
 	}
