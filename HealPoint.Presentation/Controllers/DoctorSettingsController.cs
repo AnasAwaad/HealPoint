@@ -36,9 +36,9 @@ public class DoctorSettingsController : Controller
 		var model = new DoctorSettingDto
 		{
 			DoctorId = doctor.Id,
-			Specializations = _specializationService.GetActiveSpecializationsForDoctor(),
-			AvailableServices = _serviceManager.GetActiveServicesForDoctor(),
-			Symptoms = _symptomService.GetActiveSymptomsForDoctor(),
+			Specializations = _specializationService.GetActiveSpecializations(),
+			AvailableServices = _serviceManager.GetActiveServices(),
+			Symptoms = _symptomService.GetActiveSymptoms(),
 			SelectedServiceId = doctor.ServiceId,
 			SelectedSpecializationId = doctor.SpecializationId,
 			SelectedSymptoms = doctor.Symptoms.Select(s => s.SymptomId).ToList(),

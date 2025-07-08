@@ -27,11 +27,11 @@ internal class ServiceManager(IUnitOfWork unitOfWork, IMapper mapper, IFileStora
 		return mapper.Map<IEnumerable<ServiceDto>>(services);
 	}
 
-	public IEnumerable<DoctorServiceItemDto> GetActiveServicesForDoctor()
+	public IEnumerable<ServiceDto> GetActiveServices()
 	{
 		var services = unitOfWork.Services.GetActiveServices();
 
-		return mapper.Map<IEnumerable<DoctorServiceItemDto>>(services);
+		return mapper.Map<IEnumerable<ServiceDto>>(services);
 	}
 
 	public ServiceFormDto? GetServiceById(int id)
