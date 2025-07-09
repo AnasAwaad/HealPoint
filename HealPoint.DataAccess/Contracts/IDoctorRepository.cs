@@ -2,6 +2,7 @@
 public interface IDoctorRepository : IRepository<Doctor>
 {
 	IQueryable<Doctor> GetAllWithDetails();
+	IQueryable<Doctor> GetAllWithSchedulesAndDetails();
 	Doctor? GetDoctorByContactEmail(string email);
 	Doctor? GetDoctorByEmergencyContactPhone(string emergencyContactNumber);
 	Doctor? GetDoctorByIdWithDetails(int id);
@@ -9,6 +10,4 @@ public interface IDoctorRepository : IRepository<Doctor>
 	Doctor? GetDoctorByUserId(string userId);
 	Doctor? GetDoctorWithSymptomsByUserId(string userId);
 	Doctor? GetDoctorWithSymptomsByDoctorId(int id);
-
-	IEnumerable<Doctor> GetAllWithSchedulesAndDetails();
 }

@@ -11,4 +11,6 @@ public class DoctorCardDto
 	public bool AvailableToday { get; set; }
 	public decimal Price { get; set; }
 	public List<string> AvailableTimes { get; set; }
+	public List<DoctorScheduleDto> Schedules { get; set; } = new();
+
 }

@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using HealPoint.BusinessLogic.Contracts;
 using HealPoint.BusinessLogic.DTOs.Doctor;
+using HealPoint.BusinessLogic.DTOs.DoctorSchedule;
 using HealPoint.DataAccess.Contracts;
 using HealPoint.DataAccess.Entities;
 using HealPoint.DataAccess.Enums;
@@ -325,47 +326,60 @@ internal class DoctorService(IUnitOfWork unitOfWork,
 
 	public IEnumerable<DoctorCardDto> GetAllDoctorsWithAvailableTimes(DateTime date)
 	{
-		var doctors = unitOfWork.Doctors.GetAllWithSchedulesAndDetails();
+		var query = unitOfWork.Doctors.GetAllWithSchedulesAndDetails();
+		var doctors = mapper.ProjectTo<DoctorOverviewDto>(query).ToList();
 
 		var doctorsDto = new List<DoctorCardDto>();
-		int dayOfWeek = (int)date.DayOfWeek;
 
 		foreach (var doctor in doctors)
 		{
-			var schedules = doctor.Schedules
-				.Where(s => !s.IsDeleted && s.StartDate <= date && s.EndDate >= date)
-				.SelectMany(ds => ds.DoctorScheduleDetails)
-				.Where(ds => !ds.IsDeleted && (int)ds.DayOfWeek == dayOfWeek)
-				.ToList();
-
-			var timeSlots = new List<string>();
-
-			foreach (var sched in schedules)
-			{
-				int slotSize = 15;
-				var current = sched.StartTime;
-				while (current.Add(TimeSpan.FromMinutes(slotSize)) <= sched.EndTime && timeSlots.Count < 6)
-				{
-					timeSlots.Add(DateTime.Today.Add(current).ToString("h:mm tt"));
-					current = current.Add(TimeSpan.FromMinutes(slotSize));
-				}
-			}
+			var availableTimes = GetAvailableTimeSlots(doctor.Schedules, date, (int)date.DayOfWeek);
 
 			doctorsDto.Add(new DoctorCardDto
 			{
 				Id = doctor.Id,
-				FullName = $"Dr. {doctor.ApplicationUser!.FirstName} {doctor.ApplicationUser.LastName}",
-				Specialization = doctor.Specialization!.Name,
-				ProfilePhotoUrl = doctor.ProfilePhotoPath!,
+				FullName = $"Dr. {doctor.FirstName} {doctor.LastName}",
+				Specialization = doctor.Specialization,
+				ProfilePhotoUrl = doctor.ProfilePhotoUrl,
 				Rating = 4.9f,
 				TotalReviews = 1000,
-				AvailableToday = timeSlots.Any(),
+				AvailableToday = availableTimes.Any(),
 				Price = 35m,
-				AvailableTimes = timeSlots
+				AvailableTimes = availableTimes
 			});
 		}
 
 		return doctorsDto;
+	}
+
+	private static List<string> GetAvailableTimeSlots(
+		List<DoctorOverviewScheduleDto> schedules,
+		DateTime date,
+		int dayOfWeek)
+	{
+		const int slotSizeMinutes = 15;
+		const int maxSlots = 6;
+
+		var matchedDetails = schedules
+			.Where(s => s.StartDate <= date && s.EndDate >= date)
+			.SelectMany(s => s.DoctorScheduleDetails)
+			.Where(d => (int)d.DayOfWeek == dayOfWeek)
+			.OrderBy(d => d.StartTime)
+			.ToList();
+
+		var timeSlots = new List<string>();
+
+		foreach (var detail in matchedDetails)
+		{
+			var current = detail.StartTime;
+			while (current.Add(TimeSpan.FromMinutes(slotSizeMinutes)) <= detail.EndTime && timeSlots.Count < maxSlots)
+			{
+				timeSlots.Add(DateTime.Today.Add(current).ToString("h:mm tt"));
+				current = current.Add(TimeSpan.FromMinutes(slotSizeMinutes));
+			}
+		}
+
+		return timeSlots;
 	}
 
 	#endregion
