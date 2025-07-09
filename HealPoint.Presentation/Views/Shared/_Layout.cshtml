@@ -1,56 +1,288 @@
-﻿@using Microsoft.AspNetCore.Identity
-
-@inject SignInManager<ApplicationUser> SignInManager
-@inject UserManager<ApplicationUser> UserManager
-
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 <head>
-	<meta charset="utf-8" />
-	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-	<title>HealPoint</title>
-	<!--begin::Fonts(mandatory for all pages)-->
-	<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Inter:300,400,500,600,700" />
-	<!--end::Fonts-->
-	<!--begin::Global Stylesheets Bundle(mandatory for all pages)-->
-	<link href="~/assets/css/plugins.bundle.css" rel="stylesheet" />
-	<link href="~/assets/css/style.bundle.css" rel="stylesheet" type="text/css" />
-	<!--end::Global Stylesheets Bundle-->
-	
-	@await RenderSectionAsync("Styles", required: false)
+	<meta charset="utf-8">
+	<title>Medi-tech - HTML Template | Home Page 03</title>
+	<!-- Stylesheets -->
+	<link href="~/assets/css/bootstrap.css" rel="stylesheet">
+	<link href="~/assets/css/style.css" rel="stylesheet">
+	<link href="~/assets/css/responsive.css" rel="stylesheet">
+	<link href="~/assets/css/site.css" rel="stylesheet" />
+	<!--Color Switcher Mockup-->
+	<link href="~/assets/css/color-switcher-design.css" rel="stylesheet">
+	<!--Color Themes-->
+	<link id="theme-color-file" href="~/assets/css/color-themes/default-theme.css" rel="stylesheet">
+
+	<link rel="shortcut icon" href="~/assets/images/favicon.png" type="image/x-icon">
+	<link rel="icon" href="~/assets/images/favicon.png" type="image/x-icon">
+	<link href="~/lib/bootstrap-icons/font/bootstrap-icons.min.css" rel="stylesheet" />
+	@RenderSection("Styles",false)
+	<!-- Responsive -->
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
 	
 </head>
-<body id="kt_app_body" data-kt-app-layout="dark-sidebar" data-kt-app-header-fixed="true" data-kt-app-sidebar-enabled="true" data-kt-app-sidebar-fixed="true" data-kt-app-sidebar-hoverable="true" data-kt-app-sidebar-push-header="true" data-kt-app-sidebar-push-toolbar="true" data-kt-app-sidebar-push-footer="true" data-kt-app-toolbar-enabled="true" class="app-default">
-	<!--begin::Theme mode setup on page load-->
-	<script>var defaultThemeMode = "light"; var themeMode; if (document.documentElement) { if (document.documentElement.hasAttribute("data-bs-theme-mode")) { themeMode = document.documentElement.getAttribute("data-bs-theme-mode"); } else { if (localStorage.getItem("data-bs-theme") !== null) { themeMode = localStorage.getItem("data-bs-theme"); } else { themeMode = defaultThemeMode; } } if (themeMode === "system") { themeMode = window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light"; } document.documentElement.setAttribute("data-bs-theme", themeMode); }</script>
-	<!--end::Theme mode setup on page load-->
-	
-	
-	@RenderBody()
-	<!--end::Drawers-->
-	<!--begin::Scrolltop-->
-	<div id="kt_scrolltop" class="scrolltop" data-kt-scrolltop="true">
-		<i class="ki-duotone ki-arrow-up">
-			<span class="path1"></span>
-			<span class="path2"></span>
-		</i>
+
+<body>
+
+	<div class="page-wrapper">
+		<!-- Preloader -->
+		@* <div class="preloader"></div> *@
+
+		<partial name="_HomeHeader"/>
+
+		@RenderBody()
+
+		<!--Main Footer-->
+		<footer class="main-footer style-two">
+			<div class="auto-container">
+				<!--Widgets Section-->
+				<div class="widgets-section">
+					<div class="row clearfix">
+
+						<!--big column-->
+						<div class="big-column col-lg-6 col-md-12 col-sm-12">
+							<div class="row clearfix">
+
+								<!--Footer Column-->
+								<div class="footer-column col-lg-7 col-md-6 col-sm-12">
+									<div class="footer-widget logo-widget">
+										<div class="logo">
+											<a href="index.html"><img src="~/assets/images/logo-3.png" alt="" /></a>
+										</div>
+										<div class="text">Meditech is a library of health and medical templates with predefined web elements which helps you to build your medical templates best site Provide Comprehensive Quality Care About Medical Care Health Suspendisse metus turpis.</div>
+										<ul class="social-icons">
+											<li><a href="#"><span class="fab fa-facebook-f"></span></a></li>
+											<li><a href="#"><span class="fab fa-google"></span></a></li>
+											<li><a href="#"><span class="fab fa-twitter"></span></a></li>
+											<li><a href="#"><span class="fab fa-skype"></span></a></li>
+											<li><a href="#"><span class="fab fa-linkedin"></span></a></li>
+										</ul>
+									</div>
+								</div>
+
+								<!--Footer Column-->
+								<div class="footer-column col-lg-5 col-md-6 col-sm-12">
+									<div class="footer-widget links-widget">
+										<div class="footer-title  clearfix">
+											<h2>Departments</h2>
+											<div class="separator"></div>
+										</div>
+										<ul class="footer-list">
+											<li><a href="#">Surgery & Radiology</a></li>
+											<li><a href="#">Family Medicine</a></li>
+											<li><a href="#">Women’s Health</a></li>
+											<li><a href="#">Optician</a></li>
+											<li><a href="#">Pediatrics</a></li>
+											<li><a href="#">Dermatology</a></li>
+										</ul>
+									</div>
+								</div>
+
+							</div>
+						</div>
+
+						<!--big column-->
+						<div class="big-column col-lg-6 col-md-12 col-sm-12">
+							<div class="row clearfix">
+
+								<!--Footer Column-->
+								<div class="footer-column col-lg-6 col-md-6 col-sm-12">
+									<div class="footer-widget news-widget">
+										<div class="footer-title  clearfix">
+											<h2>News Update</h2>
+											<div class="separator"></div>
+										</div>
+
+										<!--News Widget Block-->
+										<div class="news-widget-block">
+											<div class="widget-inner">
+												<div class="image">
+													<img src="~/assets/images/resource/news-image-1.jpg" alt="" />
+												</div>
+												<h3><a href="blog-detail.html">Integrative Medicine And Cancer Treatment</a></h3>
+												<div class="post-date">July 11, 2017</div>
+											</div>
+										</div>
+
+										<!--News Widget Block-->
+										<div class="news-widget-block">
+											<div class="widget-inner">
+												<div class="image">
+													<img src="~/assets/images/resource/news-image-2.jpg" alt="" />
+												</div>
+												<h3><a href="blog-detail.html">Achieving Better Health Care One Patient  Time</a></h3>
+												<div class="post-date">July 11, 2018</div>
+											</div>
+										</div>
+
+									</div>
+								</div>
+
+								<!--Footer Column-->
+								<div class="footer-column col-lg-6 col-md-6 col-sm-12">
+									<div class="footer-widget contact-widget">
+										<div class="footer-title  clearfix">
+											<h2>Contact Us</h2>
+											<div class="separator"></div>
+										</div>
+
+										<ul class="contact-list">
+											<li><span class="icon flaticon-placeholder"></span>2130 Fulton Street San Diego <br> CA 94117-1080 USA</li>
+											<li><span class="icon flaticon-call"></span>Mon to Fri : 08:30 - 18:00 <br> <a href="tel:+898-68679-575-09">+898 68679 575 09</a></li>
+											<li><span class="icon flaticon-message"></span>Do you have a Question? <a href="mailto:info@gmail.com">info@gmail.com</a></li>
+										</ul>
+
+									</div>
+								</div>
+
+							</div>
+						</div>
+
+					</div>
+				</div>
+			</div>
+
+			<!-- Footer Bottom -->
+			<div class="footer-bottom">
+				<div class="auto-container">
+					<div class="copyright">MediTech Helth Care &copy; All Rights Reserved By Expertthemes</div>
+				</div>
+			</div>
+
+		</footer>
+
+	</div>
+	<!--End pagewrapper-->
+	<!--Scroll to top-->
+	<div class="scroll-to-top scroll-to-target" data-target="html"><span class="fa fa-angle-up"></span></div>
+
+	<!--Search Popup-->
+	<div id="search-popup" class="search-popup">
+		<div class="close-search theme-btn"><span class="fas fa-window-close"></span></div>
+		<div class="popup-inner">
+			<div class="overlay-layer"></div>
+			<div class="search-form">
+				<form method="post" action="index.html">
+					<div class="form-group">
+						<fieldset>
+							<input type="search" class="form-control" name="search-input" value="" placeholder="Search Here" required>
+							<input type="submit" value="Search Now!" class="theme-btn">
+						</fieldset>
+					</div>
+				</form>
+
+				<br>
+				<h3>Recent Search Keywords</h3>
+				<ul class="recent-searches">
+					<li><a href="#">Business</a></li>
+					<li><a href="#">Web Development</a></li>
+					<li><a href="#">SEO</a></li>
+					<li><a href="#">Logistics</a></li>
+					<li><a href="#">Freedom</a></li>
+				</ul>
+
+			</div>
+
+		</div>
 	</div>
 
-	
-	<!--begin::Javascript-->
-	<script>var hostUrl = "assets/";</script>
-	<!--begin::Javascript-->
-	<!--begin::Global Javascript Bundle(mandatory for all pages)-->
-	<script src="~/assets/js/plugins.bundle.js"></script>
-	<script src="~/assets/js/scripts.bundle.js"></script>
-	<!--end::Global Javascript Bundle-->
-	
-	@await RenderSectionAsync("Scripts", required: false)
-	<!--end::Javascript-->
-	<!--end::Javascript-->
+	<!-- sidebar cart item -->
+	<div class="xs-sidebar-group info-group">
+		<div class="xs-overlay xs-bg-black"></div>
+		<div class="xs-sidebar-widget">
+			<div class="sidebar-widget-container">
+				<div class="widget-heading">
+					<a href="#" class="close-side-widget">
+						X
+					</a>
+				</div>
+				<div class="sidebar-textwidget">
+
+					<!-- Sidebar Info Content -->
+					<div class="sidebar-info-contents">
+						<div class="content-inner">
+							<div class="logo">
+								<a href="index.html"><img src="~/assets/images/logo-3.png" alt="" /></a>
+							</div>
+							<div class="content-box">
+								<h2>About Us</h2>
+								<p class="text">Core values are the fundamental beliefs of a person or organization. The core values are the guiding prin ples that dictate behavior and action suas labore saperet has there any quote for write lorem percit latineu.</p>
+								<a href="#" class="theme-btn btn-style-two"><span class="txt">Consultation</span></a>
+							</div>
+							<div class="contact-info">
+								<h2>Contact Info</h2>
+								<ul class="list-style-two">
+									<li><span class="icon flaticon-map"></span>Chicago 12, Melborne City, USA</li>
+									<li><span class="icon flaticon-telephone"></span>(111) 111-111-1111</li>
+									<li><span class="icon flaticon-message-1"></span>meditech@gmail.com</li>
+									<li><span class="icon flaticon-timetable"></span>Week Days: 09.00 to 18.00 Sunday: Closed</li>
+								</ul>
+							</div>
+							<!-- Social Box -->
+							<ul class="social-box">
+								<li class="facebook"><a href="#" class="fab fa-facebook-f"></a></li>
+								<li class="twitter"><a href="#" class="fab fa-twitter"></a></li>
+								<li class="linkedin"><a href="#" class="fab fa-linkedin-in"></a></li>
+								<li class="instagram"><a href="#" class="fab fa-instagram"></a></li>
+								<li class="youtube"><a href="#" class="fab fa-youtube"></a></li>
+							</ul>
+						</div>
+					</div>
+
+				</div>
+			</div>
+		</div>
+	</div>
+	<!-- END sidebar widget item -->
+	<!-- Color Palate / Color Switcher -->
+	<div class="color-palate">
+		<div class="color-trigger">
+			<i class="fas fa-cog"></i>
+		</div>
+		<div class="color-palate-head">
+			<h6>Choose Your Color</h6>
+		</div>
+		<div class="various-color clearfix">
+			<div class="colors-list">
+				<span class="palate default-color active" data-theme-file="~/assets/css/color-themes/default-theme.~/assets/css"></span>
+				<span class="palate green-color" data-theme-file="~/assets/css/color-themes/green-theme.~/assets/css"></span>
+				<span class="palate olive-color" data-theme-file="~/assets/css/color-themes/olive-theme.~/assets/css"></span>
+				<span class="palate orange-color" data-theme-file="~/assets/css/color-themes/orange-theme.~/assets/css"></span>
+				<span class="palate purple-color" data-theme-file="~/assets/css/color-themes/purple-theme.~/assets/css"></span>
+				<span class="palate teal-color" data-theme-file="~/assets/css/color-themes/teal-theme.~/assets/css"></span>
+				<span class="palate brown-color" data-theme-file="~/assets/css/color-themes/brown-theme.~/assets/css"></span>
+				<span class="palate redd-color" data-theme-file="~/assets/css/color-themes/redd-color.~/assets/css"></span>
+			</div>
+		</div>
+
+		<ul class="rtl-version option-box"> <li class="rtl">RTL Version</li> <li>LTR Version</li> </ul>
+
+		<a href="#" class="purchase-btn">Purchase now $17</a>
+
+		<div class="palate-foo">
+			<span>You will find much more options for colors and styling in admin panel. This color picker is used only for demonstation purposes.</span>
+		</div>
+
+	</div>
+
+	<!--Scroll to top-->
+	<script src="~/assets/js/jquery.js"></script>
+	<script src="~/assets/js/popper.min.js"></script>
+	<script src="~/assets/js/jquery-ui.js"></script>
+	<script src="~/assets/js/bootstrap.min.js"></script>
+	<script src="~/assets/js/jquery.fancybox.js"></script>
+	<script src="~/assets/js/parallax.min.js"></script>
+	<script src="~/assets/js/jquery.paroller.min.js"></script>
+	<script src="~/assets/js/owl.js"></script>
+	<script src="~/assets/js/wow.js"></script>
+	<script src="~/assets/js/nav-tool.js"></script>
+	<script src="~/assets/js/jquery.magnific-popup.min.js"></script>
+	<script src="~/assets/js/main.js"></script>
+	<script src="~/assets/js/swiper.min.js"></script>
+	<script src="~/assets/js/appear.js"></script>
+	<script src="~/assets/js/script.js"></script>
+	<script src="~/assets/js/color-settings.js"></script>
+	@RenderSection("Scripts", false)
 </body>
-
-
-
-<!--end::Body-->
 </html>

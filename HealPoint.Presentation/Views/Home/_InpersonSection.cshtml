@@ -1,0 +1,21 @@
+﻿@model HomeViewModel
+
+<section class="py-5 testimonial_wrapper inperson-section">
+
+    <div class="container my-5">
+        <h4 class="mb-4 font-weight-bold">In-person doctor visit</h4>
+
+        <div class="d-flex align-items-center mb-4">
+            <button class="btn-toggle mr-2">Within 2 hours</button>
+        </div>
+
+        <div class="owl-carousel testimonial_slider">
+            @foreach (var doctor in Model.InpersonDoctors)
+            {
+                <partial name="_DoctorCard" model="doctor"/>
+            }
+            
+        </div>
+    </div>
+
+</section>

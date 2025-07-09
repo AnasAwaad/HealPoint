@@ -1,5 +1,6 @@
 ﻿using HealPoint.DataAccess.Contracts;
 using HealPoint.DataAccess.Data;
+using HealPoint.DataAccess.Enums;
 
 namespace HealPoint.DataAccess.Repositories;
 internal class DoctorRepository : Repository<Doctor>, IDoctorRepository
@@ -57,5 +58,15 @@ internal class DoctorRepository : Repository<Doctor>, IDoctorRepository
 		return _context.Doctors
 			.Include(d => d.Symptoms)
 			.FirstOrDefault(d => d.Id == id && !d.IsDeleted);
+	}
+
+	public IQueryable<Doctor> GetAllWithSchedulesAndDetails(DoctorOperationMode operationMode)
+	{
+		return _context.Doctors
+			.Include(d => d.ApplicationUser)
+			.Include(d => d.Specialization)
+			.Include(d => d.Schedules)
+				.ThenInclude(s => s.DoctorScheduleDetails)
+			.Where(d => !d.IsDeleted && d.OperationMode == operationMode);
 	}
 }

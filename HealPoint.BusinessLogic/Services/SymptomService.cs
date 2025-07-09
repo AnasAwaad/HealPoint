@@ -1,6 +1,5 @@
 ﻿using AutoMapper;
 using HealPoint.BusinessLogic.Contracts;
-using HealPoint.BusinessLogic.DTO;
 using HealPoint.DataAccess.Contracts;
 using HealPoint.DataAccess.Entities;
 
@@ -94,9 +93,9 @@ internal class SymptomService : ISymptomService
 		return _unitOfWork.Symptoms.IsSymptomNameAllowed(department.Name, department.Id);
 	}
 
-	public IEnumerable<DoctorSymptomItemDto> GetActiveSymptomsForDoctor()
+	public IEnumerable<SymptomDto> GetActiveSymptoms()
 	{
 		var symptoms = _unitOfWork.Symptoms.GetActiveSymptoms();
-		return _mapper.Map<IEnumerable<DoctorSymptomItemDto>>(symptoms);
+		return _mapper.Map<IEnumerable<SymptomDto>>(symptoms);
 	}
 }
