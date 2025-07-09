@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using HealPoint.BusinessLogic.Contracts;
+using HealPoint.BusinessLogic.DTOs.Doctor;
 using HealPoint.DataAccess.Contracts;
 using HealPoint.DataAccess.Entities;
 using HealPoint.DataAccess.Enums;
@@ -320,6 +321,51 @@ internal class DoctorService(IUnitOfWork unitOfWork,
 		doctor.OperationMode = operationMode;
 
 		unitOfWork.SaveChanges();
+	}
+
+	public IEnumerable<DoctorCardDto> GetAllDoctorsWithAvailableTimes(DateTime date)
+	{
+		var doctors = unitOfWork.Doctors.GetAllWithSchedulesAndDetails();
+
+		var doctorsDto = new List<DoctorCardDto>();
+		int dayOfWeek = (int)date.DayOfWeek;
+
+		foreach (var doctor in doctors)
+		{
+			var schedules = doctor.Schedules
+				.Where(s => !s.IsDeleted && s.StartDate <= date && s.EndDate >= date)
+				.SelectMany(ds => ds.DoctorScheduleDetails)
+				.Where(ds => !ds.IsDeleted && (int)ds.DayOfWeek == dayOfWeek)
+				.ToList();
+
+			var timeSlots = new List<string>();
+
+			foreach (var sched in schedules)
+			{
+				int slotSize = 15;
+				var current = sched.StartTime;
+				while (current.Add(TimeSpan.FromMinutes(slotSize)) <= sched.EndTime && timeSlots.Count < 6)
+				{
+					timeSlots.Add(DateTime.Today.Add(current).ToString("h:mm tt"));
+					current = current.Add(TimeSpan.FromMinutes(slotSize));
+				}
+			}
+
+			doctorsDto.Add(new DoctorCardDto
+			{
+				Id = doctor.Id,
+				FullName = $"Dr. {doctor.ApplicationUser!.FirstName} {doctor.ApplicationUser.LastName}",
+				Specialization = doctor.Specialization!.Name,
+				ProfilePhotoUrl = doctor.ProfilePhotoPath!,
+				Rating = 4.9f,
+				TotalReviews = 1000,
+				AvailableToday = timeSlots.Any(),
+				Price = 35m,
+				AvailableTimes = timeSlots
+			});
+		}
+
+		return doctorsDto;
 	}
 
 	#endregion

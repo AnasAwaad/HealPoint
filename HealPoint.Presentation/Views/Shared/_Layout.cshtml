@@ -16,11 +16,11 @@
 	<link rel="shortcut icon" href="~/assets/images/favicon.png" type="image/x-icon">
 	<link rel="icon" href="~/assets/images/favicon.png" type="image/x-icon">
 	<link href="~/lib/bootstrap-icons/font/bootstrap-icons.min.css" rel="stylesheet" />
+	@RenderSection("Styles",false)
 	<!-- Responsive -->
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
-	<!--[if lt IE 9]><script src="https://cdn~/assets/js.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv.~/assets/js"></script><![endif]-->
-	<!--[if lt IE 9]><script src="~/assets/js/respond.~/assets/js"></script><![endif]-->
+	
 </head>
 
 <body>
@@ -283,6 +283,6 @@
 	<script src="~/assets/js/appear.js"></script>
 	<script src="~/assets/js/script.js"></script>
 	<script src="~/assets/js/color-settings.js"></script>
-
+	@RenderSection("Scripts", false)
 </body>
 </html>

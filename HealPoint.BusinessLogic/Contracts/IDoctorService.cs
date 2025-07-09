@@ -1,10 +1,12 @@
-﻿using HealPoint.DataAccess.Entities;
+﻿using HealPoint.BusinessLogic.DTOs.Doctor;
+using HealPoint.DataAccess.Entities;
 using HealPoint.DataAccess.Enums;
 
 namespace HealPoint.BusinessLogic.Contracts;
 public interface IDoctorService
 {
 	IEnumerable<DoctorDto> GetAll();
+	IEnumerable<DoctorCardDto> GetAllDoctorsWithAvailableTimes(DateTime date);
 	DoctorFormDto? GetById(int id);
 	Doctor? GetWithSymptomsByUserId(string userId);
 	Task CreateAsync(DoctorFormDto dto);

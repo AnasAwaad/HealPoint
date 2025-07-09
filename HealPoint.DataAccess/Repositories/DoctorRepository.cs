@@ -58,4 +58,15 @@ internal class DoctorRepository : Repository<Doctor>, IDoctorRepository
 			.Include(d => d.Symptoms)
 			.FirstOrDefault(d => d.Id == id && !d.IsDeleted);
 	}
+
+	public IEnumerable<Doctor> GetAllWithSchedulesAndDetails()
+	{
+		return _context.Doctors
+			.Include(d => d.ApplicationUser)
+			.Include(d => d.Specialization)
+			.Include(d => d.Schedules)
+				.ThenInclude(s => s.DoctorScheduleDetails)
+			.Where(d => !d.IsDeleted)
+			.AsEnumerable();
+	}
 }
