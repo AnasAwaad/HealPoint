@@ -22,7 +22,7 @@
 	</td>
     <td>
         <div class="form-check form-switch form-check-custom form-check-solid ">
-            <input class="form-check-input js-change-status w-40px h-25px" type="checkbox" @(Model.IsDeleted ? "" : "checked") data-url="/Doctors/UpdateStatus/@Model.Id" />
+            <input class="form-check-input js-change-status w-40px h-25px" type="checkbox" @(Model.IsDeleted ? "" : "checked") data-url="/Admin/Doctors/UpdateStatus/@Model.Id" />
         </div>
     </td>
     <td class="text-center">
@@ -32,14 +32,14 @@
             </button>
             <ul class="dropdown-menu dropdown-menu-end">
                 <li>
-                    <a class="dropdown-item " asp-controller="Doctors" asp-action="Update" asp-route-Id="@Model.Id">
+                    <a class="dropdown-item " asp-area="Admin" asp-controller="Doctors" asp-action="Update" asp-route-Id="@Model.Id">
                         <i class="ki-duotone ki-notepad-edit text-success me-2"></i> Update
                     </a>
                 </li>
                 <li>
                     <a class="dropdown-item d-flex align-items-center js-render-modal"
                        href="javascript:;"
-                       data-url="/Doctors/ResetPassword/@Model.UserId"
+                       data-url="/Admin/Doctors/ResetPassword/@Model.UserId"
                        data-title="Change Password"
                        data-update="true">
                         <i class="ki-duotone ki-notepad-edit fs-5 text-success me-2">

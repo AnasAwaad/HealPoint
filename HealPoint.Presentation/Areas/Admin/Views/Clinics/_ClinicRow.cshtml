@@ -25,7 +25,7 @@
     <td>@Model.ContactNumber</td>
     <td>@(Model.Description.Length > 30 ? $"{Model.Description.Substring(0, 30)}..." : Model.Description)</td>
     <td class="text-center">
-        <a href="javascript:;" class="js-render-modal btn btn-icon btn-active-light-primary w-30px h-30px me-3" data-url="/Clinics/GetClinicSessions?clinicId=@Model.Id" data-title="Clinic Sessions" data-bs-toggle="tooltip" title="Clinic sessions">
+        <a href="javascript:;" class="js-render-modal btn btn-icon btn-active-light-primary w-30px h-30px me-3" data-url="/Admin/Clinics/GetClinicSessions?clinicId=@Model.Id" data-title="Clinic Sessions" data-bs-toggle="tooltip" title="Clinic sessions">
             <i class="ki-duotone ki-time">
                 <span class="path1"></span>
                 <span class="path2"></span>
@@ -45,7 +45,7 @@
             </i>
         </a>
         @* Delete Button *@
-        <a class="js-delete-item btn btn-icon btn-active-light-primary w-30px h-30px" data-url="/Clinics/DeleteClinic/@Model.Id" href="javascript:;" data-kt-ecommerce-Model-filter="delete_row" data-bs-toggle="tooltip" title="Delete">
+        <a class="js-delete-item btn btn-icon btn-active-light-primary w-30px h-30px" data-url="/Admin/Clinics/DeleteClinic/@Model.Id" href="javascript:;" data-kt-ecommerce-Model-filter="delete_row" data-bs-toggle="tooltip" title="Delete">
             <i class="ki-duotone ki-trash-square fs-1 text-danger">
                 <span class="path1"></span>
                 <span class="path2"></span>

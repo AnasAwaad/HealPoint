@@ -25,4 +25,11 @@
 		<ProjectReference Include="..\HealPoint.BusinessLogic\HealPoint.BusinessLogic.csproj" />
 	</ItemGroup>
 
+	<ItemGroup>
+	  <Folder Include="Areas\Doctor\Controllers\" />
+	  <Folder Include="Areas\Doctor\Data\" />
+	  <Folder Include="Areas\Doctor\Models\" />
+	  <Folder Include="Areas\Doctor\Views\" />
+	</ItemGroup>
+
 </Project>

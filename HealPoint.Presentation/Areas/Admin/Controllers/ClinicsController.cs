@@ -6,8 +6,9 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 
-namespace HealPoint.Presentation.Controllers;
+namespace HealPoint.Presentation.Areas.Admin.Controllers;
 [Authorize(Roles = AppRoles.Admin)]
+[Area("Admin")]
 public class ClinicsController : Controller
 {
 	#region Props
@@ -114,9 +115,7 @@ public class ClinicsController : Controller
 	public IActionResult SaveClinicSessions([FromBody] List<ClinicSessionDto> clinicSessions)
 	{
 		if (clinicSessions == null || !clinicSessions.Any())
-		{
 			return BadRequest("No clinic sessions data received.");
-		}
 
 		_clinicSessionService.SaveClinicSessions(clinicSessions);
 		return Ok();

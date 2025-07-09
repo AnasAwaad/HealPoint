@@ -1,7 +1,12 @@
 ﻿using HealPoint.BusinessLogic.Contracts;
+using HealPoint.DataAccess.Consts;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
-namespace HealPoint.Presentation.Controllers;
+namespace HealPoint.Presentation.Areas.Admin.Controllers;
+
+[Authorize(Roles = AppRoles.Admin)]
+[Area("Admin")]
 public class PatientsController : Controller
 {
 	#region Props

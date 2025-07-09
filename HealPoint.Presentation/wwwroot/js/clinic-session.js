@@ -15,7 +15,7 @@ $(document).ready(function () {
 
     days.forEach(function (day) {
         const checkboxId = day.name + 'Checkbox';
-        
+
 
         toggleDayInputs(checkboxId);
 
@@ -74,7 +74,7 @@ $(document).ready(function () {
 
 
         $.ajax({
-            url: '/Clinics/SaveClinicSessions',
+            url: '/Admin/Clinics/SaveClinicSessions',
             data: JSON.stringify(clinicSessions),
             headers: {
                 'RequestVerificationToken': $("input[name='__RequestVerificationToken']").val()

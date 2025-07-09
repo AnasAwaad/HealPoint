@@ -1,8 +1,7 @@
-﻿@model IEnumerable<DoctorDto>
-
+﻿@model IEnumerable<SpecializationDto>
 
 @{
-	ViewData["Title"] = "Doctors";
+	ViewData["Title"] = "Create Specialization";
 }
 
 <div class="d-flex flex-column flex-column-fluid" style="margin-top:30px;">
@@ -14,7 +13,7 @@
 			<div class="page-title d-flex flex-column justify-content-center flex-wrap me-3 mb-4 ">
 				<!--begin::Title-->
 				<h1 class="page-heading d-flex text-gray-900 fw-bold fs-3 flex-column justify-content-center my-0">
-					Doctors
+					Specializations
 				</h1>
 				<!--end::Title-->
 				<!--begin::Breadcrumb-->
@@ -33,13 +32,13 @@
 					<!--end::Item-->
 					<!--begin::Item-->
 					<li class="breadcrumb-item text-muted">
-						Doctors
+						Specializations
 					</li>
 
 				</ul>
 				<!--end::Breadcrumb-->
 			</div>
-			<!--begin::Doctor-->
+			<!--begin::Specialization-->
 			<div class="card card-flush">
 				<!--begin::Card header-->
 				<div class="card-header d-flex align-items-center py-5 gap-2 gap-md-5">
@@ -47,7 +46,7 @@
 						<!--begin::Search-->
 						<div class="d-flex align-items-center position-relative my-1">
 							<i class="ki-duotone ki-magnifier fs-1 position-absolute ms-4"><span class="path1"></span><span class="path2"></span></i>
-							<input type="text" data-kt-filter="search" class="form-control form-control-solid w-250px ps-14" placeholder="Search Department" />
+							<input type="text" data-kt-filter="search" class="form-control form-control-solid w-250px ps-14" placeholder="Search Specialization" />
 						</div>
 						<!--end::Search-->
 						<!--begin::Export buttons-->
@@ -94,8 +93,8 @@
 						</div>
 						<!--end::Menu-->
 						<!--end::Export dropdown-->
-						<a asp-controller="Doctors" asp-action="Create" class="btn btn-primary">
-							Add Doctor
+						<a href="javascript:;" data-url="/Admin/Specializations/Create" data-title="Create New Specialization" class="btn btn-primary js-render-modal">
+							Create
 						</a>
 						<!--begin::Hide default export buttons-->
 						<div id="kt_datatable_example_buttons" class="d-none"></div>
@@ -107,7 +106,7 @@
 
 						</div>
 
-						<!--end::Doctor-->
+						<!--end::Specialization-->
 					</div>
 				</div>
 				<!--begin::Card body-->
@@ -116,22 +115,20 @@
 
 					<!--begin::Table-->
 					<div class="table-responsive">
-						<table id="datatable" data-title="Doctor - Report" class="table align-middle border rounded table-row-dashed fs-6 g-5">
+						<table id="datatable" data-title="Specialization - Report" class="table align-middle border rounded table-row-dashed fs-6 g-5">
 							<thead>
 								<tr class="fw-bold fs-6 text-gray-800">
 									<th class="text-center">Name</th>
-									<th>Speciality</th>
-									<th>Patients</th>
-									<th>Experience</th>
-									<th>Contact</th>
+									<th>Description</th>
+									<th>Department</th>
 									<th>Status</th>
 									<th class="text-center">Actions</th>
 								</tr>
 							</thead>
 							<tbody class="js-tbody">
-								@foreach (var doctor in Model)
+								@foreach (var specialization in Model)
 								{
-									<partial name="_DoctorRow" model="doctor" />
+									<partial name="_SpecializationRow" model="specialization" />
 								}
 
 
@@ -145,7 +142,7 @@
 			</div>
 			<!--end::Content-->
 
-</div>
+		</div>
 
 @Html.AntiForgeryToken()
 
@@ -161,7 +158,12 @@
 
 			<script>
 				$(document).ready(function () {
-					$('.table').DataTable();
+					$(document).on('change', '#DepartmentId', function () {
+						var selectedText = $(this).find('option:selected').text();
+						console.log(selectedText)
+
+						$('#DepartmentName').val(selectedText);
+					});
 				})
 			</script>
 }

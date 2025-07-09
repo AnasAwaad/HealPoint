@@ -1,9 +1,14 @@
 ﻿using HealPoint.BusinessLogic.Contracts;
 using HealPoint.BusinessLogic.DTOs;
+using HealPoint.DataAccess.Consts;
 using HealPoint.Presentation.Filters;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
-namespace HealPoint.Presentation.Controllers;
+namespace HealPoint.Presentation.Areas.Admin.Controllers;
+
+[Authorize(Roles = AppRoles.Admin)]
+[Area("Admin")]
 public class ServicesController : Controller
 {
 	#region Props
@@ -73,7 +78,7 @@ public class ServicesController : Controller
 	[ValidateAntiForgeryToken]
 	public IActionResult ChangeServiceStatus(int id)
 	{
-		(bool? isDeleted, string? lastUpdatedOn) = _serviceManager.UpdateServiceStatus(id);
+		(var isDeleted, var lastUpdatedOn) = _serviceManager.UpdateServiceStatus(id);
 
 		if (isDeleted is null)
 			return NotFound();

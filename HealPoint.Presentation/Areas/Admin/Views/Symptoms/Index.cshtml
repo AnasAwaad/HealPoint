@@ -1,7 +1,7 @@
-﻿@model IEnumerable<SpecializationDto>
+﻿@model IEnumerable<SymptomDto>
 
 @{
-	ViewData["Title"] = "Create Specialization";
+	ViewData["Title"] = "Symptom";
 }
 
 <div class="d-flex flex-column flex-column-fluid" style="margin-top:30px;">
@@ -13,7 +13,7 @@
 			<div class="page-title d-flex flex-column justify-content-center flex-wrap me-3 mb-4 ">
 				<!--begin::Title-->
 				<h1 class="page-heading d-flex text-gray-900 fw-bold fs-3 flex-column justify-content-center my-0">
-					Specializations
+					Symptoms
 				</h1>
 				<!--end::Title-->
 				<!--begin::Breadcrumb-->
@@ -32,13 +32,13 @@
 					<!--end::Item-->
 					<!--begin::Item-->
 					<li class="breadcrumb-item text-muted">
-						Specializations
+						Symptoms
 					</li>
 
 				</ul>
 				<!--end::Breadcrumb-->
 			</div>
-			<!--begin::Specialization-->
+			<!--begin::Symptom-->
 			<div class="card card-flush">
 				<!--begin::Card header-->
 				<div class="card-header d-flex align-items-center py-5 gap-2 gap-md-5">
@@ -46,7 +46,7 @@
 						<!--begin::Search-->
 						<div class="d-flex align-items-center position-relative my-1">
 							<i class="ki-duotone ki-magnifier fs-1 position-absolute ms-4"><span class="path1"></span><span class="path2"></span></i>
-							<input type="text" data-kt-filter="search" class="form-control form-control-solid w-250px ps-14" placeholder="Search Specialization" />
+							<input type="text" data-kt-filter="search" class="form-control form-control-solid w-250px ps-14" placeholder="Search Symptom" />
 						</div>
 						<!--end::Search-->
 						<!--begin::Export buttons-->
@@ -93,8 +93,8 @@
 						</div>
 						<!--end::Menu-->
 						<!--end::Export dropdown-->
-						<a href="javascript:;" data-url="/Specializations/Create" data-title="Create New Specialization" class="btn btn-primary js-render-modal">
-							Create
+						<a href="javascript:;" data-url="/Symptoms/Create" data-title="Create New Symptom" class="btn btn-primary js-render-modal">
+							Add Symptom
 						</a>
 						<!--begin::Hide default export buttons-->
 						<div id="kt_datatable_example_buttons" class="d-none"></div>
@@ -106,7 +106,7 @@
 
 						</div>
 
-						<!--end::Specialization-->
+						<!--end::Symptom-->
 					</div>
 				</div>
 				<!--begin::Card body-->
@@ -115,20 +115,20 @@
 
 					<!--begin::Table-->
 					<div class="table-responsive">
-						<table id="datatable" data-title="Specialization - Report" class="table align-middle border rounded table-row-dashed fs-6 g-5">
+						<table id="datatable" data-title="Symptom - Report" class="table align-middle border rounded table-row-dashed fs-6 g-5">
 							<thead>
 								<tr class="fw-bold fs-6 text-gray-800">
 									<th class="text-center">Name</th>
-									<th>Description</th>
-									<th>Department</th>
+									<th>Creation Date</th>
+									<th>Last Updated on</th>
 									<th>Status</th>
 									<th class="text-center">Actions</th>
 								</tr>
 							</thead>
 							<tbody class="js-tbody">
-								@foreach (var specialization in Model)
+								@foreach (var symptom in Model)
 								{
-									<partial name="_SpecializationRow" model="specialization" />
+									<partial name="_SymptomRow" model="symptom" />
 								}
 
 
@@ -141,29 +141,26 @@
 				<!--end::Content container-->
 			</div>
 			<!--end::Content-->
-
 		</div>
+	</div>
+
+</div>
 
 @Html.AntiForgeryToken()
 
 @section Styles {
-			<link href="~/assets/plugins/datatable/datatables.bundle.css" rel="stylesheet" />
+	<link href="~/assets/plugins/datatable/datatables.bundle.css" rel="stylesheet" />
 }
 @section Plugins {
-			<script src="~/assets/plugins/datatable/datatables.bundle.js"></script>
+	<script src="~/assets/plugins/datatable/datatables.bundle.js"></script>
 }
 
 @section Scripts {
-			<partial name="_ValidationScriptsPartial" />
+	<partial name="_ValidationScriptsPartial" />
 
-			<script>
-				$(document).ready(function () {
-					$(document).on('change', '#DepartmentId', function () {
-						var selectedText = $(this).find('option:selected').text();
-						console.log(selectedText)
-
-						$('#DepartmentName').val(selectedText);
-					});
-				})
-			</script>
+	<script>
+		$(document).ready(function () {
+			$('.table').DataTable();
+		})
+	</script>
 }

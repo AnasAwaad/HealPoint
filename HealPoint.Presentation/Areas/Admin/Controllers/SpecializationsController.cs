@@ -6,8 +6,10 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 
-namespace HealPoint.Presentation.Controllers;
+namespace HealPoint.Presentation.Areas.Admin.Controllers;
+
 [Authorize(Roles = AppRoles.Admin)]
+[Area("Admin")]
 public class SpecializationsController : Controller
 {
 	#region Props

@@ -1,18 +1,12 @@
-﻿@model DepartmentDto
+﻿@model SymptomDto
 
 <tr>
-	<td class="text-center">@Model.Name</td>
-	<td>@(Model.Description.Length > 30 ? $"{Model.Description.Substring(0, 30)}...":Model.Description)</td>
-	<td>@Model.CreatedOn.ToString("dddd, dd MMMM yyyy h:mm tt")</td>
-	<td class="js-last-updated-on">@(Model.LastUpdatedOn.HasValue ? Model.LastUpdatedOn.Value.ToString("dddd, dd MMMM yyyy h:mm tt") : "-")</td>
-	<td class="js-feature-status">
-		<div class="form-check form-switch form-check-custom form-check-solid ">
-			<input class="form-check-input js-change-status w-40px h-25px" type="checkbox" asp-for="IsFeatured" data-url="/Departments/UpdateFeaturedStatus/@Model.Id" />
-		</div>
-	</td>
-	<td class="js-status">
-		<span class="badge badge-@(Model.IsDeleted ? "warning" : "success")">@(Model.IsDeleted ? "Inactive" : "Active")</span>
-	</td>
+    <td class="text-center">@Model.Name</td>
+    <td>@Model.CreatedOn.ToString("dddd, dd MMMM yyyy h:mm tt")</td>
+    <td class="js-last-updated-on">@(Model.LastUpdatedOn.HasValue? Model.LastUpdatedOn.Value.ToString("dddd, dd MMMM yyyy h:mm tt") : "-")</td>
+    <td class="js-status">
+        <span class="badge badge-@(Model.IsDeleted ? "warning" : "success")">@(Model.IsDeleted ? "Inactive" : "Active")</span>
+    </td>
     <td class="text-center">
         <div class="dropdown">
             <button class="btn btn-sm btn-light shadow-sm rounded-circle" type="button" id="dropdownMenuButton1"
@@ -24,8 +18,8 @@
                 <li>
                     <a class="dropdown-item d-flex align-items-center js-render-modal"
                        href="javascript:;"
-                       data-url="/Departments/Update/@Model.Id"
-                       data-title="Update Department"
+                       data-url="/Admin/Symptoms/Update/@Model.Id"
+                       data-title="Update Symptom"
                        data-update="true">
                         <i class="ki-duotone ki-notepad-edit fs-5 text-success me-2">
                             <span class="path1"></span>
@@ -37,7 +31,7 @@
                 <li>
                     <a class="dropdown-item d-flex align-items-center js-change-status text-danger"
                        data-status="true"
-                       data-url="/Departments/ChangeDepartmentStatus/@Model.Id"
+                       data-url="/Admin/Symptoms/ChangeSymptomStatus/@Model.Id"
                        href="javascript:;">
                         <i class="bi bi-x-circle fs-5 me-2"></i>
                         <span>Change Status</span>

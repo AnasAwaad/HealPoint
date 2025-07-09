@@ -7,9 +7,10 @@ using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 
-namespace HealPoint.Presentation.Controllers;
+namespace HealPoint.Presentation.Areas.Admin.Controllers;
 
 [Authorize(Roles = AppRoles.Admin)]
+[Area("Admin")]
 public class DoctorsController : Controller
 {
 	#region Props
@@ -113,7 +114,7 @@ public class DoctorsController : Controller
 		if (!ModelState.IsValid)
 			return BadRequest();
 
-		(bool isSucceeded, string? errors) = await _authService.ResetPasswordAsync(dto.Id, dto.Password);
+		(var isSucceeded, var errors) = await _authService.ResetPasswordAsync(dto.Id, dto.Password);
 
 		if (!isSucceeded)
 			return BadRequest(errors);

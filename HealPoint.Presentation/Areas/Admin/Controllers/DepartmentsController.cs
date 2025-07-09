@@ -5,8 +5,9 @@ using HealPoint.Presentation.Filters;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
-namespace HealPoint.Presentation.Controllers;
+namespace HealPoint.Presentation.Areas.Admin.Controllers;
 [Authorize(Roles = AppRoles.Admin)]
+[Area("Admin")]
 public class DepartmentsController : Controller
 {
 	#region Props
@@ -84,7 +85,7 @@ public class DepartmentsController : Controller
 	[ValidateAntiForgeryToken]
 	public IActionResult ChangeDepartmentStatus(int id)
 	{
-		(bool? isDeleted, string? lastUpdatedOn) = _departmentService.UpdateDepartmentStatus(id);
+		(var isDeleted, var lastUpdatedOn) = _departmentService.UpdateDepartmentStatus(id);
 
 		if (isDeleted is null)
 			return NotFound();

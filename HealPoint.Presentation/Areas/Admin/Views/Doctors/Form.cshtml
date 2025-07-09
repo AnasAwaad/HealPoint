@@ -50,7 +50,7 @@
 				<!--end::Breadcrumb-->
 			</div>
 			<!--begin::Doctor-->
-			<form class="form d-flex flex-column flex-lg-row fv-plugins-bootstrap5 fv-plugins-framework" method="post" asp-controller="Doctors" asp-action="@(Model?.Id is not null ? "Update":"Create")" enctype="multipart/form-data">
+			<form class="form d-flex flex-column flex-lg-row fv-plugins-bootstrap5 fv-plugins-framework" method="post" asp-area="Admin" asp-controller="Doctors" asp-action="@(Model?.Id is not null ? "Update":"Create")" enctype="multipart/form-data">
 				
 
 				<input type="hidden" asp-for="Id"  value="@Model.Id" />
