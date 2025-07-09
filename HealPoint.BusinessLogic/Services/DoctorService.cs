@@ -1,5 +1,7 @@
 ﻿using AutoMapper;
 using HealPoint.BusinessLogic.Contracts;
+using HealPoint.BusinessLogic.DTOs.Doctor;
+using HealPoint.BusinessLogic.DTOs.DoctorSchedule;
 using HealPoint.DataAccess.Contracts;
 using HealPoint.DataAccess.Entities;
 using HealPoint.DataAccess.Enums;
@@ -320,6 +322,66 @@ internal class DoctorService(IUnitOfWork unitOfWork,
 		doctor.OperationMode = operationMode;
 
 		unitOfWork.SaveChanges();
+	}
+
+	public IEnumerable<DoctorCardDto> GetAllDoctorsWithAvailableTimes(DateTime date, DoctorOperationMode operationMode)
+	{
+		var query = unitOfWork.Doctors.GetAllWithSchedulesAndDetails(operationMode);
+		var doctors = mapper.ProjectTo<DoctorOverviewDto>(query).ToList();
+
+		var doctorsDto = new List<DoctorCardDto>();
+
+		foreach (var doctor in doctors)
+		{
+			var availableTimes = GetAvailableTimeSlots(doctor.Schedules, date, (int)date.DayOfWeek);
+
+			doctorsDto.Add(new DoctorCardDto
+			{
+				Id = doctor.Id,
+				FullName = $"Dr. {doctor.FirstName} {doctor.LastName}",
+				Specialization = doctor.Specialization,
+				ProfilePhotoUrl = doctor.ProfilePhotoUrl,
+				OperationMode = operationMode,
+				ClinicAddress = "347 East 53rd Street Suite LA, New York, NY 10022",
+				Rating = 4.9f,
+				TotalReviews = 1000,
+				AvailableToday = availableTimes.Any(),
+				Price = 35m,
+				AvailableTimes = availableTimes
+			});
+		}
+
+		return doctorsDto;
+	}
+
+	private static List<string> GetAvailableTimeSlots(
+		List<DoctorOverviewScheduleDto> schedules,
+		DateTime date,
+		int dayOfWeek)
+	{
+		const int slotSizeMinutes = 15;
+		const int maxSlots = 6;
+
+		var matchedDetails = schedules
+			.Where(s => s.StartDate <= date && s.EndDate >= date)
+			.SelectMany(s => s.DoctorScheduleDetails)
+			.Where(d => (int)d.DayOfWeek == dayOfWeek)
+			.OrderBy(d => d.StartTime)
+			.ToList();
+
+		var timeSlots = new List<string>();
+
+		foreach (var detail in matchedDetails)
+		{
+			var current = detail.StartTime;
+			while (current.Add(TimeSpan.FromMinutes(slotSizeMinutes)) <= detail.EndTime && timeSlots.Count < maxSlots)
+			{
+				timeSlots.Add(DateTime.Today.Add(current).ToString("h:mm tt"));
+				current = current.Add(TimeSpan.FromMinutes(slotSizeMinutes));
+			}
+		}
+
+		return timeSlots;
 	}
 
 	#endregion

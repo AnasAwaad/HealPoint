@@ -1,8 +1,37 @@
-﻿@{
+﻿@model HomeViewModel
+@{
     ViewData["Title"] = "Home Page";
 }
+@section Styles{
+	<link href="~/assets/css/owl.carousel.min.css" rel="stylesheet" />
+	<link href="~/assets/css/carousal-style.css" rel="stylesheet" />
+}
+<partial name="_Carousel" />
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
-</div>
+<partial name="_SpecialtiesSection" model="Model"  />
+<partial name="_TelehealthSection" model="Model"/>
+<partial name="_InpersonSection" model="Model"/>
+
+@section Scripts {
+	<script src="~/assets/js/owl.carousel.min.js"></script>
+	<script>
+
+        function testimonial_carouselInit() {
+            $('.owl-carousel.testimonial_slider').owlCarousel({
+                dots: false,
+                loop: false,
+                margin: 30,
+                stagePadding: 0,
+                animateOut: 'fadeOut',
+                nav: true,
+                navText: ['<span><i class="bi bi-arrow-left"></i>','<span><i class="bi bi-arrow-right"></i></i></span>'],
+                autoWidth:true,
+                autoplay: false,
+                autoplayTimeout: 4000,
+                smartSpeed:4000,
+                autoplayHoverPause: false,
+            });
+        }
+        testimonial_carouselInit();
+	</script>
+}

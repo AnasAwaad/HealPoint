@@ -1,29 +1,48 @@
+using HealPoint.BusinessLogic.Contracts;
+using HealPoint.DataAccess.Enums;
 using HealPoint.Presentation.Models;
-using Microsoft.AspNetCore.Authorization;
+using HealPoint.Presentation.ViewModels;
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
 
 namespace HealPoint.Presentation.Controllers;
 
-[Authorize]
 public class HomeController : Controller
 {
 	#region Props
-	private readonly ILogger<HomeController> _logger;
-
+	private readonly IServiceManager _serviceManager;
+	private readonly ISpecializationService _specializationService;
+	private readonly ISymptomService _symptomService;
+	private readonly IDoctorService _doctorService;
 	#endregion
 
 	#region Ctor
-	public HomeController(ILogger<HomeController> logger)
+	public HomeController(IServiceManager serviceManager, ISpecializationService specializationService, ISymptomService symptomService, IDoctorService doctorService)
 	{
-		_logger = logger;
+		_serviceManager = serviceManager;
+		_specializationService = specializationService;
+		_symptomService = symptomService;
+		_doctorService = doctorService;
 	}
 	#endregion
 
 	#region Actions
 	public IActionResult Index()
 	{
-		return View();
+		var services = _serviceManager.GetActiveServices();
+		var specialities = _specializationService.GetActiveSpecializations();
+		var symptoms = _symptomService.GetActiveSymptoms();
+		var inpersonDoctors = _doctorService.GetAllDoctorsWithAvailableTimes(DateTime.Now, DoctorOperationMode.InPerson);
+		var telehealthDoctors = _doctorService.GetAllDoctorsWithAvailableTimes(DateTime.Now, DoctorOperationMode.Telehealth);
+		var viewModel = new HomeViewModel
+		{
+			Services = services,
+			Specializations = specialities,
+			Symptoms = symptoms,
+			InpersonDoctors = inpersonDoctors,
+			TelehealthDoctors = telehealthDoctors,
+		};
+		return View(viewModel);
 	}
 
 	public IActionResult Privacy()

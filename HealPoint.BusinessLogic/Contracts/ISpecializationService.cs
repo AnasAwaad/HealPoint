@@ -1,11 +1,9 @@
-﻿using HealPoint.BusinessLogic.DTOs.Specialization;
-
-namespace HealPoint.BusinessLogic.Contracts;
+﻿namespace HealPoint.BusinessLogic.Contracts;
 public interface ISpecializationService
 {
 	IEnumerable<SpecializationDto> GetAllSpecializations();
 	IEnumerable<SpecializationDto> GetSpecializationsLookup();
-	IEnumerable<DoctorSpecializationItemDto> GetActiveSpecializationsForDoctor();
+	IEnumerable<SpecializationDto> GetActiveSpecializations();
 	SpecializationFormDto? GetSpecializationById(int id);
 	SpecializationDto CreateSpecialization(SpecializationFormDto specializationDto);
 	SpecializationDto? UpdateSpecialization(SpecializationFormDto specializationDto);

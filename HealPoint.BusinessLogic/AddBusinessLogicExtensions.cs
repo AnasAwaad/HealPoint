@@ -18,6 +18,7 @@ public static class AddBusinessLogicExtensions
 		services.AddScoped<IAuthService, AuthService>();
 		services.AddScoped<IServiceManager, ServiceManager>();
 		services.AddScoped<ISymptomService, SymptomService>();
+		services.AddScoped<IPatientService, PatientService>();
 
 
 

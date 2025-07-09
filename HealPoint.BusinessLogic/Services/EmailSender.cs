@@ -29,7 +29,8 @@ public class EmailSender : IEmailSender
 			IsBodyHtml = true,
 		};
 
-		message.To.Add(_webHostEnvironment.IsDevelopment() ? "ahmed.awaad1000@gmail.com" : email);
+		message.To.Add(email);
+		//message.To.Add(_webHostEnvironment.IsDevelopment() ? "ahmed.awaad1000@gmail.com" : email);
 
 		SmtpClient smtpClient = new SmtpClient(_mailSettings.Host)
 		{

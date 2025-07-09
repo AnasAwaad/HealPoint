@@ -1,0 +1,81 @@
+﻿@model HomeViewModel
+
+<section class="py-5 bg-white text-center">
+    <div class="container">
+        <h2 class="font-weight-bold text-black mb-2">Top-rated online doctors & specialists available now.</h2>
+        <p class="text-black mb-4">
+            Choose from thousands of providers at every day affordable prices.<br />
+            Book online today.
+        </p>
+
+        <!-- Tabs -->
+        <ul class="nav nav-tabs justify-content-center mb-4" id="specialtyTabs" role="tablist">
+            <li class="nav-item">
+                <a class="nav-link active text-black" id="top-tab" data-toggle="tab" href="#services" role="tab">Services</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link text-black" id="specialties-tab" data-toggle="tab" href="#specialties" role="tab">Specialties</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link text-black" id="symptoms-tab" data-toggle="tab" href="#symptoms" role="tab">Symptoms</a>
+            </li>
+        </ul>
+
+        <!-- Tab content -->
+        <div class="tab-content text-left" id="specialtyTabsContent">
+
+            <!-- Top Booked -->
+            <div class="tab-pane fade show active" id="services" role="tabpanel">
+                <div class="row">
+                    @foreach (var service in Model.Services)
+                    {
+                        <div class="col-md-3 mb-3 pl-0">
+                            <div class="p-3 rounded shadow-sm d-flex align-items-center link-card">
+                                <img src="@service.ImageUrl" alt="@service.Name" width="70" class="pr-2" />
+                                <p class="link-name pl-2 mb-0">@service.Name</p>
+                                <div class="ml-auto">
+                                    <i class="bi bi-arrow-right font-weight-bold link-icon"></i>
+                                </div>
+                            </div>
+                        </div>
+                    }
+                </div>
+            </div>
+
+
+            <!-- Specialties -->
+            <div class="tab-pane fade" id="specialties" role="tabpanel">
+                <div class="row">
+                    @foreach (var spec in Model.Specializations)
+                    {
+                        <div class="col-md-3 mb-3 pl-0">
+                            <div class="p-3 rounded shadow-sm d-flex align-items-center link-card">
+                                <p class="link-name pl-2 mb-0">@spec.Name</p>
+                                <div class="ml-auto">
+                                    <i class="bi bi-arrow-right font-weight-bold link-icon"></i>
+                                </div>
+                            </div>
+                        </div>
+                    }
+                </div>
+            </div>
+
+            <!-- Symptoms -->
+            <div class="tab-pane fade" id="symptoms" role="tabpanel">
+                <div class="row">
+                    @foreach (var spec in Model.Symptoms)
+                    {
+                        <div class="col-md-3 mb-3 pl-0">
+                            <div class="p-3 rounded shadow-sm d-flex align-items-center link-card">
+                                <p class="link-name pl-2 mb-0">@spec.Name</p>
+                                <div class="ml-auto">
+                                    <i class="bi bi-arrow-right font-weight-bold link-icon"></i>
+                                </div>
+                            </div>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

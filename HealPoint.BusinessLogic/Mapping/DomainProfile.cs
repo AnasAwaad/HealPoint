@@ -1,4 +1,6 @@
 ﻿using AutoMapper;
+using HealPoint.BusinessLogic.DTOs.Doctor;
+using HealPoint.BusinessLogic.DTOs.DoctorSchedule;
 using HealPoint.BusinessLogic.DTOs.Specialization;
 using HealPoint.DataAccess.Entities;
 
@@ -51,6 +53,26 @@ public class DomainProfile : Profile
 			.ForMember(dest => dest.UserName, opt => opt.MapFrom(src => src.ApplicationUser!.UserName))
 			.ForMember(dest => dest.Email, opt => opt.MapFrom(src => src.ApplicationUser!.Email))
 			.ForMember(dest => dest.PhoneNumber, opt => opt.MapFrom(src => src.ApplicationUser!.PhoneNumber));
+
+
+		CreateMap<DoctorSchedule, DoctorOverviewScheduleDto>()
+			.ForMember(dest => dest.DoctorScheduleDetails,
+	opt => opt.MapFrom(src => src.DoctorScheduleDetails.Where(d => !d.IsDeleted)));
+
+		CreateMap<DoctorScheduleDetails, DoctorOverviewScheduleDetailDto>();
+
+		CreateMap<Doctor, DoctorOverviewDto>()
+			.ForMember(dest => dest.FirstName,
+				opt => opt.MapFrom(src => src.ApplicationUser.FirstName))
+			.ForMember(dest => dest.LastName,
+				opt => opt.MapFrom(src => src.ApplicationUser.LastName))
+			.ForMember(dest => dest.ProfilePhotoUrl,
+				opt => opt.MapFrom(src => src.ProfilePhotoPath))
+			.ForMember(dest => dest.Specialization,
+				opt => opt.MapFrom(src => src.Specialization.Name))
+			.ForMember(dest => dest.Schedules,
+				opt => opt.MapFrom(src => src.Schedules.Where(s => !s.IsDeleted)));
+
 
 		CreateMap<RegisterPatientDto, ApplicationUser>();
 

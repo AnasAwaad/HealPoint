@@ -1,12 +1,14 @@
 ﻿using HealPoint.BusinessLogic.Contracts;
 using HealPoint.DataAccess.Consts;
+using HealPoint.DataAccess.Contracts;
 using HealPoint.DataAccess.Entities;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
 namespace HealPoint.BusinessLogic.Services;
 internal class AuthService(UserManager<ApplicationUser> userManager,
-						   SignInManager<ApplicationUser> signInManager) : IAuthService
+						   SignInManager<ApplicationUser> signInManager,
+						   IUnitOfWork unitOfWork) : IAuthService
 {
 	public async Task<ApplicationUser?> GetUsersByIdAsync(string id)
 	{
@@ -49,6 +51,20 @@ internal class AuthService(UserManager<ApplicationUser> userManager,
 			return userResult;
 
 		var result = await userManager.AddToRoleAsync(user, AppRoles.Patient);
+
+		if (!result.Succeeded)
+		{
+			await userManager.DeleteAsync(user);
+			return result;
+		}
+
+		var patient = new Patient
+		{
+			ApplicationUserId = user.Id,
+		};
+
+		unitOfWork.Patients.Insert(patient);
+		unitOfWork.SaveChanges();
 
 		return result;
 	}

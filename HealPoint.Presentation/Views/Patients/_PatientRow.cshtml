@@ -1,0 +1,51 @@
+﻿@model PatientDto
+
+<tr>
+    <td class="d-flex align-items-center justify-content-center">
+        <div class="symbol symbol-circle symbol-45px me-3">
+            <img src="@(Model.ProfilePhotoPath ?? "/images/doctors/default-doctor.jpg")" alt="photo" />
+        </div>
+        <div class="d-flex flex-column">
+            <span class="fw-bold text-gray-800 fs-6">@Model.FirstName @Model.LastName</span>
+        </div>
+    </td>
+
+    <td>
+        <a href="mailto:@Model.Email" class="text-primary text-hover-dark fw-semibold">@Model.Email</a>
+    </td>
+    <td>
+        <span class="text-muted">@Model.PhoneNumber</span>
+    </td>
+    <td>
+        <div class="form-check form-switch form-check-custom form-check-solid ">
+            <input class="form-check-input js-change-status w-40px h-25px" type="checkbox" @(Model.IsDeleted ? "" : "checked") data-url="/Patients/UpdateStatus/@Model.Id" />
+        </div>
+    </td>
+    <td class="text-center">
+        <div class="dropdown">
+            <button class="btn btn-sm btn-icon btn-light btn-active-color-primary" data-bs-toggle="dropdown">
+                <i class="bi bi-three-dots-vertical fs-4"></i>
+            </button>
+            <ul class="dropdown-menu dropdown-menu-end">
+                <li>
+                    <a class="dropdown-item " asp-controller="Patients" asp-action="Update" asp-route-Id="@Model.Id">
+                        <i class="ki-duotone ki-notepad-edit text-success me-2"></i> Update
+                    </a>
+                </li>
+                <li>
+                    <a class="dropdown-item d-flex align-items-center js-render-modal"
+                       href="javascript:;"
+                       data-url="/Patients/ResetPassword/@Model.UserId"
+                       data-title="Change Password"
+                       data-update="true">
+                        <i class="ki-duotone ki-notepad-edit fs-5 text-success me-2">
+                            <span class="path1"></span>
+                            <span class="path2"></span>
+                        </i>
+                        <span>Change Password</span>
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </td>
+</tr>
