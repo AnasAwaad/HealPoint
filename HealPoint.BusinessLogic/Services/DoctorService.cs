@@ -324,9 +324,9 @@ internal class DoctorService(IUnitOfWork unitOfWork,
 		unitOfWork.SaveChanges();
 	}
 
-	public IEnumerable<DoctorCardDto> GetAllDoctorsWithAvailableTimes(DateTime date)
+	public IEnumerable<DoctorCardDto> GetAllDoctorsWithAvailableTimes(DateTime date, DoctorOperationMode operationMode)
 	{
-		var query = unitOfWork.Doctors.GetAllWithSchedulesAndDetails();
+		var query = unitOfWork.Doctors.GetAllWithSchedulesAndDetails(operationMode);
 		var doctors = mapper.ProjectTo<DoctorOverviewDto>(query).ToList();
 
 		var doctorsDto = new List<DoctorCardDto>();
@@ -341,6 +341,8 @@ internal class DoctorService(IUnitOfWork unitOfWork,
 				FullName = $"Dr. {doctor.FirstName} {doctor.LastName}",
 				Specialization = doctor.Specialization,
 				ProfilePhotoUrl = doctor.ProfilePhotoUrl,
+				OperationMode = operationMode,
+				ClinicAddress = "347 East 53rd Street Suite LA, New York, NY 10022",
 				Rating = 4.9f,
 				TotalReviews = 1000,
 				AvailableToday = availableTimes.Any(),

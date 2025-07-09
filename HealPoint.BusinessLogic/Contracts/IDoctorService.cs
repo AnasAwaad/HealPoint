@@ -6,7 +6,7 @@ namespace HealPoint.BusinessLogic.Contracts;
 public interface IDoctorService
 {
 	IEnumerable<DoctorDto> GetAll();
-	IEnumerable<DoctorCardDto> GetAllDoctorsWithAvailableTimes(DateTime date);
+	IEnumerable<DoctorCardDto> GetAllDoctorsWithAvailableTimes(DateTime date, DoctorOperationMode operationMode);
 	DoctorFormDto? GetById(int id);
 	Doctor? GetWithSymptomsByUserId(string userId);
 	Task CreateAsync(DoctorFormDto dto);

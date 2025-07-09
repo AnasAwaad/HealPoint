@@ -1,4 +1,6 @@
-﻿namespace HealPoint.BusinessLogic.DTOs.Doctor;
+﻿using HealPoint.DataAccess.Enums;
+
+namespace HealPoint.BusinessLogic.DTOs;
 public class DoctorCardDto
 {
 	public int Id { get; set; }
@@ -6,6 +8,8 @@ public class DoctorCardDto
 	public string Description { get; set; }
 	public string Specialization { get; set; }
 	public string ProfilePhotoUrl { get; set; }
+	public string ClinicAddress { get; set; }
+	public DoctorOperationMode OperationMode { get; set; }
 	public float Rating { get; set; }
 	public int TotalReviews { get; set; }
 	public bool AvailableToday { get; set; }

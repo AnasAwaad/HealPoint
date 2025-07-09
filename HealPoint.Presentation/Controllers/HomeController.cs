@@ -1,4 +1,5 @@
 using HealPoint.BusinessLogic.Contracts;
+using HealPoint.DataAccess.Enums;
 using HealPoint.Presentation.Models;
 using HealPoint.Presentation.ViewModels;
 using Microsoft.AspNetCore.Mvc;
@@ -31,13 +32,15 @@ public class HomeController : Controller
 		var services = _serviceManager.GetActiveServices();
 		var specialities = _specializationService.GetActiveSpecializations();
 		var symptoms = _symptomService.GetActiveSymptoms();
-		var doctors = _doctorService.GetAllDoctorsWithAvailableTimes(DateTime.Now);
+		var inpersonDoctors = _doctorService.GetAllDoctorsWithAvailableTimes(DateTime.Now, DoctorOperationMode.InPerson);
+		var telehealthDoctors = _doctorService.GetAllDoctorsWithAvailableTimes(DateTime.Now, DoctorOperationMode.Telehealth);
 		var viewModel = new HomeViewModel
 		{
 			Services = services,
 			Specializations = specialities,
 			Symptoms = symptoms,
-			Doctors = doctors,
+			InpersonDoctors = inpersonDoctors,
+			TelehealthDoctors = telehealthDoctors,
 		};
 		return View(viewModel);
 	}
