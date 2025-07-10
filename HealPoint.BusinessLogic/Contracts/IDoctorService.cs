@@ -20,4 +20,5 @@ public interface IDoctorService
 	void ChangeSpecialization(int doctorId, int selectedSpecializationId);
 	void UpdateSymptoms(int doctorId, IList<int> selectedSymptoms);
 	void UpdateOperationModel(int doctorId, DoctorOperationMode operationMode);
+	DoctorDetailsDto GetDoctorDetailsWithSchedule(int id);
 }

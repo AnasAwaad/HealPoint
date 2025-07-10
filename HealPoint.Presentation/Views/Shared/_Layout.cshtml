@@ -1,4 +1,9 @@
-﻿<!DOCTYPE html>
+﻿@{
+	var isHomePage = ViewContext.RouteData.Values["controller"]?.ToString() == "Home";
+
+}
+
+<!DOCTYPE html>
 <html lang="en">
 <head>
 	<meta charset="utf-8">
@@ -23,7 +28,7 @@
 	
 </head>
 
-<body>
+<body class="@(isHomePage ? "home-page" : "not-home")">
 
 	<div class="page-wrapper">
 		<!-- Preloader -->

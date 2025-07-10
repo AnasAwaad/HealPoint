@@ -12,4 +12,5 @@ public interface IDoctorRepository : IRepository<Doctor>
 	Doctor? GetDoctorByUserId(string userId);
 	Doctor? GetDoctorWithSymptomsByUserId(string userId);
 	Doctor? GetDoctorWithSymptomsByDoctorId(int id);
+	Doctor? GetDoctorWithDetails(int id);
 }

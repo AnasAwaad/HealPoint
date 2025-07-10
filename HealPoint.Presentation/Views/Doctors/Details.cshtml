@@ -1,0 +1,97 @@
+﻿@model DoctorDetailsDto
+
+@{
+    ViewData["Title"] = "Doctor details";
+    Layout = "_Layout";
+}
+
+@section Styles{
+	<link href="~/assets/css/calender.css" rel="stylesheet" />
+}
+
+<div class="container my-5" style="padding-top:80px;">
+    <div class="card shadow-sm border-0 p-4 w-100">
+        <div class="d-flex align-items-center mb-4">
+            <img src="@Model.ProfilePhotoPath" alt="@Model.FullName" class="rounded-circle" width="100" height="100" />
+            <div class="ml-4">
+                <h4 class="mb-1">@Model.FullName</h4>
+                <div>
+                    <span class="badge badge-light text-primary ml-2">Loyal patients</span>
+                    <span class="badge badge-danger ml-1">Popular</span>
+                </div>
+                <div class="mt-1 text-muted">
+                    @Model.SpecializationName · @Model.OperationMode.ToString()
+                </div>
+            </div>
+        </div>
+
+        <blockquote class="blockquote text-muted pl-3 border-left">
+            “@Model.Description”
+        </blockquote>
+
+        <h5 class="mt-5">Telehealth Visit</h5>
+
+        <ul class="nav nav-tabs mt-4" id="doctorTabs" role="tablist">
+            <li class="nav-item">
+                <a class="nav-link active" id="availability-tab" data-toggle="tab" href="#availability" role="tab">Availability</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" id="service-tab" data-toggle="tab" href="#service" role="tab">Service details</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" id="about-tab" data-toggle="tab" href="#about" role="tab">About the provider</a>
+            </li>
+        </ul>
+
+        <div class="tab-content pt-4" id="doctorTabsContent">
+            <!-- Availability Tab -->
+            <div class="tab-pane fade show active" id="availability" role="tabpanel">
+                <div class="calendar">
+                    <div class="header">
+                        <div class="month">July 2021</div>
+                        <div class="btns">
+                            <!-- today -->
+                            <div class="btn today">
+                                <i class="fas fa-calendar-day"></i>
+                            </div>
+                            <!-- previous month -->
+                            <div class="btn prev">
+                                <i class="fas fa-chevron-left"></i>
+                            </div>
+                            <!-- next month -->
+                            <div class="btn next">
+                                <i class="fas fa-chevron-right"></i>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="weekdays">
+                        <div class="day">Sun</div>
+                        <div class="day">Mon</div>
+                        <div class="day">Tue</div>
+                        <div class="day">Wed</div>
+                        <div class="day">Thu</div>
+                        <div class="day">Fri</div>
+                        <div class="day">Sat</div>
+                    </div>
+                    <div class="days">
+                        <!-- render days with js -->
+                    </div>
+                </div>
+            </div>
+
+            <!-- Service Details Tab -->
+            <div class="tab-pane fade" id="service" role="tabpanel">
+                <p class="text-muted">Service details will be shown here. (You can expand this as needed.)</p>
+            </div>
+
+            <!-- About the Provider Tab -->
+            <div class="tab-pane fade" id="about" role="tabpanel">
+                <p class="text-muted">More about the provider will be shown here. (Extend with bio, education, etc.)</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts{
+	<script src="~/assets/js/calender.js"></script>
+}

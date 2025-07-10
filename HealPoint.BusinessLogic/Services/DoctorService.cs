@@ -386,5 +386,12 @@ internal class DoctorService(IUnitOfWork unitOfWork,
 		return timeSlots;
 	}
 
+	public DoctorDetailsDto GetDoctorDetailsWithSchedule(int id)
+	{
+		var doctor = unitOfWork.Doctors.GetDoctorWithDetails(id);
+
+		return mapper.Map<DoctorDetailsDto>(doctor);
+	}
+
 	#endregion
 }

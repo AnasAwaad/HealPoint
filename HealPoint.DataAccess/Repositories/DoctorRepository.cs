@@ -69,4 +69,14 @@ internal class DoctorRepository : Repository<Doctor>, IDoctorRepository
 				.ThenInclude(s => s.DoctorScheduleDetails)
 			.Where(d => !d.IsDeleted && d.OperationMode == operationMode);
 	}
+
+	public Doctor? GetDoctorWithDetails(int id)
+	{
+		return _context.Doctors
+			.Where(d => d.Id == id)
+			.Include(d => d.ApplicationUser)
+			.Include(d => d.Specialization)
+			.Include(d => d.Symptoms)
+			.FirstOrDefault();
+	}
 }
