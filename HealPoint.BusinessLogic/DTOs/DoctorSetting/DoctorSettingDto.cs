@@ -10,6 +10,8 @@ public class DoctorSettingDto
 	public IList<int> SelectedSymptoms { get; set; } = new List<int>();
 	public int? SelectedServiceId { get; set; }
 	public int? SelectedSpecializationId { get; set; }
+	public int? ServicePrice { get; set; }
+	public int? ServiceDurationInMinutes { get; set; }
 	public DoctorOperationMode OperationMode { get; set; }
 
 }

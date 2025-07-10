@@ -9,6 +9,8 @@ $(document).ready(function () {
 
         const id = $(this).data('service-id');
         $('#SelectedServiceId').val(id);
+
+        $('#servicePriceDurationInputs').removeClass('d-none');
     });
 
     // specialization click
@@ -47,11 +49,13 @@ $(document).ready(function () {
         if (!serviceId) return showErrorSwal('Please select a service.');
 
         $.ajax({
-            url: '/DoctorSettings/UpdateService',
+            url: '/Doctor/DoctorSettings/UpdateService',
             method: 'POST',
             contentType: 'application/json',
             data: JSON.stringify({
                 DoctorId: parseInt($('#DoctorId').val()),
+                ServicePrice: parseInt($('#ServicePrice').val()),
+                ServiceDurationInMinutes: parseInt($('#ServiceDurationInMinutes').val()),
                 SelectedServiceId: serviceId
             }),
             success: () => showSuccessSwal('Your service is updated successfully.'),
@@ -66,7 +70,7 @@ $(document).ready(function () {
 
 
         $.ajax({
-            url: '/DoctorSettings/UpdateSpecialization',
+            url: '/Doctor/DoctorSettings/UpdateSpecialization',
             method: 'POST',
             contentType: 'application/json',
             data: JSON.stringify({
@@ -83,7 +87,7 @@ $(document).ready(function () {
     $('#btnUpdateSymptoms').on('click', function () {
         if (selectedSymptomIds.length === 0) return showErrorSwal('Please select at least one symptom.');
         $.ajax({
-            url: '/DoctorSettings/UpdateSymptoms',
+            url: '/Doctor/DoctorSettings/UpdateSymptoms',
             method: 'POST',
             contentType: 'application/json',
             data: JSON.stringify({
@@ -110,7 +114,7 @@ $(document).ready(function () {
 
         $.ajax({
             type: "POST",
-            url: '/DoctorSettings/UpdateOperationMode',
+            url: '/Doctor/DoctorSettings/UpdateOperationMode',
             contentType: 'application/json',
             data: JSON.stringify({
                 DoctorId: parseInt(doctorId),

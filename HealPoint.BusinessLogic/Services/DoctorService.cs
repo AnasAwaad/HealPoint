@@ -269,7 +269,7 @@ internal class DoctorService(IUnitOfWork unitOfWork,
 		return unitOfWork.Doctors.GetDoctorWithSymptomsByUserId(userId);
 	}
 
-	public void ChangeService(int doctorId, int selectedServiceId)
+	public void ChangeService(int doctorId, int selectedServiceId, int servicePrice, int serviceDuration)
 	{
 		var doctor = unitOfWork.Doctors.FindById(doctorId);
 
@@ -277,6 +277,8 @@ internal class DoctorService(IUnitOfWork unitOfWork,
 			throw new KeyNotFoundException($"Doctor with ID {doctorId} not found.");
 
 		doctor.ServiceId = selectedServiceId;
+		doctor.ServicePrice = servicePrice;
+		doctor.ServiceDuration = serviceDuration;
 
 		unitOfWork.SaveChanges();
 	}

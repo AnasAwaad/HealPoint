@@ -1,5 +1,4 @@
-﻿using HealPoint.BusinessLogic.DTOs.Doctor;
-using HealPoint.DataAccess.Entities;
+﻿using HealPoint.DataAccess.Entities;
 using HealPoint.DataAccess.Enums;
 
 namespace HealPoint.BusinessLogic.Contracts;
@@ -17,7 +16,7 @@ public interface IDoctorService
 	bool IsAllowedEmail(string email, int? id);
 	Task UpdateAsync(DoctorFormDto dto);
 	Task ToggleDoctorStatusAsync(int id);
-	void ChangeService(int doctorId, int selectedServiceId);
+	void ChangeService(int doctorId, int selectedServiceId, int servicePrice, int serviceDuration);
 	void ChangeSpecialization(int doctorId, int selectedSpecializationId);
 	void UpdateSymptoms(int doctorId, IList<int> selectedSymptoms);
 	void UpdateOperationModel(int doctorId, DoctorOperationMode operationMode);

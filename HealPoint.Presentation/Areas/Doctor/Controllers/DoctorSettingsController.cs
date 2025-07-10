@@ -1,9 +1,14 @@
 ﻿using HealPoint.BusinessLogic.Contracts;
 using HealPoint.BusinessLogic.DTOs;
+using HealPoint.DataAccess.Consts;
 using HealPoint.Presentation.Extensions;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
-namespace HealPoint.Presentation.Controllers;
+namespace HealPoint.Presentation.Areas.Doctor.Controllers;
+
+[Authorize(Roles = AppRoles.Doctor)]
+[Area("Doctor")]
 public class DoctorSettingsController : Controller
 {
 	#region Props
@@ -42,7 +47,9 @@ public class DoctorSettingsController : Controller
 			SelectedServiceId = doctor.ServiceId,
 			SelectedSpecializationId = doctor.SpecializationId,
 			SelectedSymptoms = doctor.Symptoms.Select(s => s.SymptomId).ToList(),
-			OperationMode = doctor.OperationMode
+			OperationMode = doctor.OperationMode,
+			ServicePrice = doctor.ServicePrice,
+			ServiceDurationInMinutes = doctor.ServiceDuration
 		};
 
 		return View(model);
@@ -54,7 +61,7 @@ public class DoctorSettingsController : Controller
 		if (!model.SelectedServiceId.HasValue || model.SelectedServiceId.Equals(0))
 			return BadRequest("Selected service ID cannot be zero.");
 
-		_doctorService.ChangeService(model.DoctorId, model.SelectedServiceId.Value);
+		_doctorService.ChangeService(model.DoctorId, model.SelectedServiceId.Value, model.ServicePrice.Value, model.ServiceDurationInMinutes.Value);
 		return Ok();
 	}
 

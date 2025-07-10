@@ -1,12 +1,15 @@
 ﻿using HealPoint.BusinessLogic.Contracts;
 using HealPoint.BusinessLogic.DTOs;
+using HealPoint.DataAccess.Consts;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using System.Security.Claims;
 
-namespace HealPoint.Presentation.Controllers;
-[Authorize]
+namespace HealPoint.Presentation.Areas.Doctor.Controllers;
+
+[Authorize(Roles = AppRoles.Doctor)]
+[Area("Doctor")]
 public class DoctorSchedulesController : Controller
 {
 	private readonly IClinicService _clinicService;
@@ -33,9 +36,7 @@ public class DoctorSchedulesController : Controller
 		foreach (var item in model.DoctorScheduleDetails)
 		{
 			if (TimeSpan.Parse(item.StartTime) >= TimeSpan.Parse(item.EndTime))
-			{
 				return BadRequest($"Start Time must be before End Time on {item.DayOfWeek}");
-			}
 		}
 
 		_doctorScheduleService.Create(model, User.FindFirst(ClaimTypes.NameIdentifier)!.Value);
@@ -51,9 +52,7 @@ public class DoctorSchedulesController : Controller
 		foreach (var item in model.DoctorScheduleDetails)
 		{
 			if (TimeSpan.Parse(item.StartTime) >= TimeSpan.Parse(item.EndTime))
-			{
 				return BadRequest($"Start Time must be before End Time on {item.DayOfWeek}");
-			}
 		}
 		_doctorScheduleService.Update(model, User.FindFirst(ClaimTypes.NameIdentifier)!.Value);
 		return Ok(new { success = true, message = "Doctor schedule updated successfully" });

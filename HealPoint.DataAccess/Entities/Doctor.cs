@@ -38,6 +38,8 @@ public class Doctor : BaseEntity
 	public Department? Department { get; set; }
 	public string? Position { get; set; }
 	public int? ServiceId { get; set; }
+	public int? ServicePrice { get; set; }
+	public int? ServiceDuration { get; set; }
 	public Service? Service { get; set; }
 
 
