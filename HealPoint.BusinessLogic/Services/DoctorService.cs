@@ -393,5 +393,32 @@ internal class DoctorService(IUnitOfWork unitOfWork,
 		return mapper.Map<DoctorDetailsDto>(doctor);
 	}
 
+	public List<TimeSpan> GetAvailableTimesForDay(int doctorId, DateTime date)
+	{
+		var doctor = unitOfWork.Doctors.FindById(doctorId);
+
+		if (doctor is null)
+			return new List<TimeSpan>();
+
+		var doctorSchedules = unitOfWork.Doctors.GetDoctorSchedulesForDay(doctorId, date);
+
+		var timeSlots = new List<TimeSpan>();
+
+		if (doctorSchedules is not null)
+		{
+			foreach (var detail in doctorSchedules.DoctorScheduleDetails)
+			{
+				var currentTime = detail.StartTime;
+				while (currentTime.Add(TimeSpan.FromMinutes(doctor.ServiceDuration.Value)) <= detail.EndTime)
+				{
+					timeSlots.Add(currentTime);
+					currentTime = currentTime.Add(TimeSpan.FromMinutes(doctor.ServiceDuration.Value));
+				}
+			}
+		}
+
+		return timeSlots;
+	}
+
 	#endregion
 }

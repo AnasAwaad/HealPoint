@@ -22,6 +22,17 @@ public class DoctorsController : Controller
 		return View(doctor);
 	}
 
+	[HttpGet]
+	public IActionResult GetDoctorSchedulesForDate(int doctorId, string date)
+	{
+		if (!DateTime.TryParse(date, out DateTime parsedDate))
+			return BadRequest("Invalid date format");
+
+		var slots = _doctorService.GetAvailableTimesForDay(doctorId, parsedDate);
+
+
+		return Ok(slots);
+	}
 	#endregion
 
 }

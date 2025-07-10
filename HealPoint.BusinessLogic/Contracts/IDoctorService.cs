@@ -21,4 +21,5 @@ public interface IDoctorService
 	void UpdateSymptoms(int doctorId, IList<int> selectedSymptoms);
 	void UpdateOperationModel(int doctorId, DoctorOperationMode operationMode);
 	DoctorDetailsDto GetDoctorDetailsWithSchedule(int id);
+	List<TimeSpan> GetAvailableTimesForDay(int doctorId, DateTime date);
 }

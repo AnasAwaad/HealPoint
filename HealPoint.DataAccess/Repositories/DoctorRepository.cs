@@ -79,4 +79,16 @@ internal class DoctorRepository : Repository<Doctor>, IDoctorRepository
 			.Include(d => d.Symptoms)
 			.FirstOrDefault();
 	}
+
+	public DoctorSchedule? GetDoctorSchedulesForDay(int doctorId, DateTime day)
+	{
+		return _context.DoctorSchedules
+			.Where(ds => !ds.IsDeleted &&
+							ds.DoctorId == doctorId &&
+							ds.StartDate <= day &&
+							ds.EndDate >= day)
+			.Include(ds => ds.DoctorScheduleDetails.Where(dsd => !dsd.IsDeleted && dsd.DayOfWeek == day.DayOfWeek))
+			.FirstOrDefault();
+
+	}
 }
