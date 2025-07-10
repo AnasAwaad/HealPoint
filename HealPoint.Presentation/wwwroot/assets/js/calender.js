@@ -1,7 +1,7 @@
 const daysContainer = document.querySelector(".days");
 const nextBtn = document.querySelector(".next");
 const prevBtn = document.querySelector(".prev");
-const todayBtn = document.querySelector(".active");
+const todayBtn = document.querySelector(".today");
 const month = document.querySelector(".month");
 
 const months = [
@@ -118,9 +118,26 @@ prevBtn.addEventListener("click", () => {
 });
 
 todayBtn.addEventListener("click", () => {
+    const today = new Date();
+
     currentMonth = date.getMonth();
     currentYear = date.getFullYear();
     renderCalendar();
+
+    const yyyy = today.getFullYear();
+    const mm = String(today.getMonth() + 1).padStart(2, '0');
+    const dd = String(today.getDate()).padStart(2, '0');
+    const todayFormatted = `${yyyy}-${mm}-${dd}`;
+
+    // After render, find and click today's element
+    setTimeout(() => {
+        const todayElem = document.querySelector(`.day[data-date="${todayFormatted}"]`);
+        if (todayElem) {
+            todayElem.classList.add("active");
+            todayElem.scrollIntoView({ behavior: "smooth", block: "center" });
+            todayElem.click();
+        }
+    }, 0);
 });
 
 function hideTodayBtn() {

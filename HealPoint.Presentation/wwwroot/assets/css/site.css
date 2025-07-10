@@ -165,3 +165,20 @@
 .purple-text {
     color: #6f42c1;
 }
+
+.doctor-avatar {
+    width: 100px;
+    height: 100px;
+}
+
+.doctor-name {
+    font-size: 32px;
+    font-weight: bold;
+    color: #000;
+}
+
+.doctor-operation-mode {
+    font-weight: bold;
+    font-size: 28px;
+    color: #5921CF;
+}

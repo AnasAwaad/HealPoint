@@ -4,167 +4,83 @@
     ViewData["Title"] = "Doctor details";
     Layout = "_Layout";
 }
-
-@section Styles{
-	<link href="~/assets/css/calender.css" rel="stylesheet" />
+@section Styles {
+    <link href="~/assets/css/calender.css" rel="stylesheet" />
 }
 
-<div class="container my-5" style="padding-top:80px;">
-    <input type="hidden" asp-for="Id" />
-    <div class="card shadow-sm border-0 p-4 w-100">
-        <div class="d-flex align-items-center mb-4">
-            <img src="@Model.ProfilePhotoPath" alt="@Model.FullName" class="rounded-circle" width="100" height="100" />
-            <div class="ml-4">
-                <h4 class="mb-1">@Model.FullName</h4>
-                <div>
-                    <span class="badge badge-light text-primary ml-2">Loyal patients</span>
-                    <span class="badge badge-danger ml-1">Popular</span>
-                </div>
-                <div class="mt-1 text-muted">
-                    @Model.SpecializationName · @Model.OperationMode.ToString()
+<div class="bg-light">
+    <div class="container my-4 align-items-start" style="padding-top:80px;">
+        <input type="hidden" asp-for="Id" />
+        <div class="card shadow-sm border-0 p-4 w-100">
+            <div class="d-flex align-items-center mb-4">
+                <img src="@Model.ProfilePhotoPath" alt="@Model.FullName" class="rounded-circle doctor-avatar" />
+                <div class="ml-4">
+                    <h4 class="mb-1 doctor-name">@Model.FullName</h4>
+                    <div>
+                        <span class="stars text-warning ">★★★★★</span>
+                        <strong class="font-weight-bold text-black">4.4</strong>
+                        <span class="num-patients">(1000)</span>
+                    </div>
+                    <div>
+                        <span class="badge badge-highlight">Highly rated</span>
+                    </div>
+                    <div class="mt-1 text-muted">
+                        <i class="bi bi-clipboard2-heart-fill display-5"></i>
+                        <span>@Model.SpecializationName</span> .
+                        <i class="bi bi-camera-video"></i>
+                        <span>@Model.OperationMode.ToString() Visit</span>
+                    </div>
+                    <div class="text-muted">
+                        “He worked with us as we had connectivity issues originally; looked at the information already provided to give us the best course of medication; very courteous and professional.”
+                    </div>
                 </div>
             </div>
-        </div>
 
-        <blockquote class="blockquote text-muted pl-3 border-left">
-            “@Model.Description”
-        </blockquote>
 
-        <h5 class="mt-5">Telehealth Visit</h5>
 
-        <ul class="nav nav-tabs mt-4" id="doctorTabs" role="tablist">
-            <li class="nav-item">
-                <a class="nav-link active" id="availability-tab" data-toggle="tab" href="#availability" role="tab">Availability</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" id="service-tab" data-toggle="tab" href="#service" role="tab">Service details</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" id="about-tab" data-toggle="tab" href="#about" role="tab">About the provider</a>
-            </li>
-        </ul>
+            <h5 class="mt-2 doctor-operation-mode">@Model.OperationMode.ToString() Visit</h5>
 
-        <div class="tab-content pt-4" id="doctorTabsContent">
-            <!-- Availability Tab -->
-            <div class="tab-pane fade show active " id="availability" role="tabpanel">
-                <div class="row">
-                    <div class="col-md-6">
-                        <div class="calendar ">
-                            <div class="header">
-                                <div class="month">July 2021</div>
-                                <div class="btns">
-                                    <!-- today -->
-                                    <div class="btn today">
-                                        <i class="fas fa-calendar-day"></i>
-                                    </div>
-                                    <!-- previous month -->
-                                    <div class="btn prev">
-                                        <i class="fas fa-chevron-left"></i>
-                                    </div>
-                                    <!-- next month -->
-                                    <div class="btn next">
-                                        <i class="fas fa-chevron-right"></i>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="weekdays">
-                                <div class="day">Sun</div>
-                                <div class="day">Mon</div>
-                                <div class="day">Tue</div>
-                                <div class="day">Wed</div>
-                                <div class="day">Thu</div>
-                                <div class="day">Fri</div>
-                                <div class="day">Sat</div>
-                            </div>
-                            <div class="days">
-                                <!-- render days with js -->
-                            </div>
+            <ul class="nav nav-tabs mt-4" id="doctorTabs" role="tablist">
+                <li class="nav-item">
+                    <a class="nav-link active" id="availability-tab" data-toggle="tab" href="#availability" role="tab">Availability</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" id="service-tab" data-toggle="tab" href="#service" role="tab">Service details</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" id="about-tab" data-toggle="tab" href="#about" role="tab">About the provider</a>
+                </li>
+            </ul>
+
+            <div class="tab-content pt-4" id="doctorTabsContent">
+                <!-- Availability Tab -->
+                <div class="tab-pane fade show active " id="availability" role="tabpanel">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <partial name="_Calender" />
+                        </div>
+
+                        <div class="col-md-6 d-flex flex-column" id="timeSlots" style="max-height: 400px; overflow-y: auto;">
                         </div>
                     </div>
-                    
-                    <div class="col-md-6 d-flex flex-column" id="timeSlots" style="max-height: 400px; overflow-y: auto;">
-                    </div>
                 </div>
-            </div>
 
-            <!-- Service Details Tab -->
-            <div class="tab-pane fade" id="service" role="tabpanel">
-                <p class="text-muted">Service details will be shown here. (You can expand this as needed.)</p>
-            </div>
+                <!-- Service Details Tab -->
+                <div class="tab-pane fade" id="service" role="tabpanel">
+                    <p class="text-muted">Service details will be shown here. (You can expand this as needed.)</p>
+                </div>
 
-            <!-- About the Provider Tab -->
-            <div class="tab-pane fade" id="about" role="tabpanel">
-                <p class="text-muted">More about the provider will be shown here. (Extend with bio, education, etc.)</p>
+                <!-- About the Provider Tab -->
+                <div class="tab-pane fade" id="about" role="tabpanel">
+                    <p class="text-muted">More about the provider will be shown here. (Extend with bio, education, etc.)</p>
+                </div>
             </div>
         </div>
     </div>
+
 </div>
 
-@section Scripts{
-	<script src="~/assets/js/calender.js"></script>
-    <script>
-       
-        $(document).ready(function(){
-
-            GetAvailableTimesForDay($('.day.active').data('date'));
-
-
-            $(document).on('click','.day.active',function(){
-                if ($(this).hasClass('disabled') || $(this).hasClass('prev') || $(this).hasClass('next')) {
-                    return;
-                }
-
-                const selectedDate = $(this).data('date');
-                console.log("Clicked date:", selectedDate);
-
-                GetAvailableTimesForDay(selectedDate);
-            });
-
-        })
-
-        function GetAvailableTimesForDay(day){
-            const doctorId = $('#Id').val();
-
-            $.ajax({
-                url: '/Doctors/GetDoctorSchedulesForDate',
-                type: 'GET',
-                data: {
-                    doctorId: doctorId,
-                    date: day
-                },
-                success: function (slots) {
-                        const container = $('#timeSlots');
-                        container.empty();
-
-                        if (slots.length === 0) {
-                            container.append('<div class="text-muted fs-3">No available time slots for this day.</div>');
-                            return;
-                        }
-
-
-                        slots.forEach(function (slot) {
-                            const newTime = formatTime(slot);
-                            container.append(`
-                                <button type="button" class="btn btn-outline-primary mb-2 slot-btn" data-slot="${slot}">
-                                    ${newTime}
-                                </button>
-                            `);
-                        });
-
-                },
-                error: function () {
-                    container.html('<span class="text-danger">Error loading time slots</span>');
-                }
-            });
-
-        }
-
-        function formatTime(timeStr) {
-            const [hours, minutes] = timeStr.split(':');
-            const h = parseInt(hours, 10);
-            const ampm = h >= 12 ? 'PM' : 'AM';
-            const hour12 = h % 12 || 12; // convert 0 to 12
-            return `${hour12}:${minutes} ${ampm}`;
-        }
-    </script>
+@section Scripts {
+    <script src="~/assets/js/calender.js"></script>
+    <script src="~/js/doctor-details.js"></script>
 }
