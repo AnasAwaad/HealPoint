@@ -6,4 +6,6 @@ public class Patient : BaseEntity
 	public DateTime DateOfBirth { get; set; }
 	public string? Gender { get; set; }
 	public string? Address { get; set; }
+
+	public ICollection<Appointment> Appointments { get; set; } = new List<Appointment>();
 }

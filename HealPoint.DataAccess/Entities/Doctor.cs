@@ -50,4 +50,5 @@ public class Doctor : BaseEntity
 
 	public ICollection<DoctorSchedule> Schedules { get; set; } = new List<DoctorSchedule>();
 	public ICollection<DoctorSymptom> Symptoms { get; set; } = new List<DoctorSymptom>();
+	public ICollection<Appointment> Appointments { get; set; } = new List<Appointment>();
 }
